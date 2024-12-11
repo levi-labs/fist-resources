@@ -13,15 +13,15 @@ class Supplier extends Model
     protected function name(): Attribute
     {
         return Attribute::make(
+            get: fn($value) => strtoupper($value),
             set: fn($value) => strtolower($value),
-            get: fn($value) => ucfirst($value),
         );
     }
     protected function address(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => strtolower($value),
             get: fn($value) => ucfirst($value),
+            set: fn($value) => strtolower($value),
         );
     }
 }

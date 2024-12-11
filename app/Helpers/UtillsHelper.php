@@ -8,6 +8,13 @@ function formatNumber($number)
     return  $formattedRupiah;
 }
 
+function handleSanitize($string)
+{
+    if ($string) {
+        return strip_tags($string);
+    }
+    return false;
+}
 function get_file_path_from_url($url)
 {
     return str_replace(url('http://localhost:8000/storage/'), '', $url);

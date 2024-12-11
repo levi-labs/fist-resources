@@ -19,9 +19,16 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $title = 'Supplier List';
-        $suppliers = $this->supplierservice->getAllSuppliers();
-        return view('pages.supplier.index', compact('title', 'suppliers'));
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if (isset($sanitize) && $sanitize !== '') {
+            $title = 'Supplier List';
+            $suppliers = $this->supplierservice->searchSuppliers($sanitize);
+            return view('pages.supplier.index', compact('title', 'suppliers'));
+        } else {
+            $title = 'Supplier List';
+            $suppliers = $this->supplierservice->getAllSuppliers();
+            return view('pages.supplier.index', compact('title', 'suppliers'));
+        }
     }
 
     /**
@@ -36,10 +43,11 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
         try {
             $this->supplierservice->createSupplier($request->all());
+            return redirect()->route('supplier.index')->with('success', 'Supplier created successfully');
         } catch (\Throwable $error) {
             return redirect()->back()->with('error', $error->getMessage());
         }

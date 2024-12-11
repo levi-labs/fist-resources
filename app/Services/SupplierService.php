@@ -7,10 +7,17 @@ use Illuminate\Support\Facades\DB;
 
 class SupplierService
 {
+    public function searchSuppliers($name)
+    {
+        $suppliers = DB::table('suppliers')->where('name', 'like', '%' . $name . '%')->get();
+        $suppliers = Supplier::hydrate($suppliers->toArray());
+        return $suppliers;
+    }
 
     public function getAllSuppliers()
     {
         $suppliers = DB::table('suppliers')->get();
+        $suppliers = Supplier::hydrate($suppliers->toArray());
         return $suppliers;
     }
 
