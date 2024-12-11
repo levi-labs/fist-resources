@@ -22,3 +22,14 @@ Route::controller(App\Http\Controllers\CategoryController::class)->prefix('categ
     Route::put('/update/{category}', 'update')->name('category.update');
     Route::get('/delete/{category}', 'destroy')->name('category.destroy');
 });
+
+Route::controller(App\Http\Controllers\ProductController::class)->prefix('product')->group(function () {
+    Route::get('/', 'index')->name('product.index');
+    Route::post('/', 'index')->name('product.search');
+    Route::get('/show/{product}', 'show')->name('product.show');
+    Route::get('/create', 'create')->name('product.create');
+    Route::post('/store', 'store')->name('product.store');
+    Route::get('/edit/{product}', 'edit')->name('product.edit');;
+    Route::put('/update/{product}', 'update')->name('product.update');
+    Route::get('/delete/{product}', 'destroy')->name('product.destroy');
+});
