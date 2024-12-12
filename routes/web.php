@@ -44,3 +44,14 @@ Route::controller(App\Http\Controllers\SupplierController::class)->prefix('suppl
     Route::put('/update/{supplier}', 'update')->name('supplier.update');
     Route::get('/delete/{supplier}', 'destroy')->name('supplier.destroy');
 });
+
+Route::controller(App\Http\Controllers\UserController::class)->prefix('user')->group(function () {
+    Route::get('/', 'index')->name('user.index');
+    Route::post('/', 'index')->name('user.search');
+    Route::get('/show/{user}', 'show')->name('user.show');
+    Route::get('/create', 'create')->name('user.create');
+    Route::post('/store', 'store')->name('user.store');
+    Route::get('/edit/{user}', 'edit')->name('user.edit');;
+    Route::put('/update/{user}', 'update')->name('user.update');
+    Route::get('/delete/{user}', 'destroy')->name('user.destroy');
+});

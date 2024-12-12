@@ -23,7 +23,7 @@ return new class extends Migration
                 'approved',
                 'rejected',
                 'resubmitted'
-            ]);
+            ])->default('pending');
 
             $table->integer('resubmit_count')->default(0);
             $table->text('notes')->nullable();
