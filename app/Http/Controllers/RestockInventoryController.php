@@ -65,6 +65,7 @@ class RestockInventoryController extends Controller
                     'image' => $product['image'],
                     'sku' => $product['sku'],
                     'category' => $product['category_name'],
+                    'product_id' => $product['id'],
                 ];
             }
             // dd($cart);
@@ -133,17 +134,45 @@ class RestockInventoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RestockInventory $restockInventory)
+    public function edit($request_code)
     {
-        //
+        $title = 'Edit Restock Inventory';
+        $products = $this->productService->getAllProducts(10);
+        $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
+        $cart = session()->get('cart', []);
+        // dd($restocks);
+        foreach ($restocks as $key => $value) {
+            $cart[$value->product_id] = [
+                'id' => $value->id,
+                'product_id' => $value->product_id,
+                'staff_id' => $value->staff_id,
+                'name' => $value->product_name,
+                'quantity' => $value->quantity,
+                'price' => $value->product_price,
+                'request_code' => $value->request_code
+            ];
+        }
+
+        session()->put('cart', $cart);
+        return view('pages.restock_inventory.edit', compact('title', 'restocks', 'products'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RestockInventory $restockInventory)
+    public function update(Request $request, $request_code = null)
     {
-        //
+        try {
+            $id = $request->id;
+            $product_id = $request->product_id;
+            $quantity = $request->quantity;
+            $notes = $request->notes;
+
+            $this->restockInventoryService->update($id, $product_id, $quantity, $request_code, $notes);
+            return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request updated successfully!');
+        } catch (\Throwable $error) {
+            return redirect()->back()->with('error', $error->getMessage());
+        }
     }
 
     /**

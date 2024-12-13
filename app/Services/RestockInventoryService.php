@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\RestockInventoryRequest;
 use App\Models\RestockInventory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,38 @@ class RestockInventoryService
             }
             RestockInventory::insert($data);
             // dd(session()->get('cart'));
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+
+    public function update($id, $idProduct, $quantity, $request_code, $notes)
+    {
+        try {
+            foreach ($id as $key => $value) {
+                $check = RestockInventory::where('id', $id)->first();
+                $dataUpdateOrInsert = [
+                    'product_id' => $idProduct[$key],
+                    'quantity' => $quantity[$key],
+                    'staff_id' => auth('web')->user()->id,
+                    'notes' => strtolower($notes) ?? null,
+                    'updated_at' => Carbon::now(),
+                ];
+                if (!RestockInventory::where('id', $value)->exists()) {
+                    $dataUpdateOrInsert['request_code'] = $request_code;
+                    $dataUpdateOrInsert['date_requested'] = date('Y-m-d');
+                    $dataUpdateOrInsert['created_at'] = Carbon::now();
+                }
+                if ($check->status === 'resubmitted') {
+                    $dataUpdateOrInsert['status'] = 'resubmitted';
+                    $dataUpdateOrInsert['resubmit_count'] = $check->resubmit_count + 1;
+                }
+                RestockInventory::updateOrInsert(
+                    ['id' => $value],
+                    $dataUpdateOrInsert
+                );
+            }
+            // dd($dataUpdateOrInsert);
         } catch (\Throwable $error) {
             throw $error;
         }

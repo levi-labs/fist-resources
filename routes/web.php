@@ -75,7 +75,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
 
     Route::controller(App\Http\Controllers\RestockInventoryController::class)
         ->prefix('restock-inventory')
-        ->middleware('role:admin,staff')
+        ->middleware('role:admin,staff,procurement')
         ->group(function () {
             Route::get('/', 'index')->name('restock.inventory.index');
             Route::post('/', 'search')->name('restock.inventory.search');
@@ -85,8 +85,12 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/add-item/{id}', 'addItem')->name('restock.inventory.add');
             Route::post('/store', 'store')->name('restock.inventory.store');
             Route::get('/edit/{request_code}', 'edit')->name('restock.inventory.edit');
-            Route::put('/update/{id}', 'update')->name('restock.inventory.update');
+            Route::put('/update/{request_code?}', 'update')->name('restock.inventory.update');
             Route::get('/delete-request/{request_code}', 'destroy')->name('restock.inventory.destroy');
             Route::get('/delete-item/{id}', 'removeItem')->name('restock.inventory.deleteItem');
+
+            Route::get('/approve/{request_code}', 'approve')->name('restock.inventory.approve');
+            Route::get('/reject/{request_code}', 'reject')->name('restock.inventory.reject');
+            Route::get('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmit');
         });
 });
