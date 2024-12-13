@@ -104,7 +104,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Description</th>
-                                                    <td>{{ $product->description }}</td>
+                                                    <td class="text-wrap">{{ $product->description }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

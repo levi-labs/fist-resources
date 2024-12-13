@@ -38,14 +38,13 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         ->group(function () {
             Route::get('/', 'index')->name('product.index');
             Route::post('/', 'index')->name('product.search');
-            Route::get('/show/{product}', 'show')->name('product.show');
             Route::get('/create', 'create')->name('product.create');
             Route::post('/store', 'store')->name('product.store');
             Route::get('/edit/{product}', 'edit')->name('product.edit');;
             Route::put('/update/{product}', 'update')->name('product.update');
             Route::get('/delete/{product}', 'destroy')->name('product.destroy');
         });
-
+    Route::get('/show/{product}', [App\Http\Controllers\ProductController::class, 'show'])->prefix('product')->name('product.show');
     Route::controller(App\Http\Controllers\SupplierController::class)
         ->prefix('supplier')
         ->middleware('role:admin,procurement,logistic')
@@ -72,5 +71,22 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/edit/{user}', 'edit')->name('user.edit');;
             Route::put('/update/{user}', 'update')->name('user.update');
             Route::get('/delete/{user}', 'destroy')->name('user.destroy');
+        });
+
+    Route::controller(App\Http\Controllers\RestockInventoryController::class)
+        ->prefix('restock-inventory')
+        ->middleware('role:admin,staff')
+        ->group(function () {
+            Route::get('/', 'index')->name('restock.inventory.index');
+            Route::post('/', 'search')->name('restock.inventory.search');
+            Route::get('/show/{request_code}', 'show')->name('restock.inventory.show');
+            Route::get('/create', 'create')->name('restock.inventory.create');
+            Route::post('/create', 'create')->name('restock.inventory.createsearch');
+            Route::get('/add-item/{id}', 'addItem')->name('restock.inventory.add');
+            Route::post('/store', 'store')->name('restock.inventory.store');
+            Route::get('/edit/{request_code}', 'edit')->name('restock.inventory.edit');
+            Route::put('/update/{id}', 'update')->name('restock.inventory.update');
+            Route::get('/delete-request/{request_code}', 'destroy')->name('restock.inventory.destroy');
+            Route::get('/delete-item/{id}', 'removeItem')->name('restock.inventory.deleteItem');
         });
 });

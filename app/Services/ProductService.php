@@ -14,15 +14,31 @@ class ProductService
             $data['image'] = $file;
         }
     }
-    public function getAllProducts()
-    {
-        $products =  DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.*', 'categories.name as category_name')
-            ->get();
 
-        return $products;
+    public function searchProducts($search)
+    {
+
+        return Product::with('category')->where('name', 'like', '%' . $search . '%')->get();
     }
+    public function getAllProducts($paginate = null)
+    {
+        if ($paginate === null) {
+            $products =  DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select('products.*', 'categories.name as category_name')
+                ->get();
+
+            return $products;
+        } else {
+            $products =  DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select('products.*', 'categories.name as category_name')
+                ->paginate(10);
+
+            return $products;
+        }
+    }
+
 
     public function getProductById($id)
     {

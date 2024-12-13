@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory_requests', function (Blueprint $table) {
+        Schema::create('restock_inventory_requests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('staff_id')->unsigned();
             $table->bigInteger('procurement_id')->unsigned()->nullable();
             $table->bigInteger('product_id')->unsigned();
+            $table->string('request_code', 20);
             $table->integer('quantity');
             $table->date('date_requested');
             $table->enum('status', [

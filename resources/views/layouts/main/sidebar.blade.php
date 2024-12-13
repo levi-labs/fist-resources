@@ -1,6 +1,6 @@
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
-        <a href="../dashboard/index.html" class="navbar-brand">
+        <a href="{{ url('/dashboard') }}" class="navbar-brand">
 
             <!--Logo start-->
             <div class="logo-main">
@@ -33,8 +33,7 @@
 
 
 
-
-            <h4 class="logo-title">Hope UI</h4>
+            <h4 class="logo-title">Fist Resources</h4>
         </a>
         <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
             <i class="icon">
@@ -60,7 +59,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" aria-current="page"
-                        href="../dashboard/index.html">
+                        href="{{ url('/dashboard') }}">
                         <i class="icon">
                             <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 class="icon-20">
@@ -79,7 +78,6 @@
                     <a class="nav-link" data-bs-toggle="collapse" href="#horizontal-menu" role="button"
                         aria-expanded="false" aria-controls="horizontal-menu">
                         <i class="icon">
-
                             <svg width="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="icon-20">
                                 <path opacity="0.4"
@@ -272,9 +270,30 @@
                                 class="badge rounded-pill bg-success item-name"></span></span>
                     </a>
                 </li>
+                {{-- <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('restock-inventory.*') ? 'active' : '' }}"
+                        aria-current="page" href="{{ route('restock.inventory.index') }}">
+                        <i class="icon">
+                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M21.9964 8.37513H17.7618C15.7911 8.37859 14.1947 9.93514 14.1911 11.8566C14.1884 13.7823 15.7867 15.3458 17.7618 15.3484H22V15.6543C22 19.0136 19.9636 21 16.5173 21H7.48356C4.03644 21 2 19.0136 2 15.6543V8.33786C2 4.97862 4.03644 3 7.48356 3H16.5138C19.96 3 21.9964 4.97862 21.9964 8.33786V8.37513ZM6.73956 8.36733H12.3796H12.3831H12.3902C12.8124 8.36559 13.1538 8.03019 13.152 7.61765C13.1502 7.20598 12.8053 6.87318 12.3831 6.87491H6.73956C6.32 6.87664 5.97956 7.20858 5.97778 7.61852C5.976 8.03019 6.31733 8.36559 6.73956 8.36733Z"
+                                    fill="currentColor"></path>
+                                <path opacity="0.4"
+                                    d="M16.0374 12.2966C16.2465 13.2478 17.0805 13.917 18.0326 13.8996H21.2825C21.6787 13.8996 22 13.5715 22 13.166V10.6344C21.9991 10.2297 21.6787 9.90077 21.2825 9.8999H17.9561C16.8731 9.90338 15.9983 10.8024 16 11.9102C16 12.0398 16.0128 12.1695 16.0374 12.2966Z"
+                                    fill="currentColor"></path>
+                                <circle cx="18" cy="11.8999" r="1" fill="currentColor"></circle>
+                            </svg>
+
+                        </i>
+                        <span class="item-name">Restock Inventory<span
+                                class="badge rounded-pill bg-success item-name"></span></span>
+                    </a>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-special" role="button"
-                        aria-expanded="false" aria-controls="sidebar-special">
+                    <a class="nav-link {{ request()->routeIs('restock-inventory.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse" href="#sidebar-special" role="button" aria-expanded="false"
+                        aria-controls="sidebar-special">
                         <i class="icon">
                             <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -286,7 +305,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Special Pages</span>
+                        <span class="item-name">Restock</span>
                         <i class="right-icon">
                             <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -295,9 +314,11 @@
                             </svg>
                         </i>
                     </a>
-                    <ul class="sub-nav collapse" id="sidebar-special" data-bs-parent="#sidebar-menu">
+                    <ul class="sub-nav collapse {{ request()->routeIs('restock.inventory.index') ? 'show' : '' }}"
+                        id="sidebar-special" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/special-pages/billing.html">
+                            <a class="nav-link {{ request()->routeIs('restock.inventory.index') ? 'active' : '' }}"
+                                href="{{ route('restock.inventory.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -307,12 +328,13 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> B </i>
-                                <span class="item-name">Billing</span>
+                                <i class="sidenav-mini-icon"> P </i>
+                                <span class="item-name">Pending</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/special-pages/calender.html">
+                            <a class="nav-link{{ request()->routeIs('restock.inventory.approved') ? 'active' : '' }}"
+                                href="../dashboard/special-pages/calender.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -322,8 +344,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> C </i>
-                                <span class="item-name">Calendar</span>
+                                <i class="sidenav-mini-icon"> A </i>
+                                <span class="item-name">Approved</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -337,8 +359,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> K </i>
-                                <span class="item-name">kanban</span>
+                                <i class="sidenav-mini-icon"> R </i>
+                                <span class="item-name">Resubmitted</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -352,38 +374,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> P </i>
-                                <span class="item-name">Pricing</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/special-pages/rtl-support.html">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                        viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor">
-                                            </circle>
-                                        </g>
-                                    </svg>
-                                </i>
                                 <i class="sidenav-mini-icon"> R </i>
-                                <span class="item-name">RTL Support</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/special-pages/timeline.html">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                        viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor">
-                                            </circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> T </i>
-                                <span class="item-name">Timeline</span>
+                                <span class="item-name">Rejected</span>
                             </a>
                         </li>
                     </ul>
@@ -402,7 +394,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Authentication</span>
+                        <span class="item-name">Propose</span>
                         <i class="right-icon">
                             <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -423,8 +415,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> L </i>
-                                <span class="item-name">Login</span>
+                                <i class="sidenav-mini-icon"> P </i>
+                                <span class="item-name">Pending</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -438,8 +430,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> R </i>
-                                <span class="item-name">Register</span>
+                                <i class="sidenav-mini-icon"> A </i>
+                                <span class="item-name">Approved</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -453,8 +445,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> C </i>
-                                <span class="item-name">Confirm Mail</span>
+                                <i class="sidenav-mini-icon"> R </i>
+                                <span class="item-name">Resubmitted</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -468,23 +460,8 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> L </i>
-                                <span class="item-name">Lock Screen</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../dashboard/auth/recoverpw.html">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                        viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor">
-                                            </circle>
-                                        </g>
-                                    </svg>
-                                </i>
                                 <i class="sidenav-mini-icon"> R </i>
-                                <span class="item-name">Recover password</span>
+                                <span class="item-name">Rejected</span>
                             </a>
                         </li>
                     </ul>

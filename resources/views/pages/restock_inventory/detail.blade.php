@@ -1,0 +1,155 @@
+@extends('layouts.main.master')
+@section('content')
+    <div class="container-fluid content-inner mt-n5 py-0">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            @if (session('success'))
+                                <div class="mx-3 my-3 alert alert-left alert-success" role="alert">
+                                    <span> {{ session('success') }}</span>
+                                </div>
+                            @elseif (session('error'))
+                                <div class="mx-3 my-3 alert alert-left alert-danger" role="alert">
+                                    <span> {{ session('error') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="header-title">
+                            @php
+                                $request_code = $restocks[0]->request_code;
+                                $status = $restocks[0]->status;
+                                $date_requested = $restocks[0]->date_requested;
+                                $requested_by = $restocks[0]->staff_name;
+                                $role = $restocks[0]->role;
+                                // dd($restocks);
+                            @endphp
+                            <h4 class="card-title">{{ $title }}</h4>
+                            <a href="{{ route('restock.inventory.index') }}" class="btn btn-primary btn-sm mt-1">Back</a>
+                        </div>
+                        <div class="float-end">
+                            {{-- <div class="badge rounded-pill bg-dark">{{ $status }}</div> --}}
+                        </div>
+                    </div>
+                    <div class="row p-4">
+                        <div class="col-md-4">
+                            <h6 class="text-muted">Requested By: {{ $requested_by }}</h6>
+                            <h6 class="text-muted my-2">As: {{ ucfirst($role) }}</h6>
+                        </div>
+                        <div class="col-md-8 text-end">
+                            <h6 class="text-muted">Request Code: {{ $request_code }}</h6>
+                            <h6 class="text-muted my-2">Date Requested: {{ $date_requested }}</h6>
+                            <h6 class="text-muted">Status: <span
+                                    class="badge rounded-pill bg-dark">{{ $status }}</span></h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0">
+                        <div class="table-responsive">
+                            <table id="user-list-table" class="table table-striped" role="grid"
+                                data-bs-toggle="data-table">
+                                <thead>
+                                    <tr class="ligth">
+                                        <th>#</th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th style="min-width: 100px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $total = 0;
+                                    @endphp
+
+                                    @forelse ($restocks as $restock)
+                                        @php
+                                            $total += $restock->product_price * $restock->quantity;
+                                        @endphp
+                                        <tr>
+                                            {{-- <td class="text-center"><img
+                                                    class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
+                                                    src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td class="font-weight-bold">
+                                                <h6>{{ $restock->product_name }}</h6>
+                                                <span class="text-muted">SKU:{{ $restock->product_sku }}</span>
+                                            </td>
+                                            <td>{{ $restock->quantity }}</td>
+                                            <td>{{ formatNumber($restock->product_price) }}</td>
+                                            <td>
+                                                <div class="flex align-items-center list-user-action">
+                                                    <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        href="{{ route('product.show', $restock->product_id) }}"
+                                                        aria-label="Detail" data-bs-original-title="Detail">
+                                                        <span class="btn-inner">
+                                                            <svg class="icon-20" width="20" viewBox="0 0 24 24"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                    d="M9.87651 15.2063C6.03251 15.2063 2.74951 15.7873 2.74951 18.1153C2.74951 20.4433 6.01251 21.0453 9.87651 21.0453C13.7215 21.0453 17.0035 20.4633 17.0035 18.1363C17.0035 15.8093 13.7415 15.2063 9.87651 15.2063Z"
+                                                                    stroke="currentColor" stroke-width="1.5"
+                                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                    d="M9.8766 11.886C12.3996 11.886 14.4446 9.841 14.4446 7.318C14.4446 4.795 12.3996 2.75 9.8766 2.75C7.3546 2.75 5.3096 4.795 5.3096 7.318C5.3006 9.832 7.3306 11.877 9.8456 11.886H9.8766Z"
+                                                                    stroke="currentColor" stroke-width="1.5"
+                                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                <path d="M19.2036 8.66919V12.6792" stroke="currentColor"
+                                                                    stroke-width="1.5" stroke-linecap="round"
+                                                                    stroke-linejoin="round"></path>
+                                                                <path d="M21.2497 10.6741H17.1597" stroke="currentColor"
+                                                                    stroke-width="1.5" stroke-linecap="round"
+                                                                    stroke-linejoin="round"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </a>
+
+                                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        href="{{ route('restock.inventory.deleteItem', $restock->id) }}"
+                                                        aria-label="Delete" data-bs-original-title="Delete"
+                                                        onclick="return confirm('Are you sure?')">
+                                                        <span class="btn-inner">
+                                                            <svg class="icon-20" width="20" viewBox="0 0 24 24"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                                stroke="currentColor">
+                                                                <path
+                                                                    d="M19.3248 9.46826C19.3248 9.46826 18.7818 16.2033 18.4668 19.0403C18.3168 20.3953 17.4798 21.1893 16.1088 21.2143C13.4998 21.2613 10.8878 21.2643 8.27979 21.2093C6.96079 21.1823 6.13779 20.3783 5.99079 19.0473C5.67379 16.1853 5.13379 9.46826 5.13379 9.46826"
+                                                                    stroke="currentColor" stroke-width="1.5"
+                                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                <path d="M20.708 6.23975H3.75" stroke="currentColor"
+                                                                    stroke-width="1.5" stroke-linecap="round"
+                                                                    stroke-linejoin="round"></path>
+                                                                <path
+                                                                    d="M17.4406 6.23973C16.6556 6.23973 15.9796 5.68473 15.8256 4.91573L15.5826 3.69973C15.4326 3.13873 14.9246 2.75073 14.3456 2.75073H10.1126C9.53358 2.75073 9.02558 3.13873 8.87558 3.69973L8.63258 4.91573C8.47858 5.68473 7.80258 6.23973 7.01758 6.23973"
+                                                                    stroke="currentColor" stroke-width="1.5"
+                                                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            </svg>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="3" class="text-center">No Data Found</td>
+                                        </tr>
+                                    @endforelse
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end">Total:</td>
+                                        <td colspan="2">{{ formatNumber($total) ?? 0 }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
