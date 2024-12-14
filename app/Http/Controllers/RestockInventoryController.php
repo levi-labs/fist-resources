@@ -10,6 +10,7 @@ use App\Services\RestockPurchaseOrderService;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class RestockInventoryController extends Controller
@@ -115,19 +116,30 @@ class RestockInventoryController extends Controller
     public function approve(RestockPurchaseOrderService $restockPurchaseOrderService, Request $request, $request_code)
     {
 
+        $validate = Validator::make($request->all(), [
+            'delivery_date' => 'required',
+            'supplier' => 'required',
+            'reason' => 'nullable',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->errors()->toArray()], 422);
+        }
         try {
             DB::transaction(function () use ($restockPurchaseOrderService, $request, $request_code) {
                 $this->restockInventoryService->approve($request_code, $request->reason);
                 $restockPurchaseOrderService->create(
                     $request_code,
-                    $request->supplier_id,
+                    $request->supplier,
                     $request->delivery_date
                 );
             });
 
-            return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
+            // return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
+            return response()->json(['success' => 'Restock inventory request, approved successfully!'], 201);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', $th->getMessage());
+            // return redirect()->back()->with('error', $th->getMessage());
+            return response()->json($th->getMessage(), 500);
         }
     }
 

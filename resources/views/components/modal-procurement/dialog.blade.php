@@ -5,29 +5,27 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Notes</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('restock.inventory.approvedetail', $params) }}" method="POST">
+            <form id="approve-form" action="{{ route('restock.inventory.approvedetail', $params) }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Delivery Date</label>
-                        <input type="date" class="form-control" id="exampleFormControlInput1" name="delivery_date">
+                        <label for="delivery_date" class="form-label">Delivery Date</label>
+                        <input type="date" class="form-control" id="delivery_date" name="delivery_date">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Supplier</label>
-                        <select class="form-select" id="supplier_id" name="supplier_id">
-                            <option selected="" disabled="">Select Supplier</option>
+                        <label for="supplier" class="form-label">Suppliers</label>
+
+                        <select class="form-select" id="supplier" name="supplier">
+                            <option selected disabled>Select Supplier</option>
                             @foreach ($suppliers as $supplier)
-                                <option {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}
+                                <option {{ old('supplier') == $supplier->id ? 'selected' : '' }}
                                     value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                             @endforeach
                         </select>
-                        @error('supplier_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Notes</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="reason"></textarea>
+                        <label for="reason" class="form-label">Reasons for restock :</label>
+                        <textarea class="form-control" id="reason" rows="3" name="reason"></textarea>
                     </div>
 
                 </div>
@@ -43,35 +41,77 @@
     // Inisialisasi Select2
 
     $(document).ready(function() {
-        console.log('Selamat datang di Select2!');
+        console.log('Selamat datang jquery!');
+        $('#approve-form').submit(function(e) {
+            e.preventDefault();
+            console.log('no refresh');
 
-        $('.my-select2').select2({});
+            var csrf_token = $('meta[name="csrf-token"]').attr('content');
+            var delivery_date = $('#delivery_date').val();
+            var supplier = $('#supplier').val();
+            var reason = $('#reason').val();
 
-        $('.my-select2').on('select2:open', function(e) {
-            // Mengubah style setelah dropdown terbuka
-            $('.select2-selection').css({
-                'padding': '0.375rem 0.75rem',
-                'height': '40px',
-                'border': '1px solid rgb(62, 91, 232)',
-                'background-color': '#f8f9fa',
-                'color': '#495057'
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrf_token
+                }
             });
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('restock.inventory.approvedetail', $params) }}",
+                data: {
+                    "delivery_date": delivery_date,
+                    "supplier": supplier,
+                    "reason": reason,
+                    "_token": csrf_token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        setTimeout(() => {
+                            window.location.href =
+                                "{{ route('restock.inventory.index') }}"
+                        }, 800);
+                        $('#approve-form').trigger('reset');
+                        $('#exampleModal').modal('hide');
+
+                        var alertHtml =
+                            '<div class="index-card alert alert-success alert-dismissible fade show" role="alert">' +
+                            'Your request has been approved, successfully.' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button>' +
+                            '</div>';
+
+                        $('.index-card').html(alertHtml).show();
+                    }
+                    console.log('sukses');
+
+                },
+                error: function(xhr, status, error) {
+                    var errors = xhr.responseJSON.error;
+                    // console.log(xhr.responseJSON);
+                    console.log('Error:',
+                        errors);
+                    $('.text-danger').remove();
+
+                    $.each(errors, function(key, value) {
+                        console.log(key, value);
+                        var errorElement = $('<span class="text-danger">' + value +
+                            '</span>');
+                        if (key === 'supplier') {
+                            errorElement.insertAfter('select[name="' + key +
+                                '"]'); // Untuk select supplier
+                        } else {
+                            errorElement.insertAfter('input[name="' + key +
+                                '"]'); // Untuk input lainnya
+                        }
+                    });
+
+                    $('#exampleModal').modal('show');
+                }
+            })
         });
 
-        $('.my-select2').on('select2:close', function(e) {
-            // Mengubah style setelah dropdown tertutup
-            $('.select2-selection').css({
-                'padding': '0.375rem 0.75rem',
-                'height': '40px',
-                'border': '1px solid #ced4da',
-                'background-color': '#fff',
-                'color': '#ced4da',
-            });
-        });
-
-        $('.my-select2').on('change', function() {
-            // Menampilkan nilai yang dipilih di console
-            console.log('Nilai yang dipilih: ' + $(this).val());
-        });
     });
 </script>

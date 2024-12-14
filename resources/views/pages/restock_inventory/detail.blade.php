@@ -24,7 +24,9 @@
                                 $status = $restocks[0]->status;
                                 $date_requested = $restocks[0]->date_requested;
                                 $requested_by = $restocks[0]->staff_name;
-                                $role = $restocks[0]->role;
+                                $role = $restocks[0]->staff_role;
+                                $approved_by = $restocks[0]->procurement_name;
+                                $approved_role = $restocks[0]->procurement_role;
                                 // dd($restocks);
                             @endphp
                             <h4 class="card-title">{{ $title }}</h4>
@@ -38,12 +40,19 @@
                         <div class="col-md-4">
                             <h6 class="text-muted">Requested By: {{ $requested_by }}</h6>
                             <h6 class="text-muted my-2">As: {{ ucfirst($role) }}</h6>
+                            <hr class="hr-horizontal dark">
+                            <h6 class="text-muted">Approved By: {{ $approved_by ?? '-' }}</h6>
+                            <h6 class="text-muted my-2">As: {{ ucfirst($approved_role ?? '-') }}</h6>
+                            <hr class="hr-horizontal dark">
+                            <p class="text-muted text-wrap">Note: {{ $restocks[0]->note ?? '-' }}</p>
+                            <p class="text-muted text-wrap">Reason: {{ $restocks[0]->reason ?? '-' }}</p>
                         </div>
                         <div class="col-md-8 text-end">
                             <h6 class="text-muted">Request Code: {{ $request_code }}</h6>
                             <h6 class="text-muted my-2">Date Requested: {{ $date_requested }}</h6>
-                            <h6 class="text-muted">Status: <span
-                                    class="badge rounded-pill bg-dark">{{ $status }}</span></h6>
+                            <h6 class="text-muted align-items-center">Status: &nbsp;<span
+                                    class="badge rounded-pill bg-dark p-2">{{ $status }}</span></h6>
+
                         </div>
                     </div>
                     <div class="card-body px-0">

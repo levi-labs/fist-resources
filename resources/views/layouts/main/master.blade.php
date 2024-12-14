@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Hope UI | Responsive Bootstrap 5 Admin Dashboard Template</title>
 
     <!-- Favicon -->
@@ -94,13 +95,13 @@
     <!-- App Script -->
     <script src="{{ asset('assets/js/hope-ui.js') }}" defer></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
     <!-- Pastikan Select2 dimuat setelah jQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> --}}
 
     {{-- @yield('scripts') --}}
-    <script>
+    {{-- <script>
         // Inisialisasi Select2
 
         $(document).ready(function() {
@@ -135,7 +136,7 @@
                 console.log('Nilai yang dipilih: ' + $(this).val());
             });
         });
-    </script>
+    </script> --}}
 
 </body>
 

@@ -108,11 +108,20 @@ class RestockInventoryService
     {
         $restock = DB::table('restock_inventory_requests as restock')
             ->join('products as product', 'product.id', '=', 'restock.product_id')
-            ->join('users', 'users.id', '=', 'restock.staff_id')
-            ->select('restock.*', 'product.name as product_name', 'product.sku as product_sku', 'product.price as product_price', 'users.name as staff_name', 'users.role as role')
+            ->join('users as staff', 'staff.id', '=', 'restock.staff_id')
+            ->leftJoin('users as procurement', 'procurement.id', '=', 'restock.procurement_id')
+            ->select(
+                'restock.*',
+                'product.name as product_name',
+                'product.sku as product_sku',
+                'product.price as product_price',
+                'staff.name as staff_name',
+                'staff.role as staff_role',
+                'procurement.name as procurement_name',
+                'procurement.role as procurement_role'
+            )
             ->where('restock.request_code', $request_code)
             ->get();
-
         return $restock;
     }
 
@@ -124,10 +133,16 @@ class RestockInventoryService
                     [
                         'reason' => $reason,
                         'status' => 'approved',
+                        'procurement_id' => auth('web')->user()->id
                     ]
                 );
             } else {
-                RestockInventory::where('request_code', $request_code)->update(['status' => 'approved']);
+                RestockInventory::where('request_code', $request_code)->update(
+                    [
+                        'status' => 'approved',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
             }
         } catch (\Throwable $error) {
             throw $error;
