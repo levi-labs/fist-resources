@@ -31,7 +31,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
 
-            $table->foreign('supplier_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->foreign('staff_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('procurement_id')->references('id')->on('users')->onDelete('cascade');
         });

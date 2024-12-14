@@ -151,5 +151,11 @@
                 </div>
             </div>
         </div>
+        @if (auth('web')->user()->role === 'procurement')
+            @include('components.action-in-detail.action-procurement', [
+                'params' => $request_code,
+                'status' => $status,
+            ])
+        @endif
     </div>
 @endsection

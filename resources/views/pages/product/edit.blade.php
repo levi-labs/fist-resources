@@ -43,8 +43,8 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="exampleFormControlSelect1">Category</label>
-                                <select class="form-select" id="exampleFormControlSelect1" name="category_id">
+                                <label class="form-label" for="category_id">Category</label>
+                                <select class="form-select" id="category_id" name="category_id">
                                     <option selected="" disabled="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option

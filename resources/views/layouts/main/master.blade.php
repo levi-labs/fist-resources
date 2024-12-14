@@ -15,6 +15,7 @@
     <!-- Aos Animation Css -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/aos/dist/aos.css') }}">
 
+
     <!-- Hope Ui Design System Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=5.0.0') }}">
 
@@ -24,8 +25,13 @@
     <!-- Customizer Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css?v=5.0.0') }}">
 
+
     <!-- RTL Css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css?v=5.0.0') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css?v=5.0.0') }}"> --}}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2-bootstrap5.min.css" rel="stylesheet" /> --}}
 
 
 </head>
@@ -55,6 +61,7 @@
 
     <!-- Wrapper End-->
     <!-- offcanvas start -->
+
 
     <!-- Library Bundle Script -->
     <script src="{{ asset('assets/js/core/libs.min.js') }}"></script>
@@ -86,6 +93,49 @@
 
     <!-- App Script -->
     <script src="{{ asset('assets/js/hope-ui.js') }}" defer></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Pastikan Select2 dimuat setelah jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    {{-- @yield('scripts') --}}
+    <script>
+        // Inisialisasi Select2
+
+        $(document).ready(function() {
+            console.log('Selamat datang di Select2!');
+
+            $('.my-select2').select2({});
+
+            $('.my-select2').on('select2:open', function(e) {
+                // Mengubah style setelah dropdown terbuka
+                $('.select2-selection').css({
+                    'padding': '0.375rem 0.75rem',
+                    'height': '40px',
+                    'border': '1px solid rgb(62, 91, 232)',
+                    'background-color': '#f8f9fa',
+                    'color': '#495057'
+                });
+            });
+
+            $('.my-select2').on('select2:close', function(e) {
+                // Mengubah style setelah dropdown tertutup
+                $('.select2-selection').css({
+                    'padding': '0.375rem 0.75rem',
+                    'height': '40px',
+                    'border': '1px solid #ced4da',
+                    'background-color': '#fff',
+                    'color': '#ced4da',
+                });
+            });
+
+            $('.my-select2').on('change', function() {
+                // Menampilkan nilai yang dipilih di console
+                console.log('Nilai yang dipilih: ' + $(this).val());
+            });
+        });
+    </script>
 
 </body>
 

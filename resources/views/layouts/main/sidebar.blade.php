@@ -333,8 +333,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{ request()->routeIs('restock.inventory.approved') ? 'active' : '' }}"
-                                href="../dashboard/special-pages/calender.html">
+                            <a class="nav-link {{ request()->routeIs('restock.inventory.approved') ? 'active' : '' }}"
+                                href="{{ route('restock.inventory.approved') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">

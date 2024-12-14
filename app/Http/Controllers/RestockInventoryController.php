@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\RestockInventory;
 use App\Services\ProductService;
 use App\Services\RestockInventoryService;
+use App\Services\RestockPurchaseOrderService;
+use App\Services\SupplierService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,8 +29,15 @@ class RestockInventoryController extends Controller
         session()->forget('cart');
 
         $title = 'Restock Inventory List';
-        $restocks = $this->restockInventoryService->getAllRestockInventoryRequest();
+        $restocks = $this->restockInventoryService->getAllRestockInventoryPending();
         return view('pages.restock_inventory.index', compact('title', 'restocks'));
+    }
+
+    public function approved()
+    {
+        $title = 'Approved Restock Inventory List';
+        $restocks = $this->restockInventoryService->getAllRestockInventoryApproved();
+        return view('pages.restock_inventory.approved', compact('title', 'restocks'));
     }
 
     public function search()
@@ -103,6 +112,25 @@ class RestockInventoryController extends Controller
         }
     }
 
+    public function approve(RestockPurchaseOrderService $restockPurchaseOrderService, Request $request, $request_code)
+    {
+
+        try {
+            DB::transaction(function () use ($restockPurchaseOrderService, $request, $request_code) {
+                $this->restockInventoryService->approve($request_code, $request->reason);
+                $restockPurchaseOrderService->create(
+                    $request_code,
+                    $request->supplier_id,
+                    $request->delivery_date
+                );
+            });
+
+            return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -123,12 +151,13 @@ class RestockInventoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($request_code)
+    public function show(SupplierService $supplierService, $request_code)
     {
         $title = 'Restock Inventory Details';
         $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
+        $suppliers = $supplierService->getAllSuppliers();
 
-        return view('pages.restock_inventory.detail', compact('title', 'restocks'));
+        return view('pages.restock_inventory.detail', compact('title', 'restocks', 'suppliers'));
     }
 
     /**

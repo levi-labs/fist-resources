@@ -39,14 +39,15 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="exampleFormControlSelect1">Category</label>
-                                <select class="form-select" id="exampleFormControlSelect1" name="category_id">
+                                <label class="form-label" for="category_id">Category</label>
+                                <select class="form-select" id="category_id" name="category_id">
                                     <option selected="" disabled="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option {{ old('category_id') == $category->id ? 'selected' : '' }}
                                             value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+
                                 @error('category_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -81,3 +82,45 @@
         </div>
     </div>
 @endsection
+
+{{-- 
+@section('scripts')
+    <!-- Pastikan jQuery dimuat terlebih dahulu -->
+
+
+    <!-- Inisialisasi Select2 -->
+    <script>
+        // Inisialisasi Select2
+
+        $(document).ready(function() {
+            $('.my-select2').select2({});
+
+            $('#category_id').on('select2:open', function(e) {
+                // Mengubah style setelah dropdown terbuka
+                $('.select2-selection').css({
+                    'padding': '0.375rem 0.75rem',
+                    'height': '40px',
+                    'border': '1px solid rgb(62, 91, 232)',
+                    'background-color': '#f8f9fa',
+                    'color': '#495057'
+                });
+            });
+
+            $('#category_id').on('select2:close', function(e) {
+                // Mengubah style setelah dropdown tertutup
+                $('.select2-selection').css({
+                    'padding': '0.375rem 0.75rem',
+                    'height': '40px',
+                    'border': '1px solid #ced4da',
+                    'background-color': '#fff',
+                    'color': '#ced4da',
+                });
+            });
+
+            $('.my-select2').on('change', function() {
+                // Menampilkan nilai yang dipilih di console
+                console.log('Nilai yang dipilih: ' + $(this).val());
+            });
+        });
+    </script>
+@endsection --}}

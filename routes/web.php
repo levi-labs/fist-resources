@@ -79,6 +79,8 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         ->group(function () {
             Route::get('/', 'index')->name('restock.inventory.index');
             Route::post('/', 'search')->name('restock.inventory.search');
+            Route::get('/approved', 'approved')->name('restock.inventory.approved');
+            Route::post('/approved', 'approved')->name('restock.inventory.approvedsearch');
             Route::get('/show/{request_code}', 'show')->name('restock.inventory.show');
             Route::get('/create', 'create')->name('restock.inventory.create');
             Route::post('/create', 'create')->name('restock.inventory.createsearch');
@@ -90,6 +92,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/delete-item/{id}', 'removeItem')->name('restock.inventory.deleteItem');
 
             Route::get('/approve/{request_code}', 'approve')->name('restock.inventory.approve');
+            Route::post('/approve/{request_code}', 'approve')->name('restock.inventory.approvedetail');
             Route::get('/reject/{request_code}', 'reject')->name('restock.inventory.reject');
             Route::get('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmit');
         });

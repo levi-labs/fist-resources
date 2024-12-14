@@ -20,12 +20,25 @@ class RestockInventoryService
             ->distinct()
             ->get();
     }
-    public function getAllRestockInventoryRequest()
+    public function getAllRestockInventoryPending()
     {
 
         $restocks = DB::table('restock_inventory_requests as restock')
             ->select('restock.request_code', DB::raw('MAX(restock.created_at) as latest_created_at'))
             ->where('restock.status', 'pending')
+            ->groupBy('restock.request_code')
+            ->orderBy('latest_created_at', 'desc')
+            ->get();
+
+        // dd($restocks->toSql(), $restocks->get());
+        return $restocks;
+    }
+    public function getAllRestockInventoryApproved()
+    {
+
+        $restocks = DB::table('restock_inventory_requests as restock')
+            ->select('restock.request_code', DB::raw('MAX(restock.created_at) as latest_created_at'))
+            ->where('restock.status', 'approved')
             ->groupBy('restock.request_code')
             ->orderBy('latest_created_at', 'desc')
             ->get();
@@ -103,6 +116,23 @@ class RestockInventoryService
         return $restock;
     }
 
+    public function approve($request_code, $reason = null)
+    {
+        try {
+            if ($reason !== null && $reason !== '') {
+                RestockInventory::where('request_code', $request_code)->update(
+                    [
+                        'reason' => $reason,
+                        'status' => 'approved',
+                    ]
+                );
+            } else {
+                RestockInventory::where('request_code', $request_code)->update(['status' => 'approved']);
+            }
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
     public function delete($request_code)
     {
         try {
