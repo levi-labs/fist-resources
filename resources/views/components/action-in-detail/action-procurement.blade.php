@@ -13,7 +13,7 @@
         {{-- <a href="{{ route('restock.inventory.approve', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-original-title="Approve" aria-label="Approve" class="btn btn-md btn-icon btn-info">Approve</a> --}}
 
-        <a href="{{ route('restock.inventory.reject', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
+        <a href="{{ route('restock.inventory.rejected', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-original-title="Reject" aria-label="Reject" class="btn btn-md btn-icon btn-danger">Reject</a>
 
     </div>
@@ -22,4 +22,4 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-@include('components.modal-procurement.dialog', ['params' => $params])
+@include('components.modal-procurement.approve', ['params' => $params])

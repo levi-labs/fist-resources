@@ -41,6 +41,15 @@ class RestockInventoryController extends Controller
         return view('pages.restock_inventory.approved', compact('title', 'restocks'));
     }
 
+    public function resubmitted()
+    {
+        $title = 'Resubmited Restock Inventory List';
+        $restocks = $this->restockInventoryService->getAllRestockInventoryResubmitted();
+        return view('pages.restock_inventory.resubmited', compact('title', 'restocks'));
+    }
+
+
+
     public function search()
     {
 
@@ -134,12 +143,28 @@ class RestockInventoryController extends Controller
                     $request->delivery_date
                 );
             });
+            session()->flash('success', 'Restock inventory request, approved successfully!');
 
             // return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
             return response()->json(['success' => 'Restock inventory request, approved successfully!'], 201);
         } catch (\Throwable $th) {
             // return redirect()->back()->with('error', $th->getMessage());
-            return response()->json($th->getMessage(), 500);
+            session()->flash('error', $th->getMessage());
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function resubmit(Request $request, $request_code)
+    {
+        try {
+            $this->restockInventoryService->resubmit($request_code);
+
+            session()->flash('success', 'Restock inventory request, resubmitted successfully!');
+
+            return response()->json(['success' => 'Restock inventory request, resubmitted successfully!'], 201);
+        } catch (\Throwable $error) {
+            session()->flash('error', $error->getMessage());
+            return response()->json(['error' => $error->getMessage()], 500);
         }
     }
 
@@ -223,7 +248,9 @@ class RestockInventoryController extends Controller
     {
         try {
             $this->restockInventoryService->delete($request_code);
-            return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request deleted successfully!');
+            return redirect()
+                ->route('restock.inventory.index')
+                ->with('success', 'Restock inventory request deleted successfully!');
         } catch (\Throwable $error) {
             return redirect()->back()->with('error', $error->getMessage());
         }

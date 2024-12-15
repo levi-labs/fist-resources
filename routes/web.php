@@ -93,7 +93,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
 
             Route::get('/approve/{request_code}', 'approve')->name('restock.inventory.approve');
             Route::post('/approve/{request_code}', 'approve')->name('restock.inventory.approvedetail');
-            Route::get('/reject/{request_code}', 'reject')->name('restock.inventory.reject');
-            Route::get('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmit');
+            Route::get('/reject', 'rejected')->name('restock.inventory.rejected');
+            Route::get('/resubmit', 'resubmitted')->name('restock.inventory.resubmitted');
         });
 });

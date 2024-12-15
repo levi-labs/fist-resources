@@ -46,6 +46,18 @@ class RestockInventoryService
         // dd($restocks->toSql(), $restocks->get());
         return $restocks;
     }
+    public function getAllRestockInventoryResubmitted()
+    {
+        $restocks = DB::table('restock_inventory_requests as restock')
+            ->select('restock.request_code', DB::raw('MAX(restock.created_at) as latest_created_at'))
+            ->where('restock.status', 'resubmitted')
+            ->groupBy('restock.request_code')
+            ->orderBy('latest_created_at', 'desc')
+            ->get();
+
+        // dd($restocks->toSql(), $restocks->get());
+        return $restocks;
+    }
 
     public function create($id, $quantity, $notes = null)
     {
@@ -72,6 +84,16 @@ class RestockInventoryService
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  array  $id
+     * @param  array  $idProduct
+     * @param  array  $quantity
+     * @param  string  $request_code
+     * @param  string|null  $notes
+     * @return void
+     */
     public function update($id, $idProduct, $quantity, $request_code, $notes)
     {
         try {
@@ -98,7 +120,6 @@ class RestockInventoryService
                     $dataUpdateOrInsert
                 );
             }
-            // dd($dataUpdateOrInsert);
         } catch (\Throwable $error) {
             throw $error;
         }
@@ -148,6 +169,28 @@ class RestockInventoryService
             throw $error;
         }
     }
+
+    public function resubmit($request_code): void
+    {
+        try {
+
+            if (RestockInventory::where('request_code', $request_code)->doesntExist()) {
+                throw new \Exception('Restock inventory request does not exist');
+            }
+
+            RestockInventory::where('request_code', $request_code)->update(
+                [
+                    'status' => 'resubmitted',
+                    'procurement_id' => auth('web')->user()->role === 'procurement' ? auth('web')->user()->id : null,
+                    // 'resubmit_count' => DB::raw('resubmit_count + 1')
+                ]
+            );
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+
+
     public function delete($request_code)
     {
         try {
