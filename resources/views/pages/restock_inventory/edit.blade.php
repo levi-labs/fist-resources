@@ -74,7 +74,7 @@
                                             <td>
 
                                                 <a class="btn btn-sm btn-success"
-                                                    href="{{ route('restock.inventory.add', $product->id) }}">Add</a>
+                                                    href="{{ route('restock.inventory.updateAddItem', $product->id) }}">Add</a>
 
                                             </td>
                                         </tr>
@@ -166,7 +166,7 @@
                                                 <td>
 
                                                     <a class="btn btn-sm btn-danger"
-                                                        href="{{ route('restock.inventory.deleteItem', $item['id']) }}"
+                                                        href="{{ route('restock.inventory.deleteItemDetail', $item['id']) }}"
                                                         onclick="return confirm('Are you sure?')">Delete</a>
 
                                                 </td>

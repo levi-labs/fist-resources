@@ -5,7 +5,8 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Notes</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="approve-form" action="{{ route('restock.inventory.resubmit', $params) }}" method="POST">
+            <form id="resubmit-form" action="{{ route('restock.inventory.resubmitteddetail', $params) }}"
+                method="POST">
                 <div class="modal-body">
                     @method('PUT')
                     @csrf
@@ -30,7 +31,7 @@
         console.log('Selamat datang jquery!');
         $('#resubmit-form').submit(function(e) {
             e.preventDefault();
-            console.log('no refresh');
+            console.log('resubmit');
 
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             var reason = $('#reason').val();
@@ -43,29 +44,32 @@
             });
             $.ajax({
                 type: 'PUT',
-                url: "{{ route('restock.inventory.resubmit', $params) }}",
+                url: "{{ route('restock.inventory.resubmitteddetail', $params) }}",
                 data: {
                     "reason": reason,
                     "_token": csrf_token
                 },
+                // console.log(data);
+
                 success: function(response) {
                     if (response.success) {
                         setTimeout(() => {
                             window.location.href =
                                 "{{ route('restock.inventory.index') }}"
                         }, 800);
-                        $('#approve-form').trigger('reset');
+                        $('#resubmit-form').trigger('reset');
                         $('#exampleModal').modal('hide');
 
-                        var alertHtml =
-                            '<div class="index-card alert alert-success alert-dismissible fade show" role="alert">' +
-                            'Your request has been approved, successfully.' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' +
-                            '</div>';
+                        // var alertHtml =
+                        //     '<div class="index-card alert alert-success alert-dismissible fade show" role="alert">' +
+                        //     'Your request has been approved, successfully.' +
+                        //     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        //     '<span aria-hidden="true">&times;</span>' +
+                        //     '</button>' +
+                        //     '</div>';
 
-                        $('.index-card').html(alertHtml).show();
+                        // $('.index-card').html(alertHtml).show();
+
                     }
                 },
                 error: function(xhr, status, error) {
@@ -81,9 +85,6 @@
                         if (key === 'supplier') {
                             errorElement.insertAfter('select[name="' + key +
                                 '"]'); // Untuk select supplier
-                        } else {
-                            errorElement.insertAfter('input[name="' + key +
-                                '"]'); // Untuk input lainnya
                         }
                     });
 

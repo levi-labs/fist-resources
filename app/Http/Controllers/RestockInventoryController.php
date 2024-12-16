@@ -36,6 +36,7 @@ class RestockInventoryController extends Controller
 
     public function approved()
     {
+        session()->forget('cart');
         $title = 'Approved Restock Inventory List';
         $restocks = $this->restockInventoryService->getAllRestockInventoryApproved();
         return view('pages.restock_inventory.approved', compact('title', 'restocks'));
@@ -43,6 +44,7 @@ class RestockInventoryController extends Controller
 
     public function resubmitted()
     {
+        session()->forget('cart');
         $title = 'Resubmited Restock Inventory List';
         $restocks = $this->restockInventoryService->getAllRestockInventoryResubmitted();
         return view('pages.restock_inventory.resubmited', compact('title', 'restocks'));
@@ -78,6 +80,44 @@ class RestockInventoryController extends Controller
             } else {
                 $cart[$id] = [
                     'id' => $product['id'],
+                    'name' => $product['name'],
+                    'quantity' => 1,
+                    'price' => $product['price'],
+                    'image' => $product['image'],
+                    'sku' => $product['sku'],
+                    'category' => $product['category_name'],
+                    'product_id' => $product['id'],
+                ];
+            }
+            // dd($cart);
+            // dd(session()->get('cart'));
+            // dd(session()->forget('cart'));
+            session()->put('cart', $cart);
+            // dd(session()->get('cart'));
+            return redirect()->back()->with('success', 'Item added to cart successfully!');
+            // if (isset($cart[$id])) {
+            //     return redirect()->route('restock.inventory.add', ['id' => $id])->with('success', 'Item added to cart successfully!');
+            // }
+
+        } catch (\Throwable $error) {
+            return back()->with('error', $error->getMessage());
+        }
+    }
+    public function updateAddItem($id)
+    {
+        try {
+            $product = $this->productService->getProductById($id);
+
+            $product = (array)$product;
+
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity']++;
+            } else {
+                $cart[$id] = [
+                    'id' => Str::random(12),
+                    'product_id' => $product['id'],
                     'name' => $product['name'],
                     'quantity' => 1,
                     'price' => $product['price'],
@@ -262,6 +302,20 @@ class RestockInventoryController extends Controller
         $cart = array_filter($cart, function ($item) use ($id) {
             return $item['id'] != $id;
         });
+
+        session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
+
+        return redirect()->back()->with('success', 'Item removed from cart successfully!');
+    }
+
+    public function removeUpdateItem($id)
+    {
+        $cart = session()->get('cart', []);
+
+        $cart = array_filter($cart, function ($item) use ($id) {
+            return $item['id'] != $id;
+        });
+        $this->restockInventoryService->deleteById($id);
 
         session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
 

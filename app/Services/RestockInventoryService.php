@@ -96,30 +96,52 @@ class RestockInventoryService
      */
     public function update($id, $idProduct, $quantity, $request_code, $notes)
     {
+        // dd($id, $idProduct, $quantity, $request_code, $notes);
         try {
+            // $dataUpdateOrInsert = [];
             foreach ($id as $key => $value) {
-                $check = RestockInventory::where('id', $id)->first();
+                $check = RestockInventory::where('id', $value)->first();
+                $existRecord = RestockInventory::where('request_code', $request_code)->first();
                 $dataUpdateOrInsert = [
                     'product_id' => $idProduct[$key],
                     'quantity' => $quantity[$key],
                     'staff_id' => auth('web')->user()->id,
+                    // 'status' =>  $check->status === 'resubmitted' ? 'resubmitted' : 'pending',
                     'notes' => strtolower($notes) ?? null,
                     'updated_at' => Carbon::now(),
                 ];
-                if (!RestockInventory::where('id', $value)->exists()) {
-                    $dataUpdateOrInsert['request_code'] = $request_code;
-                    $dataUpdateOrInsert['date_requested'] = date('Y-m-d');
-                    $dataUpdateOrInsert['created_at'] = Carbon::now();
+
+                if ($check === null) {
+
+                    // dd($existRecord);
+                    $dataUpdateOrInsert['procurement_id'] = $existRecord->procurement_id;
+                    $dataUpdateOrInsert['request_code'] = $existRecord->request_code;
+                    $dataUpdateOrInsert['reason'] = $existRecord->reason;
+                    $dataUpdateOrInsert['date_requested'] = $existRecord->date_requested;
+                    if ($existRecord->status === 'resubmitted') {
+                        $dataUpdateOrInsert['resubmit_count'] = $existRecord->resubmit_count;
+                        $dataUpdateOrInsert['status'] = 'resubmitted';
+                    }
+                    RestockInventory::create($dataUpdateOrInsert);
                 }
-                if ($check->status === 'resubmitted') {
+                if ($check !== null && $check->status === 'resubmitted') {
+
                     $dataUpdateOrInsert['status'] = 'resubmitted';
                     $dataUpdateOrInsert['resubmit_count'] = $check->resubmit_count + 1;
                 }
-                RestockInventory::updateOrInsert(
-                    ['id' => $value],
-                    $dataUpdateOrInsert
-                );
+
+                if ($check) {
+                    RestockInventory::where('id', $value)->update($dataUpdateOrInsert);
+                }
+
+                // RestockInventory::updateOrInsert(
+                //     [
+                //         'id' => $value,
+                //     ],
+                //     $dataUpdateOrInsert
+                // );
             }
+            // dd($dataUpdateOrInsert);
         } catch (\Throwable $error) {
             throw $error;
         }
@@ -195,6 +217,14 @@ class RestockInventoryService
     {
         try {
             RestockInventory::where('request_code', $request_code)->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function deleteById($id)
+    {
+        try {
+            RestockInventory::where('id', $id)->delete();
         } catch (\Throwable $th) {
             throw $th;
         }

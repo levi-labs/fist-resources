@@ -85,15 +85,18 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/create', 'create')->name('restock.inventory.create');
             Route::post('/create', 'create')->name('restock.inventory.createsearch');
             Route::get('/add-item/{id}', 'addItem')->name('restock.inventory.add');
+            Route::get('/update-add-item/{id}', 'updateAddItem')->name('restock.inventory.updateAddItem');
             Route::post('/store', 'store')->name('restock.inventory.store');
             Route::get('/edit/{request_code}', 'edit')->name('restock.inventory.edit');
             Route::put('/update/{request_code?}', 'update')->name('restock.inventory.update');
             Route::get('/delete-request/{request_code}', 'destroy')->name('restock.inventory.destroy');
             Route::get('/delete-item/{id}', 'removeItem')->name('restock.inventory.deleteItem');
+            Route::get('/update-delete-item/{id}}', 'removeUpdateItem')->name('restock.inventory.deleteItemDetail');
 
             Route::get('/approve/{request_code}', 'approve')->name('restock.inventory.approve');
             Route::post('/approve/{request_code}', 'approve')->name('restock.inventory.approvedetail');
             Route::get('/reject', 'rejected')->name('restock.inventory.rejected');
             Route::get('/resubmit', 'resubmitted')->name('restock.inventory.resubmitted');
+            Route::put('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmitteddetail');
         });
 });

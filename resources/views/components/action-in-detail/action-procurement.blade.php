@@ -1,6 +1,6 @@
 <div class="row align-items-center justify-content-center">
     <div class="col-md-12 text-end">
-        @if ($status === 'pending')
+        @if ($status === 'pending' || $status === 'resubmitted')
             <button type="button" class="btn btn-md btn-icon btn-primary" data-bs-toggle="modal"
                 data-bs-target="#exampleModal">
                 Approve
@@ -23,3 +23,5 @@
 
 
 @include('components.modal-procurement.approve', ['params' => $params])
+
+@include('components.modal-procurement.resubmit', ['params' => $params])
