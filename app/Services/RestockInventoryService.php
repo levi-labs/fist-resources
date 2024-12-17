@@ -59,6 +59,18 @@ class RestockInventoryService
         return $restocks;
     }
 
+    public function getAllRestockInventoryRejected()
+    {
+        $restocks = DB::table('restock_inventory_requests as restock')
+            ->select('restock.request_code', DB::raw('MAX(restock.created_at) as latest_created_at'))
+            ->where('restock.status', 'rejected')
+            ->groupBy('restock.request_code')
+            ->orderBy('latest_created_at', 'desc')
+            ->get();
+
+        return $restocks;
+    }
+
     public function create($id, $quantity, $notes = null)
     {
         try {
@@ -207,6 +219,30 @@ class RestockInventoryService
                     // 'resubmit_count' => DB::raw('resubmit_count + 1')
                 ]
             );
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+
+    public function reject($request_code, $reason = null)
+    {
+        try {
+            if ($reason !== null && $reason !== '') {
+                RestockInventory::where('request_code', $request_code)->update(
+                    [
+                        'reason' => $reason,
+                        'status' => 'rejected',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
+            } else {
+                RestockInventory::where('request_code', $request_code)->update(
+                    [
+                        'status' => 'rejected',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
+            }
         } catch (\Throwable $error) {
             throw $error;
         }

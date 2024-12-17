@@ -50,6 +50,14 @@ class RestockInventoryController extends Controller
         return view('pages.restock_inventory.resubmited', compact('title', 'restocks'));
     }
 
+    public function rejected()
+    {
+        session()->forget('cart');
+        $title = 'Rejected Restock Inventory List';
+        $restocks = $this->restockInventoryService->getAllRestockInventoryRejected();
+        return view('pages.restock_inventory.rejected', compact('title', 'restocks'));
+    }
+
 
 
     public function search()
@@ -202,6 +210,20 @@ class RestockInventoryController extends Controller
             session()->flash('success', 'Restock inventory request, resubmitted successfully!');
 
             return response()->json(['success' => 'Restock inventory request, resubmitted successfully!'], 201);
+        } catch (\Throwable $error) {
+            session()->flash('error', $error->getMessage());
+            return response()->json(['error' => $error->getMessage()], 500);
+        }
+    }
+
+    public function reject(Request $request, $request_code)
+    {
+        try {
+            $this->restockInventoryService->reject($request_code, $request->reason);
+
+            session()->flash('success', 'Restock inventory request, rejected successfully!');
+
+            return response()->json(['success' => 'Restock inventory request, rejected successfully!'], 201);
         } catch (\Throwable $error) {
             session()->flash('error', $error->getMessage());
             return response()->json(['error' => $error->getMessage()], 500);

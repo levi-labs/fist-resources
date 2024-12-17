@@ -30,19 +30,34 @@
                                 // dd($restocks);
                             @endphp
                             <h4 class="card-title">{{ $title }}</h4>
-                            <a href="{{ route('restock.inventory.index') }}" class="btn btn-primary btn-sm mt-1">Back</a>
+                            @if ($status == 'pending')
+                                <a href="{{ route('restock.inventory.index') }}"
+                                    class="btn btn-primary btn-sm mt-1">Back</a>
+                            @elseif ($status == 'approved')
+                                <a href="{{ route('restock.inventory.approved') }}"
+                                    class="btn btn-primary btn-sm mt-1">Back</a>
+                            @elseif ($status == 'resubmitted')
+                                <a href="{{ route('restock.inventory.resubmitted') }}"
+                                    class="btn btn-primary btn-sm mt-1">Back</a>
+                            @elseif($status == 'rejected')
+                                <a href="{{ route('restock.inventory.rejected') }}"
+                                    class="btn btn-primary btn-sm mt-1">Back</a>
+                            @endif
                         </div>
                         <div class="float-end">
-                            {{-- <div class="badge rounded-pill bg-dark">{{ $status }}</div> --}}
+                            {{-- @if ($status == 'pending') --}}
+                            <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                class="btn btn-danger btn-sm mt-4">Delete</a>
+                            {{-- @endif --}}
                         </div>
                     </div>
                     <div class="row p-4">
                         <div class="col-md-4">
                             <h6 class="text-muted">Requested By: {{ $requested_by }}</h6>
-                            <h6 class="text-muted my-2">As: {{ ucfirst($role) }}</h6>
-                            <hr class="hr-horizontal dark">
+                            <h6 class="text-muted">As: {{ ucfirst($role) }}</h6>
+                            <hr class="hr-horizontal dark my-2">
                             <h6 class="text-muted">Approved By: {{ $approved_by ?? '-' }}</h6>
-                            <h6 class="text-muted my-2">As: {{ ucfirst($approved_role ?? '-') }}</h6>
+                            <h6 class="text-muted">As: {{ ucfirst($approved_role ?? '-') }}</h6>
                             <hr class="hr-horizontal dark">
                             <p class="text-muted text-wrap">Note: {{ $restocks[0]->note ?? '-' }}</p>
                             <p class="text-muted text-wrap">Reason: {{ $restocks[0]->reason ?? '-' }}</p>
@@ -50,8 +65,11 @@
                         <div class="col-md-8 text-end">
                             <h6 class="text-muted">Request Code: {{ $request_code }}</h6>
                             <h6 class="text-muted my-2">Date Requested: {{ $date_requested }}</h6>
+                            <hr class="hr-horizontal dark my-2">
                             <h6 class="text-muted align-items-center">Status: &nbsp;<span
                                     class="badge rounded-pill bg-dark p-2">{{ $status }}</span></h6>
+                            <h6 class="text-muted my-2">Resubmit:
+                                {{ $restocks[0]->resubmit_count > 0 ? $restocks[0]->resubmit_count : '-' }} </h6>
 
                         </div>
                     </div>
@@ -114,7 +132,7 @@
                                                             </svg>
                                                         </span>
                                                     </a>
-
+                                                    {{-- 
                                                     <a class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
                                                         href="{{ route('restock.inventory.deleteItem', $restock->id) }}"
@@ -137,7 +155,7 @@
                                                                     stroke-linecap="round" stroke-linejoin="round"></path>
                                                             </svg>
                                                         </span>
-                                                    </a>
+                                                    </a> --}}
                                                 </div>
                                             </td>
                                         </tr>
