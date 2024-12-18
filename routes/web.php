@@ -100,4 +100,17 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::put('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmitteddetail');
             Route::get('/print/{request_code}', 'print')->name('restock.inventory.print');
         });
+
+    Route::controller(App\Http\Controllers\ProposedProductController::class)
+        ->prefix('propose-product')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('propose.product.index');
+            Route::post('/', 'index')->name('propose.product.search');
+            Route::get('/create', 'create')->name('propose.product.create');
+            Route::post('/create', 'store')->name('propose.product.store');
+            Route::get('/edit/{id}', 'edit')->name('propose.product.edit');
+            Route::put('/update/{id}', 'update')->name('propose.product.update');
+            Route::get('/delete/{id}', 'destroy')->name('propose.product.destroy');
+        });
 });

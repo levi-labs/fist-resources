@@ -381,6 +381,7 @@
                         </li>
                     </ul>
                 </li>
+                {{-- Propose Products --}}
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-auth" role="button"
                         aria-expanded="false" aria-controls="sidebar-user">
@@ -406,7 +407,22 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-auth" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="../dashboard/auth/sign-in.html">
+                            <a class="nav-link" href="{{ route('propose.product.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                        viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor">
+                                            </circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> P </i>
+                                <span class="item-name">Product</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../dashboard/auth/sign-up.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -421,7 +437,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../dashboard/auth/sign-up.html">
+                            <a class="nav-link" href="../dashboard/auth/confirm-mail.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -436,7 +452,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../dashboard/auth/confirm-mail.html">
+                            <a class="nav-link" href="../dashboard/auth/lock-screen.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
