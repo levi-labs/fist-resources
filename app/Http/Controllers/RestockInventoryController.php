@@ -343,4 +343,10 @@ class RestockInventoryController extends Controller
 
         return redirect()->back()->with('success', 'Item removed from cart successfully!');
     }
+
+    public function print($request_code)
+    {
+        $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
+        return view('pages.restock_inventory.print', compact('restocks'));
+    }
 }

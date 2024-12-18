@@ -46,8 +46,16 @@
                         </div>
                         <div class="float-end">
                             {{-- @if ($status == 'pending') --}}
-                            <a href="{{ route('restock.inventory.destroy', $request_code) }}"
-                                class="btn btn-danger btn-sm mt-4">Delete</a>
+                            @if ($status == 'pending' || $status == 'resubmitted')
+                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                    class="btn btn-danger btn-sm mt-4">Delete</a>
+                            @endif
+                            @if ($status == 'approved' && auth('web')->user()->role == 'admin')
+                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                    class="btn btn-danger btn-sm mt-4">Delete</a>
+                            @endif
+                            <a href="{{ route('restock.inventory.print', $request_code) }}"
+                                class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a>
                             {{-- @endif --}}
                         </div>
                     </div>
