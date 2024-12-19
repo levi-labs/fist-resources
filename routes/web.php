@@ -113,4 +113,16 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::put('/update/{id}', 'update')->name('propose.product.update');
             Route::get('/delete/{id}', 'destroy')->name('propose.product.destroy');
         });
+    Route::controller(App\Http\Controllers\ProposeInventoryController::class)
+        ->prefix('propose-inventory')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('propose.inventory.index');
+            Route::post('/', 'index')->name('propose.inventory.search');
+            Route::get('/create', 'create')->name('propose.inventory.create');
+            Route::post('/create', 'store')->name('propose.inventory.store');
+            Route::get('/edit/{id}', 'edit')->name('propose.inventory.edit');
+            Route::put('/update/{id}', 'update')->name('propose.inventory.update');
+            Route::get('/delete/{id}', 'destroy')->name('propose.inventory.destroy');
+        });
 });

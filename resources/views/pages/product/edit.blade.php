@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="price">Price:</label>
                                 <input type="number" min="0" class="form-control" id="price" name="price"
-                                    value="{{ old('price', $product->price) }}">
+                                    value="{{ old('price', number_format((int) $product->price, 0, '.', '')) }}">
                                 @error('price')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

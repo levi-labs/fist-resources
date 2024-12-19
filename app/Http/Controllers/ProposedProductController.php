@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProposedProductRequest;
 use App\Models\ProposedProduct;
+use App\Models\ProposedRequest;
+use App\Services\CategoryService;
 use App\Services\ProposeProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,9 +13,11 @@ use Illuminate\Support\Facades\Validator;
 class ProposedProductController extends Controller
 {
     protected $proposedProduct;
-    public function __construct(ProposeProductService $proposedProduct)
+    protected $category;
+    public function __construct(ProposeProductService $proposedProduct, CategoryService $category)
     {
         $this->proposedProduct = $proposedProduct;
+        $this->category = $category;
     }
 
     /**
@@ -21,7 +26,7 @@ class ProposedProductController extends Controller
     public function index()
     {
         $sanitize = handleSanitize(request()->input('search', ''));
-        if ($sanitize) {
+        if ($sanitize || $sanitize !== '') {
             $title = 'Proposed Product List';
             $propose_products =  $this->proposedProduct->search($sanitize);
             return view('pages.propose_product.index', compact('title', 'propose_products'));
@@ -37,25 +42,20 @@ class ProposedProductController extends Controller
     public function create()
     {
         $title = 'Add New Proposed Product';
-        return view('pages.propose_product.create', compact('title'));
+        $categories = $this->category->getAllCategories();
+        return view('pages.propose_product.create', compact('title', 'categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProposedProductRequest $request)
     {
-        $validated = Validator::make($request->all(), [
-            'name' => 'required',
-            'sku' => 'nullable',
-            'description' => 'required',
 
-        ]);
-        if ($validated->fails()) {
-            return redirect()->back()->withErrors($validated->errors())->withInput();
-        }
         try {
-            $this->proposedProduct->create($request->all());
+            $data = $request->all();
+            $this->proposedProduct->hanldeProductImageUpload($data);
+            $this->proposedProduct->create($data);
             return redirect()->route('propose.product.index')->with('success', 'Proposed Product created successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -77,27 +77,26 @@ class ProposedProductController extends Controller
     {
         $title = 'Edit Proposed Product';
         $propose = $this->proposedProduct->getProposeProductById($id);
+        $categories = $this->category->getAllCategories();
 
-        return view('pages.propose_product.edit', compact('title', 'propose'));
+        return view('pages.propose_product.edit', compact('title', 'propose', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ProposedProductRequest $request, $id)
     {
-        $validated = Validator::make($request->all(), [
-            'name' => 'required',
-            'sku' => 'nullable',
-            'description' => 'required',
-        ]);
-
-        if ($validated->fails()) {
-            return redirect()->back()->withErrors($validated->errors())->withInput();
-        }
-
         try {
-            $this->proposedProduct->update($request->all(), $id);
+
+            if (ProposedProduct::where('sku', $request->sku)->where('id', '!=', $id)->exists()) {
+                return redirect()->back()->with('error', 'Proposed Product SKU already exists');
+            }
+
+            $data = $request->all();
+            $this->proposedProduct->hanldeProductImageUpload($data);
+            $this->proposedProduct->update($data, $id);
+
             return redirect()->route('propose.product.index')->with('success', 'Proposed Product updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());

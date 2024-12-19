@@ -21,9 +21,10 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('propose.product.update', $propose->id) }}">
-                            @csrf
+                        <form method="POST" action="{{ route('propose.product.update', $propose->id) }}"
+                            enctype="multipart/form-data">
                             @method('PUT')
+                            @csrf
                             <div class="form-group">
                                 <label class="form-label" for="name">Name:</label>
                                 <input type="name" class="form-control" id="name" name="name"
@@ -33,10 +34,42 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="sku">SKU:(optional)</label>
+                                <label class="form-label" for="sku">SKU:</label>
+                                <span class="text-danger text-sm">(optional)</span>
                                 <input type="text" class="form-control" id="sku" name="sku"
                                     value="{{ old('sku', $propose->sku) }}">
                                 @error('sku')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="category_id">Category</label>
+                                <select class="form-select" id="category_id" name="category_id">
+                                    <option selected="" disabled="">Select Category</option>
+                                    @foreach ($categories as $category)
+                                        <option
+                                            {{ old('category_id', $propose->category_id) == $category->id ? 'selected' : '' }}
+                                            value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('category_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="price">Price:</label>
+                                <input type="number" min="0" class="form-control" id="price" name="price"
+                                    value="{{ number_format(floor((int) $propose->price), 0, '.', '') }}">
+                                @error('price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="image" class="form-label custom-file-input">Choose Image</label>
+                                <input class="form-control" type="file" id="image" name="image">
+                                <span class="text-dark text-sm">{{ $propose->image }}</span>
+                                @error('image')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

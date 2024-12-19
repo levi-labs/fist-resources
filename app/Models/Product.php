@@ -55,4 +55,10 @@ class Product extends Model
     {
         return asset('storage/' . $this->attributes['image']);
     }
+    // public function price(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn($value) => number_format(floor($value), 0, ',', '.'),
+    //     );
+    // }
 }
