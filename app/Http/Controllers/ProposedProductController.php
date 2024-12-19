@@ -20,6 +20,12 @@ class ProposedProductController extends Controller
      */
     public function index()
     {
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $title = 'Proposed Product List';
+            $propose_products =  $this->proposedProduct->search($sanitize);
+            return view('pages.propose_product.index', compact('title', 'propose_products'));
+        }
         $title = 'Proposed Product List';
         $propose_products = ProposedProduct::all();
         return view('pages.propose_product.index', compact('title', 'propose_products'));
@@ -49,8 +55,8 @@ class ProposedProductController extends Controller
             return redirect()->back()->withErrors($validated->errors())->withInput();
         }
         try {
-            $this->proposedProduct->create($validated);
-            return redirect()->route('proposed-product.index')->with('success', 'Proposed Product created successfully');
+            $this->proposedProduct->create($request->all());
+            return redirect()->route('propose.product.index')->with('success', 'Proposed Product created successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -70,9 +76,9 @@ class ProposedProductController extends Controller
     public function edit($id)
     {
         $title = 'Edit Proposed Product';
-        $proposedProduct = $this->proposedProduct->getProposeProductById($id);
+        $propose = $this->proposedProduct->getProposeProductById($id);
 
-        return view('pages.propose_product.edit', compact('title', 'proposedProduct'));
+        return view('pages.propose_product.edit', compact('title', 'propose'));
     }
 
     /**
@@ -91,7 +97,7 @@ class ProposedProductController extends Controller
         }
 
         try {
-            $this->proposedProduct->update($validated, $id);
+            $this->proposedProduct->update($request->all(), $id);
             return redirect()->route('propose.product.index')->with('success', 'Proposed Product updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -105,7 +111,7 @@ class ProposedProductController extends Controller
     {
         try {
             $this->proposedProduct->delete($id);
-            return redirect()->route('proposed-product.index')->with('success', 'Proposed Product deleted successfully');
+            return redirect()->route('propose.product.index')->with('success', 'Proposed Product deleted successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

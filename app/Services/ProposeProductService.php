@@ -4,9 +4,15 @@
 namespace App\Services;
 
 use App\Models\ProposedProduct;
+use Illuminate\Support\Facades\DB;
 
 class ProposeProductService
 {
+    public function search($name)
+    {
+        return DB::table('proposed_products')->where('name', 'like', '%' . $name . '%')
+            ->get();
+    }
     public function gellAllProposedProduct()
     {
         return ProposedProduct::all();
@@ -27,8 +33,10 @@ class ProposeProductService
     }
     public function update($data, $id)
     {
+        // dd($data, $id);
         try {
-            return ProposedProduct::where('id', $id)->update($data);
+            $propose =  ProposedProduct::where('id', $id)->first();
+            return $propose->update($data);
         } catch (\Throwable $error) {
             throw $error;
         }

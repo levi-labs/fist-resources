@@ -21,25 +21,28 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('propose.product.store') }}">
+                        <form method="POST" action="{{ route('propose.product.update', $propose->id) }}">
                             @csrf
+                            @method('PUT')
                             <div class="form-group">
                                 <label class="form-label" for="name">Name:</label>
-                                <input type="name" class="form-control" id="name" name="name">
+                                <input type="name" class="form-control" id="name" name="name"
+                                    value="{{ old('name', $propose->name) }}">
                                 @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="sku">SKU:(optional)</label>
-                                <input type="text" class="form-control" id="sku" name="sku">
+                                <input type="text" class="form-control" id="sku" name="sku"
+                                    value="{{ old('sku', $propose->sku) }}">
                                 @error('sku')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="description">Description:</label>
-                                <textarea class="form-control" id="description" rows="5" name="description"></textarea>
+                                <textarea class="form-control" id="description" rows="5" name="description">{{ old('description', $propose->description) }}</textarea>
                                 @error('description')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
