@@ -35,10 +35,46 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="sku">SKU:</label>
-                                <span class="text-danger text-sm">(optional)</span>
+                                {{-- <span class="text-danger text-sm">(optional)</span> --}}
                                 <input type="text" class="form-control" id="sku" name="sku"
                                     value="{{ old('sku', $product->sku) }}">
                                 @error('sku')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="brand">Brand:</label>
+                                <span class="text-muted text-sm">Samsung</span>
+                                <input type="text" class="form-control" id="brand" name="brand"
+                                    value="{{ old('brand', $product->brand) }}">
+                                @error('brand')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="model">Model:</label>
+                                <span class="text-muted text-sm">Galaxy S23</span>
+                                <input type="text" class="form-control" id="model" name="model"
+                                    value="{{ old('model', $product->model) }}">
+                                @error('model')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="size">Size:</label>
+                                <span class="text-muted text-sm">Optional:</span>
+                                <input type="text" class="form-control" id="size" name="size"
+                                    value="{{ old('size', $product->size) }}">
+                                @error('size')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="unit_type">Unit Type:</label>
+                                <span class="text-muted text-sm">(Unit,cm,kg,ml,l)</span>
+                                <input type="text" class="form-control" id="unit_type" name="unit_type"
+                                    value="{{ old('unit_type', $product->unit_type) }}">
+                                @error('unit_type')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

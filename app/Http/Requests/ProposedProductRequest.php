@@ -23,6 +23,10 @@ class ProposedProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
+            'model' => 'required',
+            'brand' => 'required',
+            'size' => 'nullable',
+            'unit_type' => 'required',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'sku' => 'nullable|unique:products,sku',

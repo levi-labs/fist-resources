@@ -45,7 +45,9 @@ class ProductController extends Controller
     {
         try {
             $data = $request->all();
+
             $this->productservice->hanldeProductImageUpload($data);
+            // dd($data);
             $this->productservice->createProduct($data);
             return redirect()->route('product.index')->with('success', 'Product created successfully');
         } catch (\Throwable $error) {

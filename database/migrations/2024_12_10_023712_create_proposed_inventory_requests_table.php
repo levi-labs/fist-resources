@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('staff_id')->unsigned();
             $table->bigInteger('procurement_id')->unsigned()->nullable();
             $table->bigInteger('proposed_product_id')->unsigned();
+            $table->string('request_code', 20);
             $table->integer('quantity');
             $table->date('date_requested');
             $table->enum('status', [

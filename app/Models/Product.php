@@ -12,13 +12,8 @@ class Product extends Model
     use HasFactory;
     protected $table = 'products';
 
-    protected $fillable = [
-        'name',
-        'sku',
-        'price',
-        'category_id',
-        'image',
-        'description',
+    protected $guarded = [
+        'id'
     ];
 
 
@@ -33,6 +28,19 @@ class Product extends Model
     }
 
     protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => strtolower($value),
+        );
+    }
+    protected function brand(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => strtolower($value),
+        );
+    }
+
+    protected function model(): Attribute
     {
         return Attribute::make(
             set: fn($value) => strtolower($value),

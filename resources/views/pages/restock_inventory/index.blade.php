@@ -71,7 +71,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $restock->request_code }}</td>
                                             <td>
-                                                @if (auth('web')->user()->role == 'staff')
+                                                @if (auth('web')->user()->role == 'staff' || auth('web')->user()->role == 'admin')
                                                     @include('components.action-in-index.action-staff')
                                                 @endif
                                                 @if (auth('web')->user()->role == 'procurement')

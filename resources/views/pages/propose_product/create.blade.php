@@ -24,7 +24,7 @@
                         <form method="POST" action="{{ route('propose.product.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label class="form-label" for="name">Name:</label>
+                                <label class="form-label" for="name">Product Name:</label>
                                 <input type="name" class="form-control" id="name" name="name">
                                 @error('name')
                                     <span class="text-danger">{{ $message }}</span>
@@ -32,9 +32,41 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="sku">SKU:</label>
-                                <span class="text-danger text-sm">(optional)</span>
+                                {{-- <span class="text-danger text-sm">(optional)</span> --}}
                                 <input type="text" class="form-control" id="sku" name="sku">
                                 @error('sku')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="brand">Brand:</label>
+                                <span class="text-muted text-sm">Apple</span>
+                                <input type="text" class="form-control" id="brand" name="brand">
+                                @error('brand')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="model">Model:</label>
+                                <span class="text-muted text-sm">15 Promax</span>
+                                <input type="text" class="form-control" id="model" name="model">
+                                @error('model')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="size">Size:</label>
+                                <span class="text-muted text-sm">(optional) </span>
+                                <input type="text" class="form-control" id="size" name="size">
+                                @error('size')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="unit_type">Unit Type:</label>
+                                <span class="text-muted text-sm">(Unit,cm,kg,ml,l) </span>
+                                <input type="text" class="form-control" id="unit_type" name="unit_type">
+                                @error('unit_type')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

@@ -23,17 +23,23 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
-            'sku' => 'nullable',
+
+            'model' => 'required',
+            'brand' => 'required',
+            'size' => 'nullable',
+            'unit_type' => 'required',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'required',
         ];
 
         if ($this->isMethod('POST')) {
+            $rules['sku'] = 'required|unique:products,sku';
             $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5048';
         }
 
         if ($this->isMethod('PUT')) {
+            $rules['sku'] = 'required';
             $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5048';
         }
         return $rules;
