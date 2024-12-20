@@ -29,7 +29,7 @@ class ProposeProductService
 
     public function getProposeProductById($id)
     {
-        return ProposedProduct::where('id', $id)->first();
+        return ProposedProduct::findOrFail($id);
     }
 
     public function create($data)

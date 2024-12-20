@@ -22,6 +22,20 @@ class ProposeRequestService
         return $propose;
     }
 
+    public function getAllProposeNotInRequest()
+    {
+        $propose_product = DB::table('proposed_products')
+            ->whereNotIn('id', function ($query) {
+                $query->select('proposed_product_id')
+                    ->from('proposed_inventory_requests');
+            })
+            ->where('status', 'unregistered')
+            ->paginate(10);
+
+
+        return $propose_product;
+    }
+
     public function searchProposeRequest($search)
     {
         $propose = DB::table('proposed_inventory_requests as proposed_requests')

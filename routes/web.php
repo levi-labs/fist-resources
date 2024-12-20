@@ -124,5 +124,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/edit/{id}', 'edit')->name('propose.inventory.edit');
             Route::put('/update/{id}', 'update')->name('propose.inventory.update');
             Route::get('/delete/{id}', 'destroy')->name('propose.inventory.destroy');
+            Route::get('/add-item/{id}', 'addItem')->name('propose.inventory.add');
+            Route::get('/remove-item/{id}', 'removeItem')->name('propose.inventory.remove');
         });
 });
