@@ -20,7 +20,7 @@ class AuthController extends Controller
         if (auth('web')->attempt($credentials)) {
             return redirect()->route('dashboard');
         }
-        return redirect()->route('login');
+        return redirect()->route('auth.login')->with('error', 'Invalid username or password');
     }
 
     public function logout()
