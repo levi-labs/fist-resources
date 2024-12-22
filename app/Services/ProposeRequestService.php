@@ -104,10 +104,35 @@ class ProposeRequestService
                     'updated_at' => Carbon::now(),
                 ];
             }
+
             ProposedRequest::insert($data);
             // dd(session()->get('cart'));
         } catch (\Throwable $error) {
             throw $error;
         }
+    }
+
+    public function getByRequestCode($request_code)
+    {
+        $propose = DB::table('proposed_inventory_requests as pr')
+            ->join('proposed_products as pp', 'pr.proposed_product_id', '=', 'pp.id')
+            ->join('users as staff', 'staff.id', '=', 'pr.staff_id')
+            ->leftJoin('users as procurement', 'procurement.id', '=', 'pr.procurement_id')
+            ->select(
+                'pp.id as product_id',
+                'pp.name as product_name',
+                'pp.price as product_price',
+                'pp.sku as product_sku',
+                'staff.name as staff_name',
+                'staff.role as staff_role',
+                'procurement.name as procurement_name',
+                'procurement.role as procurement_role',
+                'pr.*',
+
+            )
+            ->where('pr.request_code', $request_code)
+            ->get();
+
+        return $propose;
     }
 }

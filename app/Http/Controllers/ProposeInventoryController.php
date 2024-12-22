@@ -79,15 +79,25 @@ class ProposeInventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            if (session('cart') === null || empty(session('cart'))) {
+                return redirect()->back()->with('error', 'Cart is empty!');
+            }
+            $this->proposeRequestService->create($request->id, $request->quantity, $request->notes);
+            return redirect()->route('propose.inventory.index')->with('success', 'Propose inventory request created successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ProposedRequest $proposedRequest)
+    public function show($request_code)
     {
-        //
+        $title = 'Propose Inventory Details';
+        $proposed = $this->proposeRequestService->getByRequestCode($request_code);
+        return view('pages.propose_inventory.detail', compact('title', 'proposed'));
     }
 
     /**

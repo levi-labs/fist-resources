@@ -117,7 +117,7 @@
                             <h4 class="card-title">Request Product List</h4>
                         </div>
                     </div>
-                    <form action="{{ route('restock.inventory.store') }}" method="POST">
+                    <form action="{{ route('propose.inventory.store') }}" method="POST">
                         @csrf
                         <div class="row p-4">
                             <div class="col-sm-12 text-end">

@@ -67,7 +67,9 @@ class ProposedProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $title = 'Proposed Product Details';
+        $propose = $this->proposedProduct->getProposeProductById($id);
+        return view('pages.propose_product.detail', compact('title', 'propose'));
     }
 
     /**

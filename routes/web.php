@@ -107,6 +107,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         ->group(function () {
             Route::get('/', 'index')->name('propose.product.index');
             Route::post('/', 'index')->name('propose.product.search');
+            Route::get('/show/{id}', 'show')->name('propose.product.show');
             Route::get('/create', 'create')->name('propose.product.create');
             Route::post('/create', 'store')->name('propose.product.store');
             Route::get('/edit/{id}', 'edit')->name('propose.product.edit');
@@ -120,6 +121,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/', 'index')->name('propose.inventory.index');
             Route::post('/', 'index')->name('propose.inventory.search');
             Route::get('/create', 'create')->name('propose.inventory.create');
+            Route::get('/show/{request_code}', 'show')->name('propose.inventory.show');
             Route::post('/create', 'store')->name('propose.inventory.store');
             Route::get('/edit/{id}', 'edit')->name('propose.inventory.edit');
             Route::put('/update/{id}', 'update')->name('propose.inventory.update');
