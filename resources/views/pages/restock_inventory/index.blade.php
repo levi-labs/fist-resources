@@ -72,11 +72,11 @@
                                             <td>{{ $restock->request_code }}</td>
                                             <td>
                                                 @if (auth('web')->user()->role == 'staff' || auth('web')->user()->role == 'admin')
-                                                    @include('components.action-in-index.action-staff')
+                                                    @include('components.action-in-index-restock-request.action-staff')
                                                 @endif
                                                 @if (auth('web')->user()->role == 'procurement')
                                                     @include(
-                                                        'components.action-in-index.action-procurement',
+                                                        'components.action-in-index-restock-request.action-procurement',
                                                         [
                                                             'params' => $restock->request_code,
                                                         ]
