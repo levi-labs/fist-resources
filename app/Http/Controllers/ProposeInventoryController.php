@@ -117,7 +117,7 @@ class ProposeInventoryController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             session()->flash('error', $th->getMessage());
-            return back()->with('error', $th->getMessage());
+            return response()->json(['error' =>  $th->getMessage()], 500);
         }
     }
 

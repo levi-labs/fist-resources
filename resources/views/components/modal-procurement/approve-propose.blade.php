@@ -67,7 +67,7 @@
                     "_token": csrf_token
                 },
                 success: function(response) {
-                    console.log('success:', response);
+                    // console.log('success:', response);
 
                     if (response.success) {
 
@@ -78,15 +78,15 @@
                         $('#approve-form').trigger('reset');
                         $('#exampleModal').modal('hide');
 
-                        var alertHtml =
-                            '<div class="index-card alert alert-success alert-dismissible fade show" role="alert">' +
-                            'Your request has been approved, successfully.' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' +
-                            '</div>';
+                        // var alertHtml =
+                        //     '<div class="index-card alert alert-success alert-dismissible fade show" role="alert">' +
+                        //     'Your request has been approved, successfully.' +
+                        //     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        //     '<span aria-hidden="true">&times;</span>' +
+                        //     '</button>' +
+                        //     '</div>';
 
-                        $('.index-card').html(alertHtml).show();
+                        // $('.index-card').html(alertHtml).show();
                     }
                 },
                 error: function(xhr, status, error) {
@@ -94,6 +94,16 @@
                     // console.log(xhr.responseJSON);
                     console.log('Error:',
                         errors);
+                    if (xhr.status == 500) {
+                        var errorMessage = xhr.responseJSON
+                            .error; // Pesan error dari server
+
+                        // Menampilkan pesan error di dalam alert dengan class .my-alert
+                        window.location.href =
+                            "{{ route('propose.inventory.show', $params) }}";
+
+                        $('#exampleModal').modal('hide');
+                    }
                     $('.text-danger').remove();
 
                     $.each(errors, function(key, value) {

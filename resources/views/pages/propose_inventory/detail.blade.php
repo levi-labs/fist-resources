@@ -6,6 +6,7 @@
                 <div class="card">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
+                            <div class="my-alert"></div>
                             @if (session('success'))
                                 <div class="mx-3 my-3 alert alert-left alert-success" role="alert">
                                     <span> {{ session('success') }}</span>
