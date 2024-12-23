@@ -31,36 +31,36 @@
                             @endphp
                             <h4 class="card-title">{{ $title }}</h4>
                             @if ($status == 'pending')
-                                <a href="{{ route('restock.inventory.index') }}"
+                                <a href="{{ route('propose.inventory.index') }}"
                                     class="btn btn-primary btn-sm mt-1">Back</a>
                             @elseif ($status == 'approved')
-                                <a href="{{ route('restock.inventory.approved') }}"
+                                <a href="{{ route('propose.inventory.approved') }}"
                                     class="btn btn-primary btn-sm mt-1">Back</a>
                             @elseif ($status == 'resubmitted')
-                                <a href="{{ route('restock.inventory.resubmitted') }}"
+                                <a href="{{ route('propose.inventory.resubmitted') }}"
                                     class="btn btn-primary btn-sm mt-1">Back</a>
                             @elseif($status == 'rejected')
-                                <a href="{{ route('restock.inventory.rejected') }}"
+                                <a href="{{ route('propose.inventory.rejected') }}"
                                     class="btn btn-primary btn-sm mt-1">Back</a>
                             @endif
                         </div>
                         <div class="float-end">
                             {{-- @if ($status == 'pending') --}}
                             @if ($status == 'pending' || $status == 'resubmitted')
-                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                <a href="{{ route('propose.inventory.destroy', $request_code) }}"
                                     class="btn btn-danger btn-sm mt-4">Delete</a>
                             @endif
                             @if ($status == 'approved' && auth('web')->user()->role == 'admin')
-                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                <a href="{{ route('propose.inventory.destroy', $request_code) }}"
                                     class="btn btn-danger btn-sm mt-4">Delete</a>
                             @endif
-                            <a href="{{ route('restock.inventory.print', $request_code) }}"
+                            <a href="{{ route('propose.inventory.print', $request_code) }}"
                                 class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a>
                             {{-- @endif --}}
                         </div>
                     </div>
-                    <div class="row p-4">
-                        <div class="col-md-4">
+                    <div class="row p-4 justify-content-between">
+                        <div class="col-md-9">
                             <h6 class="text-muted">Requested By: {{ $requested_by }}</h6>
                             <h6 class="text-muted">As: {{ ucfirst($role) }}</h6>
                             <hr class="hr-horizontal dark my-2">
@@ -70,14 +70,17 @@
                             <p class="text-muted text-wrap">Note: {{ $proposed[0]->note ?? '-' }}</p>
                             <p class="text-muted text-wrap">Reason: {{ $proposed[0]->reason ?? '-' }}</p>
                         </div>
-                        <div class="col-md-8 text-end">
-                            <h6 class="text-muted">Request Code: {{ $request_code }}</h6>
+                        <div class="col-md-2 text-start mx-auto align-items-center">
+
+                            <h6 class="text-muted text-sm ">Request Code: {{ $request_code }}</h6>
                             <h6 class="text-muted my-2">Date Requested: {{ $date_requested }}</h6>
                             <hr class="hr-horizontal dark my-2">
                             <h6 class="text-muted align-items-center">Status: &nbsp;<span
                                     class="badge rounded-pill bg-dark p-2">{{ $status }}</span></h6>
                             <h6 class="text-muted my-2">Resubmit:
                                 {{ $proposed[0]->resubmit_count > 0 ? $proposed[0]->resubmit_count : '-' }} </h6>
+
+
 
                         </div>
                     </div>
@@ -187,7 +190,7 @@
             </div>
         </div>
         @if (auth('web')->user()->role === 'procurement')
-            @include('components.action-in-detail.action-procurement', [
+            @include('components.action-in-detail-propose.action-procurement', [
                 'params' => $request_code,
                 'status' => $status,
             ])

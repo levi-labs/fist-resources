@@ -121,12 +121,23 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/', 'index')->name('propose.inventory.index');
             Route::post('/', 'index')->name('propose.inventory.search');
             Route::get('/create', 'create')->name('propose.inventory.create');
+            Route::post('/create', 'create')->name('propose.inventory.createsearch');
             Route::get('/show/{request_code}', 'show')->name('propose.inventory.show');
             Route::post('/create', 'store')->name('propose.inventory.store');
-            Route::get('/edit/{id}', 'edit')->name('propose.inventory.edit');
-            Route::put('/update/{id}', 'update')->name('propose.inventory.update');
+            Route::get('/edit/{request_code}', 'edit')->name('propose.inventory.edit');
+            Route::put('/update/{request_code}', 'update')->name('propose.inventory.update');
             Route::get('/delete/{id}', 'destroy')->name('propose.inventory.destroy');
             Route::get('/add-item/{id}', 'addItem')->name('propose.inventory.add');
+            Route::get('/update-add-item/{id}/{request_code}', 'updateAddItem')->name('propose.inventory.updateAddItem');
             Route::get('/remove-item/{id}', 'removeItem')->name('propose.inventory.remove');
+            Route::get('/print/{request_code}', 'print')->name('propose.inventory.print');
+
+            Route::get('/approve', 'approved')->name('propose.inventory.approved');
+            Route::post('/approve/{request_code}', 'approve')->name('propose.inventory.approvedetail');
+            Route::get('/reject', 'rejected')->name('propose.inventory.rejected');
+            Route::get('/resubmit', 'resubmitted')->name('propose.inventory.resubmitted');
+            Route::put('/resubmit/{request_code}', 'resubmit')->name('propose.inventory.resubmitteddetail');
+            Route::get('/delete-item/{id}', 'removeItem')->name('propose.inventory.deleteItem');
+            Route::get('/update-delete-item/{id}}', 'removeUpdateItem')->name('propose.inventory.deleteItemDetail');
         });
 });

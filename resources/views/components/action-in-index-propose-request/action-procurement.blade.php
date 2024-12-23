@@ -1,6 +1,6 @@
 <div class="flex align-items-center list-user-action">
 
-    <a href="{{ route('restock.inventory.show', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
+    <a href="{{ route('propose.inventory.show', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
         data-bs-original-title="Detail" aria-label="Detail" class="btn btn-sm btn-icon btn-success text-white mx-2"><i
             class="bi bi-search"></i></a>
     {{-- <a href="{{ route('restock.inventory.approve', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"

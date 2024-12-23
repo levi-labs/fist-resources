@@ -22,9 +22,14 @@ class ProposeProductService
         return DB::table('proposed_products')->where('name', 'like', '%' . $name . '%')
             ->get();
     }
-    public function gellAllProposedProduct()
+    public function getAllProposedProduct()
     {
         return ProposedProduct::all();
+    }
+
+    public function getAllPaginateProposedProduct()
+    {
+        return ProposedProduct::paginate(10);
     }
 
     public function getProposeProductById($id)

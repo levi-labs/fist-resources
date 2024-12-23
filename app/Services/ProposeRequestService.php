@@ -112,6 +112,71 @@ class ProposeRequestService
         }
     }
 
+    public function update($id, $product_id, $quantity, $request_code, $notes = null)
+    {
+        try {
+            foreach ($id as $key => $value) {
+                $check = ProposedRequest::where('id', $value)->first();
+                $existRecord = ProposedRequest::where('request_code', $request_code)->first();
+                $dataUpdateOrInsert = [
+                    'proposed_product_id' => $product_id[$key],
+                    'quantity' => $quantity[$key],
+                    'staff_id' => auth('web')->user()->id,
+                    'notes' => strtolower($notes) ?? null,
+                    'updated_at' => Carbon::now(),
+                ];
+
+                if ($check === null) {
+                    $dataUpdateOrInsert['procurement_id'] = $existRecord->procurement_id;
+                    $dataUpdateOrInsert['request_code'] = $existRecord->request_code;
+                    $dataUpdateOrInsert['date_requested'] = $existRecord->date_requested;
+                    if ($existRecord->status === 'resubmitted') {
+                        $dataUpdateOrInsert['resubmit_count'] = $existRecord->resubmit_count;
+                        $dataUpdateOrInsert['status'] = 'resubmitted';
+                        $dataUpdateOrInsert['reason'] = $existRecord->reason;
+                    }
+                    ProposedRequest::create($dataUpdateOrInsert);
+                }
+                if ($check !== null && $check->status === 'resubmitted') {
+                    $dataUpdateOrInsert['status'] = 'resubmitted';
+                    $dataUpdateOrInsert['resubmit_count'] = $check->resubmit_count + 1;
+                }
+
+                if ($check) {
+                    ProposedRequest::where('id', $value)->update($dataUpdateOrInsert);
+                }
+            }
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+    public function resubmit($request_code, $reason = null)
+    {
+        try {
+            if (ProposedRequest::where('request_code', $request_code)->doesntExist()) {
+                throw new \Exception('Propose request not found');
+            }
+            if ($reason !== null && $reason !== '') {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'reason' => $reason,
+                        'status' => 'resubmitted',
+                        'procurement_id' => auth('web')->user()->role === 'procurement' ? auth('web')->user()->id : null,
+                    ]
+                );
+            } else {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'status' => 'resubmitted',
+                        'procurement_id' => auth('web')->user()->role === 'procurement' ? auth('web')->user()->id : null,
+                    ]
+                );
+            }
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+
     public function getByRequestCode($request_code)
     {
         $propose = DB::table('proposed_inventory_requests as pr')
@@ -134,5 +199,29 @@ class ProposeRequestService
             ->get();
 
         return $propose;
+    }
+
+    public function approve($request_code, $reason = null)
+    {
+        try {
+            if ($reason !== null && $reason !== '') {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'reason' => $reason,
+                        'status' => 'approved',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
+            } else {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'status' => 'approved',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
+            }
+        } catch (\Throwable $error) {
+            throw $error;
+        }
     }
 }
