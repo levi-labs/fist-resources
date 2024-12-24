@@ -74,7 +74,10 @@
                                             <td>
 
                                                 <a class="btn btn-sm btn-success"
-                                                    href="{{ route('restock.inventory.updateAddItem', $product->id) }}">Add</a>
+                                                    href="{{ route('restock.inventory.updateAddItem', [
+                                                        'id' => $product->id,
+                                                        'request_code' => $restocks[0]->request_code,
+                                                    ]) }}">Add</a>
 
                                             </td>
                                         </tr>
@@ -144,29 +147,29 @@
                                         @php
                                             $total = 0;
                                         @endphp
-                                        @forelse (session('cart', []) as $item)
+                                        @forelse ($restocks as $item)
                                             @php
-                                                $total += $item['price'] * $item['quantity'];
+                                                $total += $item->product_price * $item->quantity;
                                             @endphp
                                             <tr>
                                                 {{-- <td class="text-center"><img
                                                     class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
                                                     src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item['name'] }}</td>
+                                                <td>{{ $item->product_name }}</td>
                                                 <td>
                                                     <input type="hidden" name="id[]" id=""
-                                                        value="{{ $item['id'] }}">
+                                                        value="{{ $item->id }}">
                                                     <input type="hidden" name="product_id[]" id=""
-                                                        value="{{ $item['product_id'] }}">
+                                                        value="{{ $item->product_id }}">
                                                     <input class="text-center" type="number" name="quantity[]"
-                                                        id="" value="{{ $item['quantity'] }}" min="1">
+                                                        id="" value="{{ $item->quantity }}" min="1">
                                                 </td>
-                                                <td>{{ formatNumber($item['price']) }}</td>
+                                                <td>{{ formatNumber($item->product_price) }}</td>
                                                 <td>
 
                                                     <a class="btn btn-sm btn-danger"
-                                                        href="{{ route('restock.inventory.deleteItemDetail', $item['id']) }}"
+                                                        href="{{ route('restock.inventory.deleteItemDetail', $item->id) }}"
                                                         onclick="return confirm('Are you sure?')">Delete</a>
 
                                                 </td>

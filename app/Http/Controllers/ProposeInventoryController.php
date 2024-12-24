@@ -170,12 +170,11 @@ class ProposeInventoryController extends Controller
     public function edit($request_code)
     {
         $title = 'Edit Propose Inventory';
-        $propose_products = $this->proposedProductService->getAllPaginateProposedProduct();
+        $propose_products = $this->proposeRequestService->getAllProposeNotInRequest();
         // dd($propose_products);
         $proposed = $this->proposeRequestService->getByRequestCode($request_code);
 
         $cart = session()->get('cart', []);
-
         foreach ($proposed as $key => $value) {
             $cart[$value->product_id] = [
                 'id' => $value->id,
@@ -216,9 +215,14 @@ class ProposeInventoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProposedRequest $proposedRequest)
+    public function destroy($request_code)
     {
-        //
+        try {
+            $this->proposeRequestService->delete($request_code);
+            return redirect()->route('propose.inventory.index')->with('success', 'Propose inventory request deleted successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     public function addItem($id)
@@ -300,6 +304,68 @@ class ProposeInventoryController extends Controller
                 session()->put('cart', $cart);
             }
             return redirect()->back()->with('success', 'Item removed from cart successfully!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    public function updateAndCreate($id, $request_code)
+    {
+
+        try {
+            $propose_request = ProposedRequest::where('request_code', $request_code)->first();
+            $propose_product = ProposedProduct::where('id', $id)->first();
+            $check = ProposedRequest::where('request_code', $request_code)->where('proposed_product_id', $propose_product->id)->first();
+            if ($check !== null) {
+                ProposedRequest::where('id', $check->id)->update(['quantity' => $check->quantity + 1]);
+
+                return redirect()->back()->with('success', 'Item added to cart successfully!');
+            }
+            $data = [
+                'staff_id' => auth('web')->user()->id,
+                'procurement_id' => $propose_request->procurement_id,
+                'proposed_product_id' => $propose_product->id,
+                'quantity' => 1,
+                'notes' => $propose_request->notes,
+                'request_code' => $propose_request->request_code,
+                'date_requested' => $propose_request->date_requested,
+                'status' => $propose_request->status,
+                'resubmit_count' => $propose_request->resubmit_count,
+                'reason' => $propose_request->reason
+            ];
+            ProposedRequest::create($data);
+            return redirect()->back()->with('success', 'Item added to cart successfully!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    public function removeUpdateItem($id)
+    {
+        try {
+            $cart = session()->get('cart', []);
+
+
+            if (!ProposedRequest::where('id', $id)->exists()) {
+
+                // $cart = array_filter($cart, function ($item) use ($id) {
+                //     return $item['id'] != $id;
+                // });
+                // session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
+                return redirect()->back()->with('success', 'Item removed from cart successfully!');
+            } else {
+                $cart = array_filter($cart, function ($item) use ($id) {
+                    return $item['id'] != $id;
+                });
+                // session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
+                $this->proposeRequestService->deleteById($id);
+
+                return redirect()->back()->with('success', 'Item removed from cart successfully!');
+            }
+
+
+            if (count($cart) == 0) {
+                $this->proposeRequestService->deleteById($id);
+                return redirect()->route('propose.inventory.index')->with('success', 'Propose inventory request deleted successfully!');
+            }
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

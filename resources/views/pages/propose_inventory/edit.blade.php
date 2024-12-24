@@ -144,31 +144,31 @@
                                         @php
                                             $total = 0;
                                             // var_dump(session('cart', []));
-                                            // dd(session('cart', []));
+                                            // dd($proposed);
                                         @endphp
-                                        @forelse (session('cart', []) as $item)
+                                        @forelse ($proposed as $item)
                                             @php
-                                                $total += $item['price'] * $item['quantity'];
+                                                $total += $item->product_price * $item->quantity;
                                             @endphp
                                             <tr>
                                                 {{-- <td class="text-center"><img
                                                     class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
                                                     src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item['name'] }}</td>
+                                                <td>{{ $item->product_name }}</td>
                                                 <td>
-                                                    <input type="hidden" name="id[]" id=""
-                                                        value="{{ $item['id'] }}">
-                                                    <input type="hidden" name="product_id[]" id=""
-                                                        value="{{ $item['product_id'] }}">
+                                                    <input type="number" name="id[]" id=""
+                                                        value="{{ $item->id }}">
+                                                    <input type="number" name="product_id[]" id=""
+                                                        value="{{ $item->product_id }}">
                                                     <input class="text-center" type="number" name="quantity[]"
-                                                        id="" value="{{ $item['quantity'] }}" min="1">
+                                                        id="" value="{{ $item->quantity }}" min="1">
                                                 </td>
-                                                <td>{{ formatNumber($item['price']) }}</td>
+                                                <td>{{ formatNumber($item->product_price) }}</td>
                                                 <td>
 
                                                     <a class="btn btn-sm btn-danger"
-                                                        href="{{ route('propose.inventory.deleteItemDetail', $item['id']) }}"
+                                                        href="{{ route('propose.inventory.deleteItemDetail', $item->id) }}"
                                                         onclick="return confirm('Are you sure?')">Delete</a>
 
                                                 </td>

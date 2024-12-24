@@ -260,7 +260,10 @@ class RestockInventoryService
     public function deleteById($id)
     {
         try {
-            RestockInventory::where('id', $id)->delete();
+            $data = RestockInventory::where('id', $id)->first();
+            if ($data) {
+                $data->delete();
+            }
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -85,7 +85,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/create', 'create')->name('restock.inventory.create');
             Route::post('/create', 'create')->name('restock.inventory.createsearch');
             Route::get('/add-item/{id}', 'addItem')->name('restock.inventory.add');
-            Route::get('/update-add-item/{id}', 'updateAddItem')->name('restock.inventory.updateAddItem');
+            Route::get('/update-add-item/{id}/{request_code}', 'updateAndCreate')->name('restock.inventory.updateAddItem');
             Route::post('/store', 'store')->name('restock.inventory.store');
             Route::get('/edit/{request_code}', 'edit')->name('restock.inventory.edit');
             Route::put('/update/{request_code?}', 'update')->name('restock.inventory.update');
@@ -128,7 +128,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::put('/update/{request_code}', 'update')->name('propose.inventory.update');
             Route::get('/delete/{id}', 'destroy')->name('propose.inventory.destroy');
             Route::get('/add-item/{id}', 'addItem')->name('propose.inventory.add');
-            Route::get('/update-add-item/{id}/{request_code}', 'updateAddItem')->name('propose.inventory.updateAddItem');
+            Route::get('/update-add-item/{id}/{request_code}', 'updateAndCreate')->name('propose.inventory.updateAddItem');
             Route::get('/remove-item/{id}', 'removeItem')->name('propose.inventory.remove');
             Route::get('/print/{request_code}', 'print')->name('propose.inventory.print');
 
@@ -138,6 +138,6 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/resubmit', 'resubmitted')->name('propose.inventory.resubmitted');
             Route::put('/resubmit/{request_code}', 'resubmit')->name('propose.inventory.resubmitteddetail');
             Route::get('/delete-item/{id}', 'removeItem')->name('propose.inventory.deleteItem');
-            Route::get('/update-delete-item/{id}}', 'removeUpdateItem')->name('propose.inventory.deleteItemDetail');
+            Route::get('/update-delete-item/{id}', 'removeUpdateItem')->name('propose.inventory.deleteItemDetail');
         });
 });

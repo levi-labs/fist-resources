@@ -35,6 +35,20 @@ class ProposeRequestService
 
         return $propose_product;
     }
+    public function getAllProposeProductEdit($request_code)
+    {
+        $propose_product = DB::table('proposed_products')
+            ->whereIn('id', function ($query) {
+                $query->select('proposed_product_id')
+                    ->from('proposed_inventory_requests')
+                    ->where('request_code',);
+            })
+            ->where('status', 'unregistered')
+            ->paginate(10);
+
+
+        return $propose_product;
+    }
 
     public function searchProposeRequest($search)
     {
@@ -222,6 +236,27 @@ class ProposeRequestService
             }
         } catch (\Throwable $error) {
             throw $error;
+        }
+    }
+
+    public function delete($request_code)
+    {
+        try {
+            ProposedRequest::where('request_code', $request_code)->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function deleteById($id)
+    {
+        try {
+            $data = ProposedRequest::where('id', $id)->first();
+
+            if ($data) {
+                $data->delete();
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

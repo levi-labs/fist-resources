@@ -332,16 +332,48 @@ class RestockInventoryController extends Controller
 
     public function removeUpdateItem($id)
     {
-        $cart = session()->get('cart', []);
+        // $cart = session()->get('cart', []);
 
-        $cart = array_filter($cart, function ($item) use ($id) {
-            return $item['id'] != $id;
-        });
+        // $cart = array_filter($cart, function ($item) use ($id) {
+        //     return $item['id'] != $id;
+        // });
+
         $this->restockInventoryService->deleteById($id);
 
-        session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
+        // session()->put('cart', array_values($cart)); // Reindex array setelah dihapus
 
         return redirect()->back()->with('success', 'Item removed from cart successfully!');
+    }
+    public function updateAndCreate($id, $request_code)
+    {
+        try {
+            $product = $this->productService->getProductById($id);
+            $restock_request = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
+            $check = RestockInventory::where('request_code', $request_code)->where('product_id', $product->id)->first();
+            if ($check !== null) {
+                RestockInventory::where('id', $check->id)->update([
+                    'quantity' => $check->quantity + 1
+                ]);
+
+                return redirect()->back()->with('success', 'Item added to cart successfully!');
+            }
+            $data = [
+                'staff_id' => auth('web')->user()->id,
+                'procurement_id' => $restock_request[0]->procurement_id ?? null,
+                'product_id' => $product->id,
+                'quantity' => 1,
+                'notes' => $restock_request[0]->notes ?? null,
+                'request_code' => $restock_request[0]->request_code,
+                'date_requested' => $restock_request[0]->date_requested,
+                'status' => $restock_request[0]->status,
+                'resubmit_count' => $restock_request[0]->resubmit_count,
+                'reason' => $restock_request[0]->reason ?? null
+            ];
+            RestockInventory::create($data);
+            return redirect()->back()->with('success', 'Item added to cart successfully!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     public function print($request_code)
