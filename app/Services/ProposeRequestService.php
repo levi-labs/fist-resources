@@ -52,12 +52,9 @@ class ProposeRequestService
 
     public function searchProposeRequest($search)
     {
-        $propose = DB::table('proposed_inventory_requests as proposed_requests')
-            ->join('proposed_products', 'proposed_requests.proposed_product_id', '=', 'proposed_products.id')
-            ->select('proposed_requests.request_code', DB::raw('MAX(proposed_requests.created_at) as latest_created_at'))
-            ->where('proposed_products.name', 'like', '%' . $search . '%')
-            ->groupBy('proposed_requests.request_code')
-            ->orderBy('latest_created_at', 'desc')
+        $propose = ProposedRequest::where('request_code', 'like', '%' . $search . '%')
+            ->select('request_code')
+            ->distinct()
             ->get();
 
         return $propose;
@@ -183,6 +180,29 @@ class ProposeRequestService
                     [
                         'status' => 'resubmitted',
                         'procurement_id' => auth('web')->user()->role === 'procurement' ? auth('web')->user()->id : null,
+                    ]
+                );
+            }
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
+    public function reject($request_code, $reason = null)
+    {
+        try {
+            if ($reason !== null && $reason !== '') {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'reason' => $reason,
+                        'status' => 'rejected',
+                        'procurement_id' => auth('web')->user()->id
+                    ]
+                );
+            } else {
+                ProposedRequest::where('request_code', $request_code)->update(
+                    [
+                        'status' => 'rejected',
+                        'procurement_id' => auth('web')->user()->id
                     ]
                 );
             }

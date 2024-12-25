@@ -12,9 +12,12 @@
         @endif
         {{-- <a href="{{ route('restock.inventory.approve', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-original-title="Approve" aria-label="Approve" class="btn btn-md btn-icon btn-info">Approve</a> --}}
+        @if ($status !== 'rejected')
+            <a href="{{ route('propose.inventory.rejectedetail', $params) }}" data-bs-toggle="tooltip"
+                data-bs-placement="top" data-bs-original-title="Reject" aria-label="Reject"
+                class="btn btn-md btn-icon btn-danger">Reject</a>
+        @endif
 
-        <a href="{{ route('propose.inventory.rejected', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-original-title="Reject" aria-label="Reject" class="btn btn-md btn-icon btn-danger">Reject</a>
 
     </div>
 </div>

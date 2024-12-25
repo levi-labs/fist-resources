@@ -88,6 +88,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/update-add-item/{id}/{request_code}', 'updateAndCreate')->name('restock.inventory.updateAddItem');
             Route::post('/store', 'store')->name('restock.inventory.store');
             Route::get('/edit/{request_code}', 'edit')->name('restock.inventory.edit');
+            Route::post('/edit/{request_code}', 'edit')->name('restock.inventory.editsearch');
             Route::put('/update/{request_code?}', 'update')->name('restock.inventory.update');
             Route::get('/delete-request/{request_code}', 'destroy')->name('restock.inventory.destroy');
             Route::get('/delete-item/{id}', 'removeItem')->name('restock.inventory.deleteItem');
@@ -95,7 +96,8 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
 
             Route::get('/approve/{request_code}', 'approve')->name('restock.inventory.approve');
             Route::post('/approve/{request_code}', 'approve')->name('restock.inventory.approvedetail');
-            Route::get('/reject', 'rejected')->name('restock.inventory.rejected');
+            Route::get('/rejected', 'rejected')->name('restock.inventory.rejected');
+            Route::get('/reject/{request_code}', 'reject')->name('restock.inventory.rejectedetail');
             Route::get('/resubmit', 'resubmitted')->name('restock.inventory.resubmitted');
             Route::put('/resubmit/{request_code}', 'resubmit')->name('restock.inventory.resubmitteddetail');
             Route::get('/print/{request_code}', 'print')->name('restock.inventory.print');
@@ -119,7 +121,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         ->middleware('role:admin,staff,procurement')
         ->group(function () {
             Route::get('/', 'index')->name('propose.inventory.index');
-            Route::post('/', 'index')->name('propose.inventory.search');
+            Route::post('/', 'search')->name('propose.inventory.search');
             Route::get('/create', 'create')->name('propose.inventory.create');
             Route::post('/create', 'create')->name('propose.inventory.createsearch');
             Route::get('/show/{request_code}', 'show')->name('propose.inventory.show');
@@ -134,7 +136,8 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
 
             Route::get('/approve', 'approved')->name('propose.inventory.approved');
             Route::post('/approve/{request_code}', 'approve')->name('propose.inventory.approvedetail');
-            Route::get('/reject', 'rejected')->name('propose.inventory.rejected');
+            Route::get('/rejected', 'rejected')->name('propose.inventory.rejected');
+            Route::get('/reject/{request_code}', 'reject')->name('propose.inventory.rejectedetail');
             Route::get('/resubmit', 'resubmitted')->name('propose.inventory.resubmitted');
             Route::put('/resubmit/{request_code}', 'resubmit')->name('propose.inventory.resubmitteddetail');
             Route::get('/delete-item/{id}', 'removeItem')->name('propose.inventory.deleteItem');

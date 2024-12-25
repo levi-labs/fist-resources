@@ -17,8 +17,7 @@ class ProductService
 
     public function searchProducts($search)
     {
-
-        return Product::with('category')->where('name', 'like', '%' . $search . '%')->get();
+        return Product::with('category')->where('name', 'like', '%' . $search . '%')->paginate();
     }
     public function getAllProducts($paginate = null)
     {

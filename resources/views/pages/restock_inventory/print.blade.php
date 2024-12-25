@@ -8,7 +8,6 @@
             flex-direction: column;
             margin: 10px 0px;
             font-size: 24px;
-            background: #e9ecef
         }
 
         .row-head {
@@ -16,7 +15,7 @@
             flex-direction: row;
             margin: auto;
             width: 100%;
-            background: #e9ecef;
+
         }
 
         .row-head.justify-content-space-between {
@@ -59,10 +58,10 @@
         }
 
         /*
-                                                                                                                                            .text-sm.text-group .text-sm.text-wrap {
-                                                                                                                                                overflow-wrap: break-word;
-                                                                                                                                                word-wrap: break-word;
-                                                                                                                                            } */
+                                                                                                                                                                .text-sm.text-group .text-sm.text-wrap {
+                                                                                                                                                                    overflow-wrap: break-word;
+                                                                                                                                                                    word-wrap: break-word;
+                                                                                                                                                                } */
 
         .text-to {
             margin: 1%;
@@ -121,10 +120,32 @@
         </div>
         <div class="col-6 text-end group-data">
             <div class="info">
-                <p class="text-sm text-wrap">Request Code : {{ $restocks[0]->request_code ?? '-' }}</p>
+                <table>
+                    <tr>
+                        <td>Request Code</td>
+                        <td>:</td>
+                        <td>{{ $restocks[0]->request_code ?? '-' }}</td>
+                    </tr>
+                    <tr></tr>
+                    <td>Request Date</td>
+                    <td>:</td>
+                    <td>{{ $restocks[0]->request_date ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Requested By</td>
+                        <td>:</td>
+                        <td>{{ $restocks[0]->staff_name ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Approved_by</td>
+                        <td>:</td>
+                        <td>{{ $restocks[0]->procurement_name ?? '-' }}</td>
+                    </tr>
+                </table>
+                {{-- <p class="text-sm text-wrap">Request Code : {{ $restocks[0]->request_code ?? '-' }}</p>
                 <p class="text-sm text-wrap">Request Date : {{ $restocks[0]->request_date ?? '-' }}</p>
                 <p class="text-sm text-wrap">Requested By : {{ $restocks[0]->staff_name ?? '-' }}</p>
-                <p class="text-sm text-wrap">Approved_by : {{ $restocks[0]->procurement_name ?? '-' }}</p>
+                <p class="text-sm text-wrap">Approved_by : {{ $restocks[0]->procurement_name ?? '-' }}</p> --}}
             </div>
 
         </div>

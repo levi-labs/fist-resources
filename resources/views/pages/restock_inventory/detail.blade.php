@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="row p-4">
-                        <div class="col-md-4">
+                        <div class="col-md-9">
                             <h6 class="text-muted">Requested By: {{ $requested_by }}</h6>
                             <h6 class="text-muted">As: {{ ucfirst($role) }}</h6>
                             <hr class="hr-horizontal dark my-2">
@@ -70,7 +70,7 @@
                             <p class="text-muted text-wrap">Note: {{ $restocks[0]->note ?? '-' }}</p>
                             <p class="text-muted text-wrap">Reason: {{ $restocks[0]->reason ?? '-' }}</p>
                         </div>
-                        <div class="col-md-8 text-end">
+                        <div class="col-md-2 text-start mx-auto align-items-center">
                             <h6 class="text-muted">Request Code: {{ $request_code }}</h6>
                             <h6 class="text-muted my-2">Date Requested: {{ $date_requested }}</h6>
                             <hr class="hr-horizontal dark my-2">
@@ -187,7 +187,7 @@
             </div>
         </div>
         @if (auth('web')->user()->role === 'procurement')
-            @include('components.action-in-detail.action-procurement', [
+            @include('components.action-in-detail-restock.action-procurement', [
                 'params' => $request_code,
                 'status' => $status,
             ])

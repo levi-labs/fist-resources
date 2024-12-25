@@ -40,22 +40,29 @@ class ProposeInventoryController extends Controller
 
         $sanitize = handleSanitize(request()->input('search', ''));
         if ($sanitize) {
-            $title = 'Propose Inventory List';
+
             $proposes = $this->proposeRequestService->searchProposeRequest($sanitize);
-            switch ($proposes->status) {
+
+            $check = ProposedRequest::where('request_code', $proposes[0]->request_code)->first();
+            switch ($check->status) {
                 case 'pending':
+                    $title = 'Propose Inventory List';
                     return view('pages.propose_inventory.index', compact('title', 'proposes'));
                     break;
                 case 'approved':
+                    $title = 'Approved Propose Inventory List';
                     return view('pages.propose_inventory.approved', compact('title', 'proposes'));
                     break;
                 case 'resubmitted':
+                    $title = 'Resubmitted Propose Inventory List';
                     return view('pages.propose_inventory.resubmitted', compact('title', 'proposes'));
                     break;
                 case 'rejected':
+                    $title = 'Rejected Propose Inventory List';
                     return view('pages.propose_inventory.rejected', compact('title', 'proposes'));
                     break;
                 default:
+                    $title = 'Propose Inventory List';
                     return view('pages.propose_inventory.index', compact('title', 'proposes'));
                     break;
             }
@@ -76,6 +83,14 @@ class ProposeInventoryController extends Controller
         $title = 'Resubmitted Propose Inventory List';
         $proposes = $this->proposeRequestService->getAllProposeRequestResubmitted();
         return view('pages.propose_inventory.resubmitted', compact('title', 'proposes'));
+    }
+
+    public function rejected()
+    {
+        session()->forget('cart');
+        $title = 'Rejected Propose Inventory List';
+        $proposes = $this->proposeRequestService->getAllProposeRequestRejected();
+        return view('pages.propose_inventory.rejected', compact('title', 'proposes'));
     }
 
 
@@ -133,6 +148,22 @@ class ProposeInventoryController extends Controller
         } catch (\Throwable $th) {
             session()->flash('error', $th->getMessage());
             return back()->with('error', $th->getMessage());
+        }
+    }
+    public function reject(Request $request, $request_code)
+    {
+        // dd($request, $request_code);
+        try {
+            $this->proposeRequestService->reject($request_code, $request->reason);
+
+            // session()->flash('success', 'Restock inventory request, rejected successfully!');
+
+            // return response()->json(['success' => 'Restock inventory request, rejected successfully!'], 201);
+            return redirect()->route('propose.inventory.rejected')->with('success', 'Propose inventory request, rejected successfully!');
+        } catch (\Throwable $error) {
+            // session()->flash('error', $error->getMessage());
+            // return response()->json(['error' => $error->getMessage()], 500);
+            return redirect()->back()->with('error', $error->getMessage());
         }
     }
     /**

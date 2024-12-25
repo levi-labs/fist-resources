@@ -23,7 +23,7 @@
                             <h4 class="card-title">{{ $title }}</h4>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('propose.inventory.search') }}" method="POST">
+                            <form action="{{ route('restock.inventory.search') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"
@@ -47,7 +47,7 @@
                     </div>
                     <div class="row p-4">
                         <div class="col-sm-12">
-                            <a href="{{ route('propose.inventory.create') }}" class="btn btn-primary btn-sm">Add
+                            <a href="{{ route('restock.inventory.create') }}" class="btn btn-primary btn-sm">Add
                                 New</a>
                         </div>
                     </div>
@@ -63,22 +63,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($proposes as $propose)
+                                    @forelse ($restocks as $restock)
                                         <tr>
                                             {{-- <td class="text-center"><img
                                                     class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
                                                     src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $propose->request_code }}</td>
+                                            <td>{{ $restock->request_code }}</td>
                                             <td>
-                                                @if (auth('web')->user()->role == 'staff' || auth('web')->user()->role == 'admin')
-                                                    @include('components.action-in-index-propose-request.action-staff')
+                                                @if (auth('web')->user()->role == 'staff')
+                                                    @include('components.action-in-index-restock-request.action-staff')
                                                 @endif
                                                 @if (auth('web')->user()->role == 'procurement')
                                                     @include(
-                                                        'components.action-in-index-propose-request.action-procurement',
+                                                        'components.action-in-index-restock-request.action-procurement',
                                                         [
-                                                            'params' => $propose->request_code,
+                                                            'params' => $restock->request_code,
                                                         ]
                                                     )
                                                 @endif

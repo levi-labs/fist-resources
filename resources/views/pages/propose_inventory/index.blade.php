@@ -23,7 +23,7 @@
                             <h4 class="card-title">{{ $title }}</h4>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('restock.inventory.search') }}" method="POST">
+                            <form action="{{ route('propose.inventory.search') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"

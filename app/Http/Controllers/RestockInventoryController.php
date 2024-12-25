@@ -65,14 +65,37 @@ class RestockInventoryController extends Controller
 
         $sanitize = handleSanitize(request()->input('search', ''));
 
-        if ($sanitize) {
-            $title = 'Restock Inventory List';
+        if ($sanitize || $sanitize !== '') {
+            // $title = 'Restock Inventory List';
             $restocks = $this->restockInventoryService->searchRestockInventory($sanitize);
-            return view('pages.restock_inventory.index', compact('title', 'restocks'));
+            $check = RestockInventory::where('request_code', $sanitize)->first();
+            switch ($check->status) {
+                case 'pending':
+                    $title = 'Restock Inventory List';
+                    return view('pages.restock_inventory.index', compact('title', 'restocks'));
+                    break;
+                case 'approved':
+                    $title = 'Approved Restock Inventory List';
+                    return view('pages.restock_inventory.approved', compact('title', 'restocks'));
+                    break;
+                case 'resubmitted':
+                    $title = 'Resubmited Restock Inventory List';
+                    return view('pages.restock_inventory.resubmited', compact('title', 'restocks'));
+                    break;
+                case 'rejected':
+                    $title = 'Rejected Restock Inventory List';
+                    return view('pages.restock_inventory.rejected', compact('title', 'restocks'));
+                    break;
+                default:
+                    $title = 'Restock Inventory List';
+                    return view('pages.restock_inventory.index', compact('title', 'restocks'));
+            }
+            // return view('pages.restock_inventory.index', compact('title', 'restocks'));
         } else {
             return redirect()->route('restock.inventory.index');
         }
     }
+    public function searchEdit() {}
 
     public function addItem($id)
     {
@@ -170,65 +193,7 @@ class RestockInventoryController extends Controller
         }
     }
 
-    public function approve(RestockPurchaseOrderService $restockPurchaseOrderService, Request $request, $request_code)
-    {
 
-        $validate = Validator::make($request->all(), [
-            'delivery_date' => 'required',
-            'supplier' => 'required',
-            'reason' => 'nullable',
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json(['error' => $validate->errors()->toArray()], 422);
-        }
-        try {
-            DB::transaction(function () use ($restockPurchaseOrderService, $request, $request_code) {
-                $this->restockInventoryService->approve($request_code, $request->reason);
-                $restockPurchaseOrderService->create(
-                    $request_code,
-                    $request->supplier,
-                    $request->delivery_date
-                );
-            });
-            session()->flash('success', 'Restock inventory request, approved successfully!');
-
-            // return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
-            return response()->json(['success' => 'Restock inventory request, approved successfully!'], 201);
-        } catch (\Throwable $th) {
-            // return redirect()->back()->with('error', $th->getMessage());
-            session()->flash('error', $th->getMessage());
-            return response()->json(['error' => $th->getMessage()], 500);
-        }
-    }
-
-    public function resubmit(Request $request, $request_code)
-    {
-        try {
-            $this->restockInventoryService->resubmit($request_code);
-
-            session()->flash('success', 'Restock inventory request, resubmitted successfully!');
-
-            return response()->json(['success' => 'Restock inventory request, resubmitted successfully!'], 201);
-        } catch (\Throwable $error) {
-            session()->flash('error', $error->getMessage());
-            return response()->json(['error' => $error->getMessage()], 500);
-        }
-    }
-
-    public function reject(Request $request, $request_code)
-    {
-        try {
-            $this->restockInventoryService->reject($request_code, $request->reason);
-
-            session()->flash('success', 'Restock inventory request, rejected successfully!');
-
-            return response()->json(['success' => 'Restock inventory request, rejected successfully!'], 201);
-        } catch (\Throwable $error) {
-            session()->flash('error', $error->getMessage());
-            return response()->json(['error' => $error->getMessage()], 500);
-        }
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -265,11 +230,20 @@ class RestockInventoryController extends Controller
     public function edit($request_code)
     {
         $title = 'Edit Restock Inventory';
-        $products = $this->productService->getAllProducts(10);
+        // $products = $this->productService->getAllProducts(10);
         $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
-        $cart = session()->get('cart', []);
-        // dd($restocks);
-        foreach ($restocks as $key => $value) {
+
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $products = $this->productService->searchProducts($sanitize);
+            return view('pages.restock_inventory.edit', compact('title', 'restocks', 'products'));
+        } else {
+            $products = $this->productService->getAllProducts(10);
+            return view('pages.restock_inventory.edit', compact('title', 'restocks', 'products'));
+        }
+        /** 
+         *$cart = session()->get('cart', []);
+         *foreach ($restocks as $key => $value) {
             $cart[$value->product_id] = [
                 'id' => $value->id,
                 'product_id' => $value->product_id,
@@ -279,10 +253,11 @@ class RestockInventoryController extends Controller
                 'price' => $value->product_price,
                 'request_code' => $value->request_code
             ];
-        }
-
+         *}
         session()->put('cart', $cart);
-        return view('pages.restock_inventory.edit', compact('title', 'restocks', 'products'));
+         */
+
+        // return view('pages.restock_inventory.edit', compact('title', 'restocks', 'products'));
     }
 
     /**
@@ -376,6 +351,68 @@ class RestockInventoryController extends Controller
         }
     }
 
+    public function approve(RestockPurchaseOrderService $restockPurchaseOrderService, Request $request, $request_code)
+    {
+
+        $validate = Validator::make($request->all(), [
+            'delivery_date' => 'required',
+            'supplier' => 'required',
+            'reason' => 'nullable',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->errors()->toArray()], 422);
+        }
+        try {
+            DB::transaction(function () use ($restockPurchaseOrderService, $request, $request_code) {
+                $this->restockInventoryService->approve($request_code, $request->reason);
+                $restockPurchaseOrderService->create(
+                    $request_code,
+                    $request->supplier,
+                    $request->delivery_date
+                );
+            });
+            session()->flash('success', 'Restock inventory request, approved successfully!');
+
+            // return redirect()->route('restock.inventory.index')->with('success', 'Restock inventory request, approved successfully!');
+            return response()->json(['success' => 'Restock inventory request, approved successfully!'], 201);
+        } catch (\Throwable $th) {
+            // return redirect()->back()->with('error', $th->getMessage());
+            session()->flash('error', $th->getMessage());
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function resubmit(Request $request, $request_code)
+    {
+        try {
+            $this->restockInventoryService->resubmit($request_code);
+
+            session()->flash('success', 'Restock inventory request, resubmitted successfully!');
+
+            return response()->json(['success' => 'Restock inventory request, resubmitted successfully!'], 201);
+        } catch (\Throwable $error) {
+            session()->flash('error', $error->getMessage());
+            return response()->json(['error' => $error->getMessage()], 500);
+        }
+    }
+
+    public function reject(Request $request, $request_code)
+    {
+        // dd($request, $request_code);
+        try {
+            $this->restockInventoryService->reject($request_code, $request->reason);
+
+            // session()->flash('success', 'Restock inventory request, rejected successfully!');
+
+            // return response()->json(['success' => 'Restock inventory request, rejected successfully!'], 201);
+            return redirect()->route('restock.inventory.rejected')->with('success', 'Restock inventory request, rejected successfully!');
+        } catch (\Throwable $error) {
+            // session()->flash('error', $error->getMessage());
+            // return response()->json(['error' => $error->getMessage()], 500);
+            return redirect()->back()->with('error', $error->getMessage());
+        }
+    }
     public function print($request_code)
     {
         $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);

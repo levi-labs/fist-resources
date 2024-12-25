@@ -45,7 +45,7 @@ class ProposePurchaseOrderService
                     'invoice_number' => $invoice,
                     'order_date' => date('Y-m-d'),
                     'delivery_date' => $delivery_date,
-                    'status' => 'approved',
+                    'status' => 'awaiting shipment',
                     'total_price' => $propose_inventory->sum('total_price'),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
