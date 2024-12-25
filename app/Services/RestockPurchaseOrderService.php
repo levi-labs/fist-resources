@@ -69,4 +69,51 @@ class RestockPurchaseOrderService
             throw $error;
         }
     }
+
+    public function getAllRestockPurchaseOrder()
+    {
+        return RestockPurchaseOrder::all();
+    }
+    public function getRestockPurchaseOrderById($id)
+    {
+        return RestockPurchaseOrder::find($id);
+    }
+    public function getRestockPurchaseOrderDetailById($id)
+    {
+        return RestockPurchaseOrderDetail::where('restock_purchase_order_id', $id)
+            ->join('restock_purchase_orders', 'restock_purchase_orders.id', '=', 'restock_purchase_order_details.restock_purchase_order_id')
+            ->join('users as staff', 'staff.id', '=', 'restock_purchase_orders.staff_id')
+            ->join('users as procument', 'procument.id', '=', 'restock_purchase_orders.procurement_id')
+            ->join('suppliers', 'suppliers.id', '=', 'restock_purchase_orders.supplier_id')
+            ->join('products', 'products.id', '=', 'restock_purchase_order_details.product_id')
+            ->select(
+                'restock_purchase_orders.id as restock_purchase_order_id',
+                'staff.name as staff_name',
+                'procument.name as procurement_name',
+                'restock_purchase_orders.order_date',
+                'restock_purchase_orders.delivery_date',
+                'restock_purchase_orders.total_price',
+                'restock_purchase_orders.status',
+                'restock_purchase_orders.invoice_number',
+                'restock_purchase_orders.request_code',
+                'suppliers.name as supplier_name',
+                'suppliers.address as supplier_address',
+                'restock_purchase_order_details.quantity as quantity',
+                'restock_purchase_order_details.price as product_price',
+                'products.name as product_name',
+                'products.sku as product_sku'
+
+            )
+            ->get();
+    }
+
+    public function updateStatus($id, $status)
+    {
+        try {
+            $order = RestockPurchaseOrder::where('id', $id)->first();
+            return RestockPurchaseOrder::where('request_code', $order->request_code)->update(['status' => $status]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

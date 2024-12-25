@@ -143,4 +143,23 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/delete-item/{id}', 'removeItem')->name('propose.inventory.deleteItem');
             Route::get('/update-delete-item/{id}', 'removeUpdateItem')->name('propose.inventory.deleteItemDetail');
         });
+    Route::controller(App\Http\Controllers\PurchaseRestockController::class)
+        ->prefix('restock-purchase-order')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('restock.purchase.index');
+            Route::post('/', 'index')->name('restock.purchase.search');
+            Route::get('/show/{id}', 'show')->name('restock.purchase.show');
+            Route::get('/create', 'create')->name('restock.purchase.create');
+            Route::post('/create', 'store')->name('restock.purchase.store');
+            Route::get('/edit/{id}', 'edit')->name('restock.purchase.edit');
+            Route::put('/update/{id}', 'update')->name('restock.purchase.update');
+            Route::get('/delete/{id}', 'destroy')->name('restock.purchase.destroy');
+        });
+    Route::controller(App\Http\Controllers\ShipmentController::class)
+        ->prefix('shipment')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::post('/create', 'store')->name('shipment.store');
+        });
 });
