@@ -153,7 +153,9 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/create', 'create')->name('restock.purchase.create');
             Route::post('/create', 'store')->name('restock.purchase.store');
             Route::get('/shipped', 'shipped')->name('restock.purchase.shipped');
+            Route::post('/shipped', 'shipped')->name('restock.purchase.shippedsearch');
             Route::get('/delivered', 'delivered')->name('restock.purchase.delivered');
+            Route::post('/delivered', 'delivered')->name('restock.purchase.deliveredsearch');
             Route::get('/print/{id}', 'print')->name('restock.purchase.print');
         });
     Route::controller(App\Http\Controllers\PurchaseProposeController::class)

@@ -29,18 +29,18 @@
                             <div class="row">
                                 <div class="col-md-12 mt-2">
                                     <a href="{{ route('restock.purchase.index') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.index') ? 'my-active' : '' }}">Awaiting
+                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.index*') ? 'my-active' : '' }}">Awaiting
                                         Shipment</a>
                                     <a href="{{ route('restock.purchase.shipped') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.shipped') ? 'my-active' : '' }}">Shipped</a>
+                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.shipped*') ? 'my-active' : '' }}">Shipped</a>
                                     <a href="{{ route('restock.purchase.delivered') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.delivered') ? 'my-active' : '' }}">Delivered</a>
+                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.delivered*') ? 'my-active' : '' }}">Delivered</a>
                                     {{-- <a href="#" class="btn btn-primary btn-sm">Rejected</a> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('restock.purchase.search') }}" method="POST">
+                            <form action="{{ route('restock.purchase.shippedsearch') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"

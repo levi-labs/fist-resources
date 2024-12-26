@@ -70,6 +70,17 @@ class RestockPurchaseOrderService
         }
     }
 
+    public function search($search, $status)
+    {
+        try {
+            $purchase = RestockPurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
+                ->where('status', $status)
+                ->paginate(10);
+            return $purchase;
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
     public function getAllRestockPurchaseOrder()
     {
         return RestockPurchaseOrder::where('status', 'awaiting shipment')->paginate(10);

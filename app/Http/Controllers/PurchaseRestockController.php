@@ -16,23 +16,41 @@ class PurchaseRestockController extends Controller
     }
     public function index()
     {
-        $title = 'Purchase Restock List';
-        $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrder();
-        return view('pages.purchases.restock.index', compact('title', 'data'));
+        $title = 'Purchase Restock Awaiting Shipment';
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $data  = $this->restockPurchaseOrderService->search($sanitize, 'awaiting shipment');
+            return view('pages.purchases.restock.index', compact('title', 'data'));
+        } else {
+            $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrder();
+            return view('pages.purchases.restock.index', compact('title', 'data'));
+        }
     }
 
     public function shipped()
     {
         $title = 'Purchase Restock Shipped';
-        $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderShipped();
-        return view('pages.purchases.restock.shipped', compact('title', 'data'));
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $data  = $this->restockPurchaseOrderService->search($sanitize, 'shipped');
+            return view('pages.purchases.restock.shipped', compact('title', 'data'));
+        } else {
+            $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderShipped();
+            return view('pages.purchases.restock.shipped', compact('title', 'data'));
+        }
     }
 
     public function delivered()
     {
         $title = 'Purchase Restock Delivered';
-        $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderDelivered();
-        return view('pages.purchases.restock.delivered', compact('title', 'data'));
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $data  = $this->restockPurchaseOrderService->search($sanitize, 'delivered');
+            return view('pages.purchases.restock.delivered', compact('title', 'data'));
+        } else {
+            $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderDelivered();
+            return view('pages.purchases.restock.delivered', compact('title', 'data'));
+        }
     }
 
     public function show($id)
