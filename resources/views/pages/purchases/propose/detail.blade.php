@@ -57,8 +57,8 @@
                                 {{-- <a href="{{ route('restock.inventory.destroy', $request_code) }}"
                                     class="btn btn-danger btn-sm mt-4">Delete</a> --}}
                             @endif
-                            {{-- <a href="{{ route('restock.inventory.print', $request_code) }}"
-                                class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a> --}}
+                            <a href="{{ route('propose.purchase.print', $purchases[0]->propose_purchase_order_id) }}"
+                                class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a>
                             {{-- @endif --}}
                         </div>
                     </div>

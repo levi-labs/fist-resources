@@ -171,7 +171,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::post('/shipped', 'shipped')->name('propose.purchase.shippedsearch');
             Route::get('/delivered', 'delivered')->name('propose.purchase.delivered');
             Route::post('/delivered', 'delivered')->name('propose.purchase.deliveredsearch');
-            Route::get('/print/{request_code}', 'print')->name('propose.purchase.print');
+            Route::get('/print/{id}', 'print')->name('propose.purchase.print');
         });
     Route::controller(App\Http\Controllers\ShipmentController::class)
         ->prefix('shipment')

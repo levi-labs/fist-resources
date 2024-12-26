@@ -55,7 +55,13 @@ class PurchaseProposeController extends Controller
     {
         $title = 'Purchase Propose Detail';
         $purchases  = $this->proposedPurchaseOrderService->getProposePurchaseOrderDetailById($id);
-        // dd($purchases);
         return view('pages.purchases.propose.detail', compact('title', 'purchases'));
+    }
+
+    public function print($id)
+    {
+        $title = 'Purchase Propose';
+        $purchases  = $this->proposedPurchaseOrderService->getProposePurchaseOrderDetailById($id);
+        return view('pages.purchases.propose.print', compact('title', 'purchases'));
     }
 }
