@@ -573,7 +573,8 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-purchase" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ route('restock.purchase.index') }}">
+                            <a class="nav-link {{ request()->routeIs('restock.purchase.index') ? 'active' : '' }}"
+                                href="{{ route('restock.purchase.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -588,7 +589,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/widget/widgetchart.html">
+                            <a class="nav-link {{ request()->routeIs('propose.purchase.index') ? 'active' : '' }}"
+                                href="{{ route('propose.purchase.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">

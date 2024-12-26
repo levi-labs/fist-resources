@@ -21,6 +21,20 @@ class PurchaseRestockController extends Controller
         return view('pages.purchases.restock.index', compact('title', 'data'));
     }
 
+    public function shipped()
+    {
+        $title = 'Purchase Restock Shipped';
+        $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderShipped();
+        return view('pages.purchases.restock.shipped', compact('title', 'data'));
+    }
+
+    public function delivered()
+    {
+        $title = 'Purchase Restock Delivered';
+        $data  = $this->restockPurchaseOrderService->getAllRestockPurchaseOrderDelivered();
+        return view('pages.purchases.restock.delivered', compact('title', 'data'));
+    }
+
     public function show($id)
     {
         $title = 'Purchase Restock Detail';

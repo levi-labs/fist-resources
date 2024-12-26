@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('courier', 60);
             $table->string('tracking_number', 100)->nullable();
             $table->date('shipment_date');
-            $table->date('delivery_date');
             $table->enum('status', [
                 'awaiting shipment',
                 'shipped',

@@ -152,9 +152,21 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/show/{id}', 'show')->name('restock.purchase.show');
             Route::get('/create', 'create')->name('restock.purchase.create');
             Route::post('/create', 'store')->name('restock.purchase.store');
-            Route::get('/edit/{id}', 'edit')->name('restock.purchase.edit');
-            Route::put('/update/{id}', 'update')->name('restock.purchase.update');
-            Route::get('/delete/{id}', 'destroy')->name('restock.purchase.destroy');
+            Route::get('/shipped', 'shipped')->name('restock.purchase.shipped');
+            Route::get('/delivered', 'delivered')->name('restock.purchase.delivered');
+            Route::get('/print/{id}', 'print')->name('restock.purchase.print');
+        });
+    Route::controller(App\Http\Controllers\PurchaseProposeController::class)
+        ->prefix('propose-purchase-order')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('propose.purchase.index');
+            Route::post('/', 'index')->name('propose.purchase.search');
+            Route::get('/show/{request_code}', 'show')->name('propose.purchase.show');
+            Route::get('/create', 'create')->name('propose.purchase.create');
+            Route::post('/create', 'store')->name('propose.purchase.store');
+            Route::get('/reject/{id}', 'reject')->name('propose.purchase.reject');
+            Route::get('/rejected', 'rejected')->name('propose.purchase.rejected');
         });
     Route::controller(App\Http\Controllers\ShipmentController::class)
         ->prefix('shipment')

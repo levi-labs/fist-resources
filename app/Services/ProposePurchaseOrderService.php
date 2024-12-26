@@ -12,6 +12,43 @@ use Illuminate\Support\Str;
 class ProposePurchaseOrderService
 {
 
+    public function getAllProposePurchaseOrder()
+    {
+        return ProposePurchaseOrder::paginate(10);
+    }
+    public function getProposePurchaseOrderById($id)
+    {
+        return ProposePurchaseOrder::find($id);
+    }
+    public function getProposePurchaseOrderDetailById($id)
+    {
+        return ProposePurchaseOrderDetail::where('proposed_order_id', $id)
+            ->join('proposed_product_purchase_orders as propose_purchase_orders', 'propose_purchase_orders.id', '=', 'proposed_product_purchase_order_details.proposed_order_id')
+            ->join('users as staff', 'staff.id', '=', 'propose_purchase_orders.staff_id')
+            ->join('users as procurement', 'procurement.id', '=', 'propose_purchase_orders.procurement_id')
+            ->join('suppliers', 'suppliers.id', '=', 'propose_purchase_orders.supplier_id')
+            ->join('proposed_products as products', 'products.id', '=', 'proposed_product_purchase_order_details.proposed_product_id')
+            ->select(
+                'propose_purchase_orders.id as propose_purchase_order_id',
+                'staff.name as staff_name',
+                'procurement.name as procurement_name',
+                'propose_purchase_orders.order_date',
+                'propose_purchase_orders.delivery_date',
+                'propose_purchase_orders.total_price',
+                'propose_purchase_orders.status',
+                'propose_purchase_orders.invoice_number',
+                'propose_purchase_orders.request_code',
+                'suppliers.name as supplier_name',
+                'suppliers.address as supplier_address',
+                'proposed_product_purchase_order_details.quantity as quantity',
+                'proposed_product_purchase_order_details.price as product_price',
+                'products.name as product_name',
+                'products.sku as product_sku'
+
+            )
+            ->get();
+    }
+
     public function create($request_Code, $supplier, $delivery_date = null)
     {
         // dd($request_Code, $supplier, $delivery_date);
@@ -73,6 +110,15 @@ class ProposePurchaseOrderService
             });
         } catch (\Throwable $error) {
             throw $error;
+        }
+    }
+    public function updateStatus($id, $status)
+    {
+        try {
+            $order = ProposePurchaseOrder::where('id', $id)->first();
+            return ProposePurchaseOrder::where('request_code', $order->request_code)->update(['status' => $status]);
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

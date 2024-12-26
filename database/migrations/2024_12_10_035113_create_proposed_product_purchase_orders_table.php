@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigInteger('supplier_id')->unsigned();
             $table->bigInteger('staff_id')->unsigned();
             $table->bigInteger('procurement_id')->unsigned();
+            $table->string('request_code', 40);
+            $table->string('invoice_number', 40)->unique()->nullable();
             $table->date('order_date');
             $table->date('delivery_date');
             $table->enum('status', [

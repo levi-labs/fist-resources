@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProposePurchaseOrder;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 use App\Services\RestockPurchaseOrderService;
 use App\Services\ShipmentService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Services\ProposePurchaseOrderService;
 
 class ShipmentController extends Controller
 {
     protected $restockPurchaseOrderService;
     protected $shipmentService;
+    protected $proposePurchaseOrderService;
 
     public function __construct(
+        ProposePurchaseOrderService $proposePurchaseOrderService,
         RestockPurchaseOrderService $restockPurchaseOrderService,
         ShipmentService $shipmentService
     ) {
+        $this->proposePurchaseOrderService = $proposePurchaseOrderService;
         $this->restockPurchaseOrderService = $restockPurchaseOrderService;
         $this->shipmentService = $shipmentService;
     }
     public function store(Request $request)
     {
+
         $validate = Validator::make($request->all(), [
             'shipment_date' => 'required',
             'courier' => 'required',
@@ -35,21 +41,43 @@ class ShipmentController extends Controller
         }
         $data = [
             'shipment_date' => $request->shipment_date,
-            'delivery_date' => $request->delivery_date ?? null,
             'courier' => $request->courier,
             'tracking_number' => $request->tracking_number,
             'notes' => $request->notes ?? null,
-            'restock_purchase_order_id' => $request->id,
             'status' => 'shipped',
         ];
-        // dd($data);
+
+        if ($request->type == 'restock') {
+            $data['restock_purchase_order_id'] = $request->id;
+        } else if ($request->type == 'propose') {
+            $data['proposed_product_purchase_order_id'] = $request->id;
+        }
         try {
             DB::transaction(function () use ($data, $request) {
+
                 $this->shipmentService->create($data);
-                $this->restockPurchaseOrderService->updateStatus($request->id, 'shipped');
+                if ($request->type == 'restock') {
+                    $this->restockPurchaseOrderService->updateStatus($request->id, 'shipped');
+                }
+                if ($request->type == 'propose') {
+                    $this->proposePurchaseOrderService->updateStatus($request->id, 'shipped');
+                }
             });
 
             return response()->json(['success' => true, 'message' => 'Shipment created successfully!'], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            DB::transaction(function () use ($id) {
+                $this->shipmentService->reject($id);
+            });
+
+            return response()->json(['success' => true, 'message' => 'Shipment rejected successfully!'], 201);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

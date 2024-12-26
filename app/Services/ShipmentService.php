@@ -15,4 +15,12 @@ class ShipmentService
             throw $th;
         }
     }
+    public function reject($id)
+    {
+        try {
+            Shipment::where('id', $id)->update(['status' => 'rejected']);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

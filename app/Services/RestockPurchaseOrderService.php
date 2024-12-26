@@ -72,7 +72,15 @@ class RestockPurchaseOrderService
 
     public function getAllRestockPurchaseOrder()
     {
-        return RestockPurchaseOrder::all();
+        return RestockPurchaseOrder::where('status', 'awaiting shipment')->paginate(10);
+    }
+    public function getAllRestockPurchaseOrderShipped()
+    {
+        return RestockPurchaseOrder::where('status', 'shipped')->paginate(10);
+    }
+    public function getAllRestockPurchaseOrderDelivered()
+    {
+        return RestockPurchaseOrder::where('status', 'delivered')->paginate(10);
     }
     public function getRestockPurchaseOrderById($id)
     {

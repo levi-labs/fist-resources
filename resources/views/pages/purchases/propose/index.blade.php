@@ -1,10 +1,5 @@
 @extends('layouts.main.master')
-<style>
-    .my-active {
-        background-color: #001F4D !important;
-        color: #ffffff !important;
-    }
-</style>
+
 @section('content')
     <div class="container-fluid content-inner mt-n5 py-0">
         <div class="row">
@@ -26,18 +21,6 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="header-title">
                             <h4 class="card-title">{{ $title }}</h4>
-                            <div class="row">
-                                <div class="col-md-12 mt-2">
-                                    <a href="{{ route('restock.purchase.index') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.index') ? 'my-active' : '' }}">Awaiting
-                                        Shipment</a>
-                                    <a href="{{ route('restock.purchase.shipped') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.shipped') ? 'my-active' : '' }}">Shipped</a>
-                                    <a href="{{ route('restock.purchase.delivered') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('restock.purchase.delivered') ? 'my-active' : '' }}">Delivered</a>
-                                    {{-- <a href="#" class="btn btn-primary btn-sm">Rejected</a> --}}
-                                </div>
-                            </div>
                         </div>
                         <div class="float-end">
                             <form action="{{ route('restock.purchase.search') }}" method="POST">
@@ -81,6 +64,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     @forelse ($data as $dt)
                                         <tr>
                                             {{-- <td class="text-center"><img
@@ -93,7 +77,7 @@
                                                 <div class="flex align-items-center list-user-action">
                                                     <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
-                                                        href="{{ route('restock.purchase.show', $dt->id) }}"
+                                                        href="{{ route('propose.purchase.show', $dt->id) }}"
                                                         aria-label="Detail" data-bs-original-title="Detail">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
@@ -120,7 +104,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center">No Data Found</td>
+                                            <td colspan="3" class="text-center">No Data Found</td>
                                         </tr>
                                     @endforelse
 

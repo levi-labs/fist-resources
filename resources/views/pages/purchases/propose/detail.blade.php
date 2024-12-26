@@ -20,7 +20,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="header-title">
                             @php
-                                $type = 'restock';
+                                $type = 'propose';
                                 $request_code = $purchases[0]->request_code;
                                 $status = $purchases[0]->status;
                                 $order_date = $purchases[0]->order_date;
@@ -50,15 +50,15 @@
                         <div class="float-end">
                             {{-- @if ($status == 'pending') --}}
                             @if ($status == 'pending' || $status == 'resubmitted')
-                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
-                                    class="btn btn-danger btn-sm mt-4">Delete</a>
+                                {{-- <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                    class="btn btn-danger btn-sm mt-4">Delete</a> --}}
                             @endif
                             @if ($status == 'approved' && auth('web')->user()->role == 'admin')
-                                <a href="{{ route('restock.inventory.destroy', $request_code) }}"
-                                    class="btn btn-danger btn-sm mt-4">Delete</a>
+                                {{-- <a href="{{ route('restock.inventory.destroy', $request_code) }}"
+                                    class="btn btn-danger btn-sm mt-4">Delete</a> --}}
                             @endif
-                            <a href="{{ route('restock.inventory.print', $request_code) }}"
-                                class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a>
+                            {{-- <a href="{{ route('restock.inventory.print', $request_code) }}"
+                                class="btn btn-secondary btn-sm mt-4" target="_blank">Print</a> --}}
                             {{-- @endif --}}
                         </div>
                     </div>
@@ -158,26 +158,18 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12 text-end">
-
                 @if ($status === 'pending' || $status === 'awaiting shipment')
                     <button type="button" class="btn btn-md btn-icon btn-primary" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         Process
                     </button>
                 @endif
-                {{-- <a href="{{ route('restock.inventory.approve', $params) }}" data-bs-toggle="tooltip" data-bs-placement="top"
-                    data-bs-original-title="Approve" aria-label="Approve" class="btn btn-md btn-icon btn-info">Approve</a> --}}
-                {{-- @if ($status !== 'rejected')
-                    <a href="{{ route('restock.inventory.rejectedetail', $params) }}" data-bs-toggle="tooltip"
-                        data-bs-placement="top" data-bs-original-title="Reject" aria-label="Reject"
-                        class="btn btn-md btn-icon btn-danger">Reject</a>
-                @endif --}}
             </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         @include('components.modal-procurement.shipment-restock', [
-            'id' => $purchases[0]->restock_purchase_order_id,
+            'id' => $purchases[0]->propose_purchase_order_id,
             'type' => $type,
         ])
     </div>

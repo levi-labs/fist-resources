@@ -8,6 +8,8 @@
             <form id="shipment-form" action="{{ route('shipment.store') }}" method="POST">
                 <div class="modal-body">
                     @csrf
+                    <input type="hidden" class="form-control" id="type" name="type"
+                        value="{{ $type }}">
                     <input type="hidden" class="form-control" id="id" name="id"
                         value="{{ $id }}">
                     <div class="mb-3">
@@ -44,7 +46,8 @@
         console.log('Selamat datang jquery shipment!');
         $('#shipment-form').submit(function(e) {
             e.preventDefault();
-            console.log('no refresh');
+
+            var type_shipment = $('#type').val();
             var id = $('#id').val();
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             var shipment_date = $('#shipment_date').val();
@@ -62,6 +65,7 @@
                 url: $('#shipment-form').attr('action'),
                 data: {
                     "id": id,
+                    "type": type_shipment,
                     "shipment_date": shipment_date,
                     "notes": notes,
                     "tracking_number": tracking_number,
