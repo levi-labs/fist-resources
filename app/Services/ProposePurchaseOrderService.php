@@ -14,7 +14,27 @@ class ProposePurchaseOrderService
 
     public function getAllProposePurchaseOrder()
     {
-        return ProposePurchaseOrder::paginate(10);
+        return ProposePurchaseOrder::where('status', 'awaiting shipment')->paginate(10);
+    }
+    public function getAllProposePurchaseOrderDelivered()
+    {
+        return ProposePurchaseOrder::where('status', 'delivered')->paginate(10);
+    }
+    public function getAllProposePurchaseOrderShipped()
+    {
+        return ProposePurchaseOrder::where('status', 'shipped')->paginate(10);
+    }
+
+    public function search($search, $status)
+    {
+        try {
+            $purchase = ProposePurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
+                ->where('status', $status)
+                ->paginate(10);
+            return $purchase;
+        } catch (\Throwable $error) {
+            throw $error;
+        }
     }
     public function getProposePurchaseOrderById($id)
     {

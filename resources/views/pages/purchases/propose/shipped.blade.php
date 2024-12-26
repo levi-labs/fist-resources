@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('propose.purchase.search') }}" method="POST">
+                            <form action="{{ route('restock.purchase.shippedsearch') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"
@@ -81,7 +81,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @forelse ($data as $dt)
                                         <tr>
                                             {{-- <td class="text-center"><img
@@ -94,7 +93,7 @@
                                                 <div class="flex align-items-center list-user-action">
                                                     <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
-                                                        href="{{ route('propose.purchase.show', $dt->id) }}"
+                                                        href="{{ route('restock.purchase.show', $dt->id) }}"
                                                         aria-label="Detail" data-bs-original-title="Detail">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
@@ -121,7 +120,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="3" class="text-center">No Data Found</td>
+                                            <td colspan="4" class="text-center">No Data Found</td>
                                         </tr>
                                     @endforelse
 
