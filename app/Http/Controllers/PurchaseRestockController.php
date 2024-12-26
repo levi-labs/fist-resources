@@ -60,4 +60,10 @@ class PurchaseRestockController extends Controller
         // dd($purchases);
         return view('pages.purchases.restock.detail', compact('title', 'purchases'));
     }
+    public function print($id)
+    {
+        $title = 'Purchase Restock';
+        $purchases  = $this->restockPurchaseOrderService->getRestockPurchaseOrderDetailById($id);
+        return view('pages.purchases.restock.print', compact('title', 'purchases'));
+    }
 }
