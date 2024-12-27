@@ -178,5 +178,13 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         ->middleware('role:admin,staff,procurement')
         ->group(function () {
             Route::post('/create', 'store')->name('shipment.store');
+            Route::get('/restock', 'restockShipped')->name('shipment.restockShipped');
+            Route::post('/restock', 'restockShipped')->name('shipment.restockShippedsearch');
+            Route::get('/restock-delivered', 'restockDelivered')->name('shipment.restockDelivered');
+            Route::post('/restockdelivered', 'restockDelivered')->name('shipment.restockDeliveredsearch');
+            Route::get('/propose', 'proposeShipped')->name('shipment.proposeShipped');
+            Route::post('/propose', 'proposeShipped')->name('shipment.proposeShippedsearch');
+            Route::get('/propose/delivered', 'proposeDelivered')->name('shipment.proposeDelivered');
+            Route::post('/propose/delivered', 'proposeDelivered')->name('shipment.proposeDeliveredsearch');
         });
 });

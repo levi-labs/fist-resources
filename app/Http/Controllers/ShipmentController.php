@@ -82,4 +82,53 @@ class ShipmentController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function restockShipped()
+    {
+        $title = 'Shipment Restock Shipped';
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $shipments = $this->shipmentService->searchRestock($sanitize, 'shipped');
+            return view('pages.shipment.restock.restock', compact('title', 'shipments'));
+        } else {
+            $shipments = $this->shipmentService->getRestockShipmentShipped();
+            return view('pages.shipment.restock.restock', compact('title', 'shipments'));
+        }
+    }
+    public function restockDelivered()
+    {
+        $title = 'Shipment Restock Delivered';
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $shipments = $this->shipmentService->searchRestock($sanitize, 'delivered');
+            return view('pages.shipment.restock.delivered', compact('title', 'shipments'));
+        } else {
+            $shipments = $this->shipmentService->getRestockShipmentDelivered();
+            return view('pages.shipment.restock.delivered', compact('title', 'shipments'));
+        }
+    }
+    public function proposeShipped()
+    {
+        $title = 'Shipment Propose Shipped';
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $shipments = $this->shipmentService->searchPropose($sanitize, 'shipped');
+            return view('pages.shipment.propose.propose', compact('title', 'shipments'));
+        } else {
+            $shipments = $this->shipmentService->getProposeShipmentShipped();
+            return view('pages.shipment.propose.propose', compact('title', 'shipments'));
+        }
+    }
+    public function proposeDelivered()
+    {
+        $title = 'Shipment Propose Delivered';
+        $sanitize = handleSanitize(request()->input('search', ''));
+        if ($sanitize) {
+            $shipments = $this->shipmentService->searchPropose($sanitize, 'delivered');
+            return view('pages.shipment.propose.delivered', compact('title', 'shipments'));
+        } else {
+            $shipments = $this->shipmentService->getProposeShipmentDelivered();
+            return view('pages.shipment.propose.delivered', compact('title', 'shipments'));
+        }
+    }
 }
