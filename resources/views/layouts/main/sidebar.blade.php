@@ -413,7 +413,7 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-purchase" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('restock.purchase.index') ? 'active' : '' }}"
+                            <a class="nav-link {{ (((request()->routeIs('restock.purchase.index') ? 'active' : '' || request()->routeIs('restock.purchase.search')) ? 'active' : '' || request()->routeIs('restock.purchase.shipped')) ? 'active' : '' || request()->routeIs('restock.purchase.delivered')) ? 'active' : '' }}"
                                 href="{{ route('restock.purchase.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
@@ -429,7 +429,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('propose.purchase.index') ? 'active' : '' }}"
+                            <a class="nav-link {{ (((request()->routeIs('propose.purchase.index') ? 'active' : '' || request()->routeIs('propose.purchase.search')) ? 'active' : '' || request()->routeIs('propose.purchase.shipped')) ? 'active' : '' || request()->routeIs('propose.purchase.delivered')) ? 'active' : '' }}"
                                 href="{{ route('propose.purchase.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
