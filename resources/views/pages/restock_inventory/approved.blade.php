@@ -46,10 +46,10 @@
                         </div>
                     </div>
                     <div class="row p-4">
-                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-12">
                             <a href="{{ route('restock.inventory.create') }}" class="btn btn-primary btn-sm">Add
                                 New</a>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body px-0">
                         <div class="table-responsive">
@@ -71,7 +71,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $restock->request_code }}</td>
                                             <td>
-                                                @if (auth('web')->user()->role == 'staff')
+                                                @if (auth('web')->user()->role == 'staff' || auth('web')->user()->role == 'admin')
                                                     @include('components.action-in-index-restock-request.action-staff')
                                                 @endif
                                                 @if (auth('web')->user()->role == 'procurement')

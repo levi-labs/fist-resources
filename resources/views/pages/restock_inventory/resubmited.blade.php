@@ -47,8 +47,8 @@
                     </div>
                     <div class="row p-4">
                         <div class="col-sm-12">
-                            <a href="{{ route('restock.inventory.create') }}" class="btn btn-primary btn-sm">Add
-                                New</a>
+                            {{-- <a href="{{ route('restock.inventory.create') }}" class="btn btn-primary btn-sm">Add
+                                New</a> --}}
                         </div>
                     </div>
                     <div class="card-body px-0">

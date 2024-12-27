@@ -17,7 +17,11 @@
             </svg>
         </span>
     </a>
-    @if (!request()->routeIs('propose.inventory.approved') && !request()->routeIs('propose.inventory.rejected'))
+    @php
+        $propose = \App\Models\ProposeInventory::where('request_code', $propose->request_code)->first();
+        $status = $propose->status;
+    @endphp
+    @if ($status !== 'approved' && $status !== 'rejected')
         <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top"
             data-original-title="Edit" href="{{ route('propose.inventory.edit', $propose->request_code) }}"
             aria-label="Edit" data-bs-original-title="Edit">
