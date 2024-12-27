@@ -68,7 +68,17 @@ class ProposeInventoryController extends Controller
             }
         }
     }
+    // public function searchProduct(Request $request){
 
+    //     $sanitize = handleSanitize(request()->input('search', ''));
+    //     if ($sanitize) {
+    //         $proposed_products = $this->proposedProductService->searchProposedProduct($sanitize);
+    //         return view('pages.propose_inventory.search_product', compact('proposed_products'));
+    //     }
+    //     else{
+
+    //     }
+    // }
     public function approved()
     {
         session()->forget('cart');
@@ -100,7 +110,13 @@ class ProposeInventoryController extends Controller
     public function create()
     {
         $title = 'Propose Inventory';
-        $propose_products = $this->proposeRequestService->getAllProposeNotInRequest();
+        $sanitize = handleSanitize(request()->input('search', ''));
+
+        if ($sanitize) {
+            $propose_products = $this->proposeRequestService->searchProduct($sanitize);
+        } else {
+            $propose_products = $this->proposeRequestService->getAllProposeNotInRequest();
+        }
         // dd($propose_products);
         return view('pages.propose_inventory.create', compact('title', 'propose_products'));
     }

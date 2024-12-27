@@ -47,8 +47,8 @@
                     </div>
                     <div class="row p-4">
                         <div class="col-sm-12">
-                            <a href="{{ route('propose.inventory.create') }}" class="btn btn-primary btn-sm">Add
-                                New</a>
+                            {{-- <a href="{{ route('propose.inventory.create') }}" class="btn btn-primary btn-sm">Add
+                                New</a> --}}
                         </div>
                     </div>
                     <div class="card-body px-0">
@@ -63,6 +63,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{-- @php
+                                        dd($proposes);
+                                    @endphp --}}
                                     @forelse ($proposes as $propose)
                                         <tr>
                                             {{-- <td class="text-center"><img

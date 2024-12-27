@@ -23,7 +23,7 @@
                             <h4 class="card-title">{{ $title }}</h4>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('restock.inventory.createsearch') }}" method="POST">
+                            <form action="{{ route('propose.inventory.createsearch') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"
@@ -47,7 +47,7 @@
                     </div>
                     <div class="row p-4">
                         <div class="col-sm-12">
-                            <a href="{{ route('restock.inventory.index') }}" class="btn btn-primary btn-sm">Back</a>
+                            <a href="{{ route('propose.inventory.index') }}" class="btn btn-primary btn-sm">Back</a>
                         </div>
                     </div>
                     <div class="card-body px-0">

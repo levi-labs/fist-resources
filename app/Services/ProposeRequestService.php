@@ -35,6 +35,19 @@ class ProposeRequestService
 
         return $propose_product;
     }
+    public function searchProduct($search)
+    {
+        $propose_product = DB::table('proposed_products')
+            ->where('name', 'like', '%' . $search . '%')
+            ->whereNotIn('id', function ($query) {
+                $query->select('proposed_product_id')
+                    ->from('proposed_inventory_requests');
+            })
+            ->where('status', 'unregistered')
+            ->paginate(10);
+
+        return $propose_product;
+    }
     public function getAllProposeProductEdit($request_code)
     {
         $propose_product = DB::table('proposed_products')

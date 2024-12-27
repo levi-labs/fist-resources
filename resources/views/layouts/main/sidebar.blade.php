@@ -235,7 +235,7 @@
                 </li>
                 {{-- Propose Products --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('propose.product.*') ? 'active' : '' }}"
+                    <a class="nav-link {{ (request()->routeIs('propose.product.*') ? 'active' : '' || request()->routeIs('propose.inventory.*')) ? 'active' : '' }}"
                         data-bs-toggle="collapse" href="#sidebar-auth" role="button" aria-expanded="false"
                         aria-controls="sidebar-user">
                         <i class="icon">
@@ -258,10 +258,10 @@
                             </svg>
                         </i>
                     </a>
-                    <ul class="sub-nav collapse {{ request()->routeIs('propose.product.*') ? 'show' : '' }}"
+                    <ul class="sub-nav collapse {{ (request()->routeIs('propose.product.*') ? 'show' : '' || request()->routeIs('propose.inventory.*')) ? 'show' : '' }}"
                         id="sidebar-auth" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('propose.product.index') ? 'active' : '' }}"
+                            <a class="nav-link {{ (request()->routeIs('propose.product.index') ? 'active' : '' || request()->routeIs('propose.product.search')) ? 'active' : '' }}"
                                 href="{{ route('propose.product.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"

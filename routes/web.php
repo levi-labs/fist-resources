@@ -125,7 +125,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/create', 'create')->name('propose.inventory.create');
             Route::post('/create', 'create')->name('propose.inventory.createsearch');
             Route::get('/show/{request_code}', 'show')->name('propose.inventory.show');
-            Route::post('/create', 'store')->name('propose.inventory.store');
+            Route::post('/store', 'store')->name('propose.inventory.store');
             Route::get('/edit/{request_code}', 'edit')->name('propose.inventory.edit');
             Route::put('/update/{request_code}', 'update')->name('propose.inventory.update');
             Route::get('/delete/{id}', 'destroy')->name('propose.inventory.destroy');
