@@ -587,7 +587,8 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/table/bootstrap-table.html">
+                            <a class="nav-link {{ request()->routeIs('goods.received.index') ? 'active' : '' }}"
+                                href="{{ route('goods.received.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -598,10 +599,10 @@
                                     </svg>
                                 </i>
                                 <i class="sidenav-mini-icon"> B </i>
-                                <span class="item-name">Bootstrap Table</span>
+                                <span class="item-name">Received</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link " href="../dashboard/table/table-data.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
@@ -615,7 +616,7 @@
                                 <i class="sidenav-mini-icon"> D </i>
                                 <span class="item-name">Datatable</span>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 {{-- <li class="nav-item mb-5">

@@ -187,4 +187,14 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/propose/delivered', 'proposeDelivered')->name('shipment.proposeDelivered');
             Route::post('/propose/delivered', 'proposeDelivered')->name('shipment.proposeDeliveredsearch');
         });
+    Route::controller(App\Http\Controllers\GoodReceivedController::class)
+        ->prefix('good-received')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('goods.received.index');
+            Route::post('/index', 'search')->name('goods.received.search');
+            Route::get('/create', 'create')->name('goods.received.create');
+            Route::post('/create', 'trackingNumber')->name('goods.received.tracking');
+            Route::post('/store', 'store')->name('goods.received.store');
+        });
 });

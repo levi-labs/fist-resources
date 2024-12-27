@@ -16,14 +16,8 @@ return new class extends Migration
             $table->bigInteger('shipment_id')->unsigned();
             $table->bigInteger('restock_purchase_order_id')->unsigned()->nullable();
             $table->bigInteger('proposed_product_purchase_order_id')->unsigned()->nullable();
-            $table->integer('quantity_received');
             $table->bigInteger('received_by')->unsigned();
             $table->date('received_date');
-            $table->enum('condition', [
-                'good',
-                'damaged',
-                'lost',
-            ]);
             $table->enum('request_type', [
                 'restock',
                 'proposed',
