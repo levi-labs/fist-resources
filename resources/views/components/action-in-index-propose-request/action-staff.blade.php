@@ -18,7 +18,7 @@
         </span>
     </a>
     @php
-        $propose = \App\Models\ProposeInventory::where('request_code', $propose->request_code)->first();
+        $propose = \App\Models\ProposedRequest::where('request_code', $propose->request_code)->first();
         $status = $propose->status;
     @endphp
     @if ($status !== 'approved' && $status !== 'rejected')
