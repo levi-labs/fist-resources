@@ -417,4 +417,10 @@ class ProposeInventoryController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    public function print($request_code)
+    {
+        $title = 'Propose Request';
+        $proposed = $this->proposeRequestService->getByRequestCode($request_code);
+        return view('pages.propose_inventory.print', compact('proposed', 'title'));
+    }
 }

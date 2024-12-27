@@ -415,7 +415,8 @@ class RestockInventoryController extends Controller
     }
     public function print($request_code)
     {
+        $title = 'Restock Request';
         $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
-        return view('pages.restock_inventory.print', compact('restocks'));
+        return view('pages.restock_inventory.print', compact('restocks', 'title'));
     }
 }
