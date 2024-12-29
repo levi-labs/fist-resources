@@ -65,7 +65,7 @@
                                 `
                                  <div class="mb-3">
                                     <label for="quantity[${item.id}]" class="form-label">${item.name}</label>
-                                    <input type="text" class="form-control" id="quantity[${item.id}]" name="quantity[${item.id}]" value="${item.quantity}" required>
+                                    <input type="number" min="0" class="form-control" id="quantity[${item.id}]" name="quantity[${item.id}]" value="${item.quantity}" required>
                                  </div>
                                  `;
                             $('#inputModal #input-container').append(inputHtml);

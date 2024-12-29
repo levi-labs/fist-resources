@@ -23,6 +23,7 @@ return new class extends Migration
                 'proposed',
             ]);
             $table->text('notes')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
 
             $table->foreign('shipment_id')->references('id')->on('shipments')->onDelete('cascade');

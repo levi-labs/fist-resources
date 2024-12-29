@@ -19,7 +19,21 @@ class GoodReceivedService
 
     public function getAllGoodReceived()
     {
-        return GoodReceived::paginate(10);
+        return GoodReceived::join('shipments', 'shipments.id', 'goods_received.shipment_id')
+            ->leftjoin('restock_purchase_orders', 'restock_purchase_orders.id', 'goods_received.restock_purchase_order_id')
+            ->leftjoin(
+                'proposed_product_purchase_orders',
+                'proposed_product_purchase_orders.id',
+                'goods_received.proposed_product_purchase_order_id'
+            )
+            ->select(
+                'goods_received.*',
+                'shipments.tracking_number',
+                'shipments.status',
+                'restock_purchase_orders.id as restock_po_id',
+                'proposed_product_purchase_orders.id as proposed_po_id'
+            )
+            ->paginate(10);
     }
 
     public function checkTrackingNumber($tracking_number)
@@ -36,15 +50,42 @@ class GoodReceivedService
         }
     }
 
+    public function getById($id)
+    {
+        return GoodReceived::join('shipments', 'shipments.id', 'goods_received.shipment_id')
+            ->join('users', 'users.id', 'goods_received.received_by')
+            ->leftjoin('restock_purchase_orders', 'restock_purchase_orders.id', 'goods_received.restock_purchase_order_id')
+            ->leftjoin(
+                'proposed_product_purchase_orders',
+                'proposed_product_purchase_orders.id',
+                'goods_received.proposed_product_purchase_order_id'
+            )
+            ->select(
+                'goods_received.*',
+                'shipments.tracking_number',
+                'shipments.status',
+                'restock_purchase_orders.id as restock_po_id',
+                'proposed_product_purchase_orders.id as proposed_po_id',
+                'users.name as received_name'
+            )
+            ->where('goods_received.id', $id)
+            ->first();
+    }
+    public function handleProductImageUpload(&$data)
+    {
+        if (array_key_exists('image', $data)) {
+            if ($data['image'] instanceof \Illuminate\Http\UploadedFile) {
+                // Menyimpan gambar di folder 'images' di disk 'public'
+                $file = $data['image']->store('images', 'public');
+                $data['image'] = $file;  // Update data dengan path file
+            }
+        }
+    }
+
     public function create($data)
     {
-
-        // $quantiti = [];
-        // for ($i = 0; $i < count($data['quantity']); $i++) {
-        //     $quantiti = $data['quantity'];
-        // }
-        // dd($quantiti);
         try {
+
             DB::transaction(function () use ($data) {
                 $datas = Shipment::where('id', $data['shipment_id'])->first();
                 $new_product = [];
@@ -63,7 +104,12 @@ class GoodReceivedService
                         )
                         ->where('restock_purchase_order_id', $datas['restock_purchase_order_id'])
                         ->get();
+                    $image = request()->file('image');
+                    $path = $image->store('images', 'public');
 
+
+                    $resetarray = array_values($data['quantity']);
+                    // dd($resetarray);
                     $GoodsReceived = GoodReceived::create([
                         'shipment_id' => $data['shipment_id'],
                         'restock_purchase_order_id' => $data['restock_order'],
@@ -71,9 +117,11 @@ class GoodReceivedService
                         'received_date' => date('Y-m-d'),
                         'request_type' => 'restock',
                         'notes' => $data['notes'] ?? null,
+                        'image' => $path
+
                     ]);
                     // dd($orderItem);
-                    $resetarray = array_values($data['quantity']);
+
                     $data_inventory = [];
                     $goodreceive_detail = [];
                     foreach ($orderItem as $key => $value) {
@@ -89,9 +137,12 @@ class GoodReceivedService
                     foreach ($resetarray as $key => $value) {
                         $data_inventory[$key]['stock'] = $value;
                         $goodreceive_detail[$key]['quantity'] = $value;
+                    }
+                    foreach ($resetarray as $key => $value) {
                         Inventory::create($data_inventory[$key]);
                         GoodReceivedDetail::create($goodreceive_detail[$key]);
                     }
+                    // dd($data_inventory, $goodreceive_detail);
                     $datas->update([
                         'status' => 'delivered',
                     ]);
@@ -99,6 +150,7 @@ class GoodReceivedService
                         'status' => 'delivered',
                     ]);
                 } else {
+                    $resetarray = array_values($data['quantity']);
                     $getSupplierId = ProposePurchaseOrder::where('id', $data['propose_order'])->first();
                     $orderItem = ProposePurchaseOrderDetail::join('proposed_products', 'proposed_products.id', 'proposed_product_purchase_order_details.proposed_product_id')
                         ->where('proposed_order_id', $datas['proposed_product_purchase_order_id'])
@@ -117,6 +169,8 @@ class GoodReceivedService
                             'proposed_products.description',
                         )
                         ->get();
+                    $image = request()->file('image');
+                    $path = $image->store('images', 'public');
                     $GoodsReceived = GoodReceived::create([
                         'shipment_id' => $data['shipment_id'],
                         'proposed_product_purchase_order_id' => $data['propose_order'],
@@ -124,6 +178,7 @@ class GoodReceivedService
                         'received_date' => date('Y-m-d'),
                         'request_type' => 'proposed',
                         'notes' => $data['notes'] ?? null,
+                        'image' => $path
                     ]);
                     foreach ($orderItem as $key => $value) {
                         $new_product[] = [
@@ -140,7 +195,7 @@ class GoodReceivedService
                         ];
                         $goodreceive_detail[] = [
                             'good_received_id' => $GoodsReceived->id,
-                            'quantity' => $value->quantity
+                            'quantity' => $data['quantity'][$key],
                         ];
                         ProposedProduct::where('id', $value->product_id)->update(['status' => 'registered']);
                     }
@@ -149,10 +204,10 @@ class GoodReceivedService
                         $goodreceive_detail[$i]['product_id'] = $product->id;
                     }
                     for ($i = 0; $i < count($goodreceive_detail); $i++) {
-                        $checkProductId = Product::where('id', $goodreceive_detail[$i]['product_id'])->first();
-                        if ($checkProductId) {
-                            $checkProductId->update(['quantity' => $checkProductId->quantity + $goodreceive_detail[$i]['quantity']]);
-                        }
+                        // $checkProductId = Product::where('id', $goodreceive_detail[$i]['product_id'])->first();
+                        // if ($checkProductId) {
+                        //     $checkProductId->update(['quantity' => $checkProductId->quantity + $goodreceive_detail[$i]['quantity']]);
+                        // }
                         Inventory::create([
                             'product_id' => $goodreceive_detail[$i]['product_id'],
                             'supplier_id' => $getSupplierId->supplier_id,

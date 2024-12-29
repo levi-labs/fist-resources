@@ -186,7 +186,7 @@
                 </div>
             </div>
         </div>
-        @if (auth('web')->user()->role === 'procurement')
+        @if (auth('web')->user()->role === 'procurement' || auth('web')->user()->role === 'admin')
             @include('components.action-in-detail-restock.action-procurement', [
                 'params' => $request_code,
                 'status' => $status,

@@ -5,7 +5,8 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Form Goods Received</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="input-form" action="{{ route('goods.received.store') }}" method="POST">
+            <form id="input-form" action="{{ route('goods.received.store') }}" method="POST"
+                enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     <div class="mb-3">
@@ -23,6 +24,9 @@
                     </div>
                     <div class="mb-3">
                         <input type="hidden" class="form-control" id="restock_order" name="restock_order" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="image" name="image" required>
                     </div>
                     <div class="input-container" id="input-container">
 
@@ -52,17 +56,19 @@
             var restock_order = $('#restock_order').val();
             var shipment_id = $('#shipment_id').val();
             var quantity = $('#quantity').val();
+            var image = $('#image')[0].files[0];
             var quantities = [];
 
             $('input[name^="quantity"]').each(function() {
                 quantities.push($(this).val());
             });
 
-            console.log('tracking_number', tracking_number);
-            console.log('propose_order', propose_order);
-            console.log('restock_order', restock_order);
-            console.log('shipment_id', shipment_id);
-            console.log('quantities', quantities);
+            // console.log('tracking_number', tracking_number);
+            // console.log('propose_order', propose_order);
+            // console.log('restock_order', restock_order);
+            // console.log('shipment_id', shipment_id);
+            // console.log('quantities', quantities);
+            // console.log('image', image);
 
             // console.log(tracking_number, propose_order, restock_order, shipment_id, quantities);
             $.ajaxSetup({
@@ -70,18 +76,33 @@
                     'X-CSRF-TOKEN': csrf_token
                 }
             });
+            var formData = new FormData();
+            formData.append('tracking_number', tracking_number);
+            formData.append('propose_order', propose_order);
+            formData.append('restock_order', restock_order);
+            formData.append('shipment_id', shipment_id);
+            formData.append('quantity[]', quantities);
+            formData.append('image', image);
+            formData.append('_token', csrf_token);
+            formData.forEach(function(value, key) {
+                console.log(key, value);
+            });
             $.ajax({
                 type: 'POST',
                 url: $('#input-form').attr('action'),
-                data: {
-                    "tracking_number": tracking_number,
-                    "propose_order": propose_order,
-                    "restock_order": restock_order,
-                    "shipment_id": shipment_id,
-                    "quantity": quantities,
-                    "quantities": quantities,
-                    "_token": csrf_token
-                },
+                processData: false,
+                contentType: false,
+                data: formData,
+                // data: {
+                //     "tracking_number": tracking_number,
+                //     "propose_order": propose_order,
+                //     "restock_order": restock_order,
+                //     "shipment_id": shipment_id,
+                //     "quantity": quantities,
+                //     "quantities": quantities,
+                //     "image": image,
+                //     "_token": csrf_token
+                // },
                 success: function(response) {
                     // console.log('success:', response);
 

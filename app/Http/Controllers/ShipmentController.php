@@ -63,9 +63,10 @@ class ShipmentController extends Controller
                     $this->proposePurchaseOrderService->updateStatus($request->id, 'shipped');
                 }
             });
-
+            session()->flash('success', 'Shipment created successfully!');
             return response()->json(['success' => true, 'message' => 'Shipment created successfully!'], 201);
         } catch (\Throwable $th) {
+            session()->flash('error', $th->getMessage());
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
@@ -77,8 +78,10 @@ class ShipmentController extends Controller
                 $this->shipmentService->reject($id);
             });
 
+            session()->flash('success', 'Shipment rejected successfully!');
             return response()->json(['success' => true, 'message' => 'Shipment rejected successfully!'], 201);
         } catch (\Throwable $th) {
+            session()->flash('error', $th->getMessage());
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }

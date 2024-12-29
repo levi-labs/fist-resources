@@ -196,5 +196,6 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/create', 'create')->name('goods.received.create');
             Route::post('/create', 'trackingNumber')->name('goods.received.tracking');
             Route::post('/store', 'store')->name('goods.received.store');
+            Route::get('/show/{id}', 'show')->name('goods.received.show');
         });
 });

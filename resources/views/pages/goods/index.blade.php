@@ -77,9 +77,9 @@
                                 <thead>
                                     <tr class="ligth">
                                         <th>#</th>
-                                        <th>Invoice</th>
                                         <th>Tracking Number</th>
-                                        {{-- <th style="min-width: 100px">Action</th> --}}
+                                        <th>Status</th>
+                                        <th style="min-width: 100px">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,13 +89,12 @@
                                                     class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
                                                     src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $dt->invoice_number }}</td>
                                             <td>{{ $dt->tracking_number }}</td>
-                                            {{-- <td>
+                                            <td>{{ $dt->status }}</td>
+                                            <td>
                                                 <div class="flex align-items-center list-user-action">
-                                                    <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        href="{{ route('restock.purchase.show', $dt->id) }}"
+                                                    <a class="btn btn-sm btn-icon btn-success"
+                                                        href="{{ route('goods.received.show', $dt->id) }}"
                                                         aria-label="Detail" data-bs-original-title="Detail">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
@@ -118,7 +117,7 @@
                                                         </span>
                                                     </a>
                                                 </div>
-                                            </td> --}}
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
@@ -137,6 +136,7 @@
             </div>
         </div>
     </div>
+    {{-- modal --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @include('components.modal-goods.create');
 @endsection
