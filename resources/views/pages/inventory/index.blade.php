@@ -1,10 +1,5 @@
 @extends('layouts.main.master')
-<style>
-    .my-active {
-        background-color: #001F4D !important;
-        color: #ffffff !important;
-    }
-</style>
+
 @section('content')
     <div class="container-fluid content-inner mt-n5 py-0">
         <div class="row">
@@ -26,21 +21,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="header-title">
                             <h4 class="card-title">{{ $title }}</h4>
-                            <div class="row">
-                                <div class="col-md-12 mt-2">
-                                    <a href="{{ route('propose.purchase.index') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('propose.purchase.index*') ? 'my-active' : '' }}">Awaiting
-                                        Shipment</a>
-                                    <a href="{{ route('propose.purchase.shipped') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('propose.purchase.shipped*') ? 'my-active' : '' }}">Shipped</a>
-                                    <a href="{{ route('propose.purchase.delivered') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('propose.purchase.delivered*') ? 'my-active' : '' }}">Delivered</a>
-                                    {{-- <a href="#" class="btn btn-primary btn-sm">Rejected</a> --}}
-                                </div>
-                            </div>
                         </div>
                         <div class="float-end">
-                            <form action="{{ route('propose.purchase.search') }}" method="POST">
+                            {{-- <form action="{{ route('product.search') }}" method="POST">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control form-control-sm" name="search"
@@ -59,15 +42,15 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
-                    {{-- <div class="row p-4">
+                    <div class="row p-4">
                         <div class="col-sm-12">
-                            <a href="{{ route('restock.purchase.create') }}" class="btn btn-primary btn-sm">Add
-                                New</a>
+                            {{-- <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm">Add
+                                New</a> --}}
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="card-body px-0">
                         <div class="table-responsive">
                             <table id="user-list-table" class="table table-striped" role="grid"
@@ -75,26 +58,27 @@
                                 <thead>
                                     <tr class="ligth">
                                         <th>#</th>
-                                        <th>Invoice</th>
-                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Stock</th>
                                         <th style="min-width: 100px">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    @forelse ($data as $dt)
+                                    @forelse ($inventories as $product)
                                         <tr>
                                             {{-- <td class="text-center"><img
                                                     class="bg-primary-subtle rounded img-fluid avatar-40 me-3"
                                                     src="../../assets/images/shapes/01.png" alt="profile"></td> --}}
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $dt->invoice_number }}</td>
-                                            <td>{{ $dt->status }}</td>
+                                            <td>{{ $product->name }} <br>
+                                                <span>SKU : {{ $product->sku }}</span>
+                                            </td>
+                                            <td>{{ $product->total_stock }}</td>
                                             <td>
                                                 <div class="flex align-items-center list-user-action">
                                                     <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
-                                                        href="{{ route('propose.purchase.show', $dt->id) }}"
+                                                        href="{{ route('product.show', $product->product_id) }}"
                                                         aria-label="Detail" data-bs-original-title="Detail">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
@@ -116,6 +100,7 @@
                                                             </svg>
                                                         </span>
                                                     </a>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -127,9 +112,6 @@
 
                                 </tbody>
                             </table>
-                            <div class="px-2">
-                                {{ $data->links('pagination::bootstrap-5') }}
-                            </div>
                         </div>
                     </div>
                 </div>

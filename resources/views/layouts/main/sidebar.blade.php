@@ -530,7 +530,7 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-maps" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/maps/google.html">
+                            <a class="nav-link " href="{{ route('inventory.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
                                         viewBox="0 0 24 24" fill="currentColor">
@@ -540,11 +540,11 @@
                                         </g>
                                     </svg>
                                 </i>
-                                <i class="sidenav-mini-icon"> G </i>
-                                <span class="item-name">Google</span>
+                                <i class="sidenav-mini-icon"> I </i>
+                                <span class="item-name">Inventory</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link " href="../dashboard/maps/vector.html">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
@@ -558,7 +558,7 @@
                                 <i class="sidenav-mini-icon"> V </i>
                                 <span class="item-name">Vector</span>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 

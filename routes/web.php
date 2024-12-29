@@ -198,4 +198,11 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::post('/store', 'store')->name('goods.received.store');
             Route::get('/show/{id}', 'show')->name('goods.received.show');
         });
+    Route::controller(App\Http\Controllers\InventoryController::class)
+        ->prefix('inventory')
+        ->middleware('role:admin,procurement')
+        ->group(function () {
+            Route::get('/', 'index')->name('inventory.index');
+            Route::post('/', 'index')->name('inventory.search');
+        });
 });
