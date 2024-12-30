@@ -1,40 +1,33 @@
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
         <a href="{{ url('/dashboard') }}" class="navbar-brand">
+            <style>
+                .logo-my {
+                    max-width: 50% !important;
+                    height: auto !important;
+                }
 
+                img.my-img {
+                    max-width: 180% !important;
+                    height: auto !important;
+                }
+            </style>
             <!--Logo start-->
-            <div class="logo-main">
-                <div class="logo-normal">
-                    <svg class=" icon-30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
-                            transform="rotate(-45 -0.757324 19.2427)" fill="currentColor" />
-                        <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
-                            transform="rotate(-45 7.72803 27.728)" fill="currentColor" />
-                        <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
-                            transform="rotate(45 10.5366 16.3945)" fill="currentColor" />
-                        <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
-                            transform="rotate(45 10.5562 -0.556152)" fill="currentColor" />
-                    </svg>
+            <div class="row logo-my align-items-center justify-content-center">
+                <div class="col-4 p-0 m-0 bg-primary mt-2">
+                    <img class="my-img" src="{{ asset('/assets/fist-resources.png') }}" alt="">
                 </div>
-                <div class="logo-mini">
-                    <svg class=" icon-30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
-                            transform="rotate(-45 -0.757324 19.2427)" fill="currentColor" />
-                        <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
-                            transform="rotate(-45 7.72803 27.728)" fill="currentColor" />
-                        <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
-                            transform="rotate(45 10.5366 16.3945)" fill="currentColor" />
-                        <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
-                            transform="rotate(45 10.5562 -0.556152)" fill="currentColor" />
-                    </svg>
+                <div class="col-8 p-0 mb-5 text-start">
+                    <h5 class="logo-title">Fist Resources</h5>
                 </div>
             </div>
             <!--logo End-->
 
 
 
-            <h4 class="logo-title">Fist Resources</h4>
+
         </a>
+        <hr class="hr-horizontal bg-dark">
         <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
             <i class="icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -691,6 +684,14 @@
             </ul>
             <!-- Sidebar Menu End -->
         </div>
+    </div>
+    <div class="scrollbar-track scrollbar-track-x" style="display: none;">
+        <div class="scrollbar-thumb scrollbar-thumb-x" style="width: 259px; transform: translate3d(0px, 0px, 0px);">
+        </div>
+    </div>
+    <div class="scrollbar-track scrollbar-track-y" style="display: block;">
+        <div class="scrollbar-thumb scrollbar-thumb-y"
+            style="height: 74.0498px; transform: translate3d(0px, 24.2786px, 0px);"></div>
     </div>
     <div class="sidebar-footer"></div>
 </aside>

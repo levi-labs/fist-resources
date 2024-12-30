@@ -48,7 +48,7 @@
     <!-- loader END -->
 
     <!-- Sidebar Start -->
-    @include('layouts.main.sidebar')
+    @include('layouts.main.sidebarx')
     <!-- Sidebar End -->
     <main class="main-content">
         <!-- Navbar Start -->

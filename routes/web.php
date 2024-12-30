@@ -205,4 +205,11 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/', 'index')->name('inventory.index');
             Route::post('/', 'index')->name('inventory.search');
         });
+    Route::controller((App\Http\Controllers\ReportController::class))
+        ->prefix('report')
+        ->middleware('role:admin,staff,procurement')
+        ->group(function () {
+            Route::get('/inventory', 'inventoryReport')->name('report.inventory');
+            Route::post('/inventory', 'inventoryReport')->name('report.inventorysearch');
+        });
 });
