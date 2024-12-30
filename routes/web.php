@@ -71,6 +71,9 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/edit/{user}', 'edit')->name('user.edit');;
             Route::put('/update/{user}', 'update')->name('user.update');
             Route::get('/delete/{user}', 'destroy')->name('user.destroy');
+            Route::get('/reset-password/{user}', 'resetPassword')->name('user.resetPassword');
+            Route::get('/change-password', 'changePassword')->name('user.changePassword');
+            Route::patch('/change-password/{id}', 'updatePassword')->name('user.updatePassword');
         });
 
     Route::controller(App\Http\Controllers\RestockInventoryController::class)
