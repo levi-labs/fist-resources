@@ -43,6 +43,13 @@
                                 <a href="{{ route('restock.inventory.rejected') }}"
                                     class="btn btn-primary btn-sm mt-1">Back</a>
                             @endif
+                            @if ($status === 'approved')
+                                <button type="button" class="btn btn-light btn-sm mt-1 fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#checkModal">
+                                    Check
+                                </button>
+                            @endif
+
                         </div>
                         <div class="float-end">
                             {{-- @if ($status == 'pending') --}}
@@ -193,4 +200,5 @@
             ])
         @endif
     </div>
+    @include('components.modal-check.check')
 @endsection

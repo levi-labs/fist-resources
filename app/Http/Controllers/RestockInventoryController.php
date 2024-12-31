@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\RestockInventory;
+use App\Models\RestockPurchaseOrder;
+use App\Models\Shipment;
 use App\Services\ProductService;
 use App\Services\RestockInventoryService;
 use App\Services\RestockPurchaseOrderService;
 use App\Services\SupplierService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -220,8 +223,80 @@ class RestockInventoryController extends Controller
         $title = 'Restock Inventory Details';
         $restocks = $this->restockInventoryService->getRestockInventoryByRequestCode($request_code);
         $suppliers = $supplierService->getAllSuppliers();
+        if ($restocks[0]->status == 'approved') {
+            $status_purchase = RestockPurchaseOrder::where('request_code', $request_code)->first();
+            $shipped = Shipment::where('restock_purchase_order_id', $status_purchase->id)->first();
+            $tracking_status = [];
+            $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+            $awaiting_shipment = [
+                [
+                    'request_code' => $request_code,
+                    'status' => 'awaiting shipment',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                ]
+            ];
+            $shipped = [
 
-        return view('pages.restock_inventory.detail', compact('title', 'restocks', 'suppliers'));
+                [
+                    'request_code' => $request_code,
+                    'status' => 'shipped',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => $x,
+                ],
+                [
+                    'request_code' => $request_code,
+                    'status' => 'awaiting shipment',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                ],
+            ];
+
+            $delivered = [
+                [
+                    'request_code' => $request_code,
+                    'status' => 'delivered',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => Carbon::parse($status_purchase->updated_at)->format('Y-m-d'),
+                ],
+                [
+                    'request_code' => $request_code,
+                    'status' => 'shipped',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => $x,
+                ],
+                [
+                    'request_code' => $request_code,
+                    'status' => 'awaiting shipment',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                ]
+
+
+            ];
+            if ($status_purchase->status === 'awaiting_shipment') {
+                $tracking_status = $awaiting_shipment;
+            } elseif ($status_purchase->status === 'shipped') {
+                $tracking_status = $shipped;
+            } elseif ($status_purchase->status === 'delivered') {
+                $tracking_status = $delivered;
+            }
+            return view('pages.restock_inventory.detail', compact(
+                'title',
+                'restocks',
+                'suppliers',
+                'status_purchase',
+                'tracking_status'
+            ));
+        }
+
+
+
+        return view('pages.restock_inventory.detail', compact(
+            'title',
+            'restocks',
+            'suppliers',
+        ));
     }
 
     /**

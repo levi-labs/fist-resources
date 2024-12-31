@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/auth');
 });
 // Route::get('/login', function () {
 //     return view('layouts.auth.login');
