@@ -2,34 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProposePurchaseOrder;
+use App\Models\RestockPurchaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function restock()
+    public function reportRestockView()
     {
         $title = "Report Purchase Restock Order";
 
-        return view('pages.report.restock', compact('title'));
+        return view('pages.report.restock.index', compact('title'));
     }
 
-    public function printRestock(Request $request)
+    public function reportRestockSearch(Request $request)
     {
         $title = "Report Purchase Restock Order";
 
-        $restocks = DB::table('restocks')
-            ->select('restocks.id', 'restocks.order_number', 'restocks.date', 'products.name as product_name', 'units.name as unit_name', 'restocks.quantity')
-            ->join('products', 'restocks.product_id', 'products.id')
-            ->join('units', 'products.unit_id', 'units.id')
-            ->orderBy('restocks.id', 'desc')
-            ->paginate(10);
-
-        return view('pages.report.restock', compact('title', 'restocks'));
+        $restock_purchase  = new RestockPurchaseOrder();
+        $data = $restock_purchase->getReport($request->from, $request->to);
+        return view('pages.report.restock.print', compact(
+            'title',
+            'restock_purchase',
+            'data'
+        ));
     }
-    public function propose()
+    public function reportProposeView()
     {
         $title = "Report Purchase Propose Order";
-        return view('pages.report.propose', compact('title'));
+        return view('pages.report.propose.index', compact('title'));
+    }
+
+    public function reportProposeSearch(Request $request)
+    {
+        $title = "Report Purchase Propose Order";
+
+        $restock_purchase  = new ProposePurchaseOrder();
+        $data = $restock_purchase->getReport($request->from, $request->to);
+        return view('pages.report.propose.print', compact(
+            'title',
+            'restock_purchase',
+            'data'
+        ));
     }
 }

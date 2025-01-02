@@ -208,11 +208,16 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
             Route::get('/', 'index')->name('inventory.index');
             Route::post('/', 'index')->name('inventory.search');
         });
-    Route::controller((App\Http\Controllers\ReportController::class))
+    Route::controller(App\Http\Controllers\ReportController::class)
         ->prefix('report')
         ->middleware('role:admin,staff,procurement')
         ->group(function () {
-            Route::get('/inventory', 'inventoryReport')->name('report.inventory');
-            Route::post('/inventory', 'inventoryReport')->name('report.inventorysearch');
+            Route::get('/report-restock-purchase', 'reportRestockView')->name('report.restock.purchase');
+            Route::post('/report-restock-purchase', 'reportRestockSearch')->name('report.restock.purchase.search');
+            Route::get('/report-restock-purchase-print', 'reportRestockPurchasePrint')->name('report.restock.purchase.print');
+
+            Route::get('/report-propose-purchase', 'reportProposeView')->name('report.propose.purchase');
+            Route::post('/report-propose-purchase', 'reportProposeSearch')->name('report.propose.purchase.search');
+            Route::get('/report-propose-purchase-print', 'reportProposePurchasePrint')->name('report.propose.purchase.print');
         });
 });
