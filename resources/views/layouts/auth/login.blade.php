@@ -52,7 +52,7 @@
                                         .my-row {
                                             width: 100% !important;
                                             height: 500px !important;
-                                            margin-bottom: -60% !important;
+                                            margin-bottom: -50% !important;
                                         }
 
                                         .image-container {
