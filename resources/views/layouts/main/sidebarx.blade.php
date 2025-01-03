@@ -14,7 +14,7 @@
             </style>
             <!--Logo start-->
             <div class="row logo-my align-items-center justify-content-center">
-                <div class="col-4 p-0 m-0 bg-primary mt-2">
+                <div class="col-4 p-0 m-0 mt-2">
                     <img class="my-img" src="{{ asset('/assets/fist-resources.png') }}" alt="">
                 </div>
                 <div class="col-8 p-0 mb-5 text-start">
