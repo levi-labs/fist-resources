@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,9 +17,8 @@ Route::controller(App\Http\Controllers\AuthController::class)
         Route::get('/logout', 'logout')->name('auth.logout');
     });
 Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::controller(App\Http\Controllers\CategoryController::class)
         ->prefix('category')
         ->middleware('role:admin,procurement,logistic')
@@ -163,7 +163,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         });
     Route::controller(App\Http\Controllers\PurchaseProposeController::class)
         ->prefix('propose-purchase-order')
-        ->middleware('role:admin,staff,procurement')
+        ->middleware('role:admin,logistic,procurement')
         ->group(function () {
             Route::get('/', 'index')->name('propose.purchase.index');
             Route::post('/', 'index')->name('propose.purchase.search');
@@ -178,7 +178,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         });
     Route::controller(App\Http\Controllers\ShipmentController::class)
         ->prefix('shipment')
-        ->middleware('role:admin,staff,procurement')
+        ->middleware('role:admin,procurement,logistic')
         ->group(function () {
             Route::post('/create', 'store')->name('shipment.store');
             Route::get('/restock', 'restockShipped')->name('shipment.restockShipped');
@@ -192,7 +192,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         });
     Route::controller(App\Http\Controllers\GoodReceivedController::class)
         ->prefix('good-received')
-        ->middleware('role:admin,staff,procurement')
+        ->middleware('role:admin,logistic')
         ->group(function () {
             Route::get('/', 'index')->name('goods.received.index');
             Route::post('/index', 'search')->name('goods.received.search');
@@ -203,14 +203,14 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement'])->grou
         });
     Route::controller(App\Http\Controllers\InventoryController::class)
         ->prefix('inventory')
-        ->middleware('role:admin,procurement')
+        ->middleware('role:admin,procurement,logistic')
         ->group(function () {
             Route::get('/', 'index')->name('inventory.index');
             Route::post('/', 'index')->name('inventory.search');
         });
     Route::controller(App\Http\Controllers\ReportController::class)
         ->prefix('report')
-        ->middleware('role:admin,staff,procurement')
+        ->middleware('role:admin,procurement')
         ->group(function () {
             Route::get('/report-restock-purchase', 'reportRestockView')->name('report.restock.purchase');
             Route::post('/report-restock-purchase', 'reportRestockSearch')->name('report.restock.purchase.search');

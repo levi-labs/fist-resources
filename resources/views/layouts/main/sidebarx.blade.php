@@ -74,321 +74,333 @@
                             <span class="mini-icon">-</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('category.*') ? 'active' : '' }}" aria-current="page"
-                            href="{{ route('category.index') }}">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M21.9964 8.37513H17.7618C15.7911 8.37859 14.1947 9.93514 14.1911 11.8566C14.1884 13.7823 15.7867 15.3458 17.7618 15.3484H22V15.6543C22 19.0136 19.9636 21 16.5173 21H7.48356C4.03644 21 2 19.0136 2 15.6543V8.33786C2 4.97862 4.03644 3 7.48356 3H16.5138C19.96 3 21.9964 4.97862 21.9964 8.33786V8.37513ZM6.73956 8.36733H12.3796H12.3831H12.3902C12.8124 8.36559 13.1538 8.03019 13.152 7.61765C13.1502 7.20598 12.8053 6.87318 12.3831 6.87491H6.73956C6.32 6.87664 5.97956 7.20858 5.97778 7.61852C5.976 8.03019 6.31733 8.36559 6.73956 8.36733Z"
-                                        fill="currentColor"></path>
-                                    <path opacity="0.4"
-                                        d="M16.0374 12.2966C16.2465 13.2478 17.0805 13.917 18.0326 13.8996H21.2825C21.6787 13.8996 22 13.5715 22 13.166V10.6344C21.9991 10.2297 21.6787 9.90077 21.2825 9.8999H17.9561C16.8731 9.90338 15.9983 10.8024 16 11.9102C16 12.0398 16.0128 12.1695 16.0374 12.2966Z"
-                                        fill="currentColor"></path>
-                                    <circle cx="18" cy="11.8999" r="1" fill="currentColor"></circle>
-                                </svg>
+                    @if (auth('web')->user()->role == 'admin' ||
+                            auth('web')->user()->role == 'procurement' ||
+                            auth('web')->user()->role == 'logistic')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('category.*') ? 'active' : '' }}"
+                                aria-current="page" href="{{ route('category.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M21.9964 8.37513H17.7618C15.7911 8.37859 14.1947 9.93514 14.1911 11.8566C14.1884 13.7823 15.7867 15.3458 17.7618 15.3484H22V15.6543C22 19.0136 19.9636 21 16.5173 21H7.48356C4.03644 21 2 19.0136 2 15.6543V8.33786C2 4.97862 4.03644 3 7.48356 3H16.5138C19.96 3 21.9964 4.97862 21.9964 8.33786V8.37513ZM6.73956 8.36733H12.3796H12.3831H12.3902C12.8124 8.36559 13.1538 8.03019 13.152 7.61765C13.1502 7.20598 12.8053 6.87318 12.3831 6.87491H6.73956C6.32 6.87664 5.97956 7.20858 5.97778 7.61852C5.976 8.03019 6.31733 8.36559 6.73956 8.36733Z"
+                                            fill="currentColor"></path>
+                                        <path opacity="0.4"
+                                            d="M16.0374 12.2966C16.2465 13.2478 17.0805 13.917 18.0326 13.8996H21.2825C21.6787 13.8996 22 13.5715 22 13.166V10.6344C21.9991 10.2297 21.6787 9.90077 21.2825 9.8999H17.9561C16.8731 9.90338 15.9983 10.8024 16 11.9102C16 12.0398 16.0128 12.1695 16.0374 12.2966Z"
+                                            fill="currentColor"></path>
+                                        <circle cx="18" cy="11.8999" r="1" fill="currentColor"></circle>
+                                    </svg>
 
-                            </i>
-                            <span class="item-name">Category<span
-                                    class="badge rounded-pill bg-success item-name"></span></span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('product.*') ? 'active' : '' }}" aria-current="page"
-                            href="{{ route('product.index') }}">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4"
-                                        d="M16.191 2H7.81C4.77 2 3 3.78 3 6.83V17.16C3 20.26 4.77 22 7.81 22H16.191C19.28 22 21 20.26 21 17.16V6.83C21 3.78 19.28 2 16.191 2Z"
-                                        fill="currentColor"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M8.07996 6.6499V6.6599C7.64896 6.6599 7.29996 7.0099 7.29996 7.4399C7.29996 7.8699 7.64896 8.2199 8.07996 8.2199H11.069C11.5 8.2199 11.85 7.8699 11.85 7.4289C11.85 6.9999 11.5 6.6499 11.069 6.6499H8.07996ZM15.92 12.7399H8.07996C7.64896 12.7399 7.29996 12.3899 7.29996 11.9599C7.29996 11.5299 7.64896 11.1789 8.07996 11.1789H15.92C16.35 11.1789 16.7 11.5299 16.7 11.9599C16.7 12.3899 16.35 12.7399 15.92 12.7399ZM15.92 17.3099H8.07996C7.77996 17.3499 7.48996 17.1999 7.32996 16.9499C7.16996 16.6899 7.16996 16.3599 7.32996 16.1099C7.48996 15.8499 7.77996 15.7099 8.07996 15.7399H15.92C16.319 15.7799 16.62 16.1199 16.62 16.5299C16.62 16.9289 16.319 17.2699 15.92 17.3099Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Product<span
-                                    class="badge rounded-pill bg-success item-name"></span></span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('supplier.*') ? 'active' : '' }}" aria-current="page"
-                            href="{{ route('supplier.index') }}">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4"
-                                        d="M11.9912 18.6215L5.49945 21.864C5.00921 22.1302 4.39768 21.9525 4.12348 21.4643C4.0434 21.3108 4.00106 21.1402 4 20.9668V13.7087C4 14.4283 4.40573 14.8725 5.47299 15.37L11.9912 18.6215Z"
-                                        fill="currentColor"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Supplier<span
-                                    class="badge rounded-pill bg-success item-name"></span></span>
-                        </a>
-                    </li>
-                    {{-- RestockInventory --}}
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('restock-inventory.*') ? '' : 'collapsed' }}"
-                            data-bs-toggle="collapse" href="#sidebar-special" role="button" aria-expanded="false"
-                            aria-controls="sidebar-special">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4"
-                                        d="M13.3051 5.88243V6.06547C12.8144 6.05584 12.3237 6.05584 11.8331 6.05584V5.89206C11.8331 5.22733 11.2737 4.68784 10.6064 4.68784H9.63482C8.52589 4.68784 7.62305 3.80152 7.62305 2.72254C7.62305 2.32755 7.95671 2 8.35906 2C8.77123 2 9.09508 2.32755 9.09508 2.72254C9.09508 3.01155 9.34042 3.24276 9.63482 3.24276H10.6064C12.0882 3.2524 13.2953 4.43736 13.3051 5.88243Z"
-                                        fill="currentColor"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M15.164 6.08279C15.4791 6.08712 15.7949 6.09145 16.1119 6.09469C19.5172 6.09469 22 8.52241 22 11.875V16.1813C22 19.5339 19.5172 21.9616 16.1119 21.9616C14.7478 21.9905 13.3837 22.0001 12.0098 22.0001C10.6359 22.0001 9.25221 21.9905 7.88813 21.9616C4.48283 21.9616 2 19.5339 2 16.1813V11.875C2 8.52241 4.48283 6.09469 7.89794 6.09469C9.18351 6.07542 10.4985 6.05615 11.8332 6.05615C12.3238 6.05615 12.8145 6.05615 13.3052 6.06579C13.9238 6.06579 14.5425 6.07427 15.164 6.08279ZM10.8518 14.7459H9.82139V15.767C9.82139 16.162 9.48773 16.4896 9.08538 16.4896C8.67321 16.4896 8.34936 16.162 8.34936 15.767V14.7459H7.30913C6.90677 14.7459 6.57311 14.4279 6.57311 14.0233C6.57311 13.6283 6.90677 13.3008 7.30913 13.3008H8.34936V12.2892C8.34936 11.8942 8.67321 11.5667 9.08538 11.5667C9.48773 11.5667 9.82139 11.8942 9.82139 12.2892V13.3008H10.8518C11.2542 13.3008 11.5878 13.6283 11.5878 14.0233C11.5878 14.4279 11.2542 14.7459 10.8518 14.7459ZM15.0226 13.1177H15.1207C15.5231 13.1177 15.8567 12.7998 15.8567 12.3952C15.8567 12.0002 15.5231 11.6727 15.1207 11.6727H15.0226C14.6104 11.6727 14.2866 12.0002 14.2866 12.3952C14.2866 12.7998 14.6104 13.1177 15.0226 13.1177ZM16.7007 16.4318H16.7988C17.2012 16.4318 17.5348 16.1139 17.5348 15.7092C17.5348 15.3143 17.2012 14.9867 16.7988 14.9867H16.7007C16.2885 14.9867 15.9647 15.3143 15.9647 15.7092C15.9647 16.1139 16.2885 16.4318 16.7007 16.4318Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Restock</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse {{ request()->routeIs('restock.inventory.*') ? 'show' : '' }}"
-                            id="sidebar-special" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('restock.inventory.index') ? 'active' : '' }}"
-                                    href="{{ route('restock.inventory.index') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> P </i>
-                                    <span class="item-name">Pending</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('restock.inventory.approved') ? 'active' : '' }}"
-                                    href="{{ route('restock.inventory.approved') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> A </i>
-                                    <span class="item-name">Approved</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('restock.inventory.resubmitted') ? 'active' : '' }}"
-                                    href="{{ route('restock.inventory.resubmitted') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> R </i>
-                                    <span class="item-name">Resubmitted</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('restock.inventory.rejected') ? 'active' : '' }}"
-                                    href="{{ route('restock.inventory.rejected') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> R </i>
-                                    <span class="item-name">Rejected</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                                </i>
+                                <span class="item-name">Category<span
+                                        class="badge rounded-pill bg-success item-name"></span></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('product.*') ? 'active' : '' }}"
+                                aria-current="page" href="{{ route('product.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4"
+                                            d="M16.191 2H7.81C4.77 2 3 3.78 3 6.83V17.16C3 20.26 4.77 22 7.81 22H16.191C19.28 22 21 20.26 21 17.16V6.83C21 3.78 19.28 2 16.191 2Z"
+                                            fill="currentColor"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M8.07996 6.6499V6.6599C7.64896 6.6599 7.29996 7.0099 7.29996 7.4399C7.29996 7.8699 7.64896 8.2199 8.07996 8.2199H11.069C11.5 8.2199 11.85 7.8699 11.85 7.4289C11.85 6.9999 11.5 6.6499 11.069 6.6499H8.07996ZM15.92 12.7399H8.07996C7.64896 12.7399 7.29996 12.3899 7.29996 11.9599C7.29996 11.5299 7.64896 11.1789 8.07996 11.1789H15.92C16.35 11.1789 16.7 11.5299 16.7 11.9599C16.7 12.3899 16.35 12.7399 15.92 12.7399ZM15.92 17.3099H8.07996C7.77996 17.3499 7.48996 17.1999 7.32996 16.9499C7.16996 16.6899 7.16996 16.3599 7.32996 16.1099C7.48996 15.8499 7.77996 15.7099 8.07996 15.7399H15.92C16.319 15.7799 16.62 16.1199 16.62 16.5299C16.62 16.9289 16.319 17.2699 15.92 17.3099Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </i>
+                                <span class="item-name">Product<span
+                                        class="badge rounded-pill bg-success item-name"></span></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('supplier.*') ? 'active' : '' }}"
+                                aria-current="page" href="{{ route('supplier.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4"
+                                            d="M11.9912 18.6215L5.49945 21.864C5.00921 22.1302 4.39768 21.9525 4.12348 21.4643C4.0434 21.3108 4.00106 21.1402 4 20.9668V13.7087C4 14.4283 4.40573 14.8725 5.47299 15.37L11.9912 18.6215Z"
+                                            fill="currentColor"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </i>
+                                <span class="item-name">Supplier<span
+                                        class="badge rounded-pill bg-success item-name"></span></span>
+                            </a>
+                        </li>
+                    @endif
 
-                    {{-- Propose Products --}}
-                    <li class="nav-item">
-                        <a class="nav-link {{ (request()->routeIs('propose.product.*') ? 'active' : '' || request()->routeIs('propose.inventory.*')) ? 'active' : '' }}"
-                            data-bs-toggle="collapse" href="#sidebar-auth" role="button" aria-expanded="false"
-                            aria-controls="sidebar-user">
-                            <i class="icon">
-                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4"
-                                        d="M12.0865 22C11.9627 22 11.8388 21.9716 11.7271 21.9137L8.12599 20.0496C7.10415 19.5201 6.30481 18.9259 5.68063 18.2336C4.31449 16.7195 3.5544 14.776 3.54232 12.7599L3.50004 6.12426C3.495 5.35842 3.98931 4.67103 4.72826 4.41215L11.3405 2.10679C11.7331 1.96656 12.1711 1.9646 12.5707 2.09992L19.2081 4.32684C19.9511 4.57493 20.4535 5.25742 20.4575 6.02228L20.4998 12.6628C20.5129 14.676 19.779 16.6274 18.434 18.1581C17.8168 18.8602 17.0245 19.4632 16.0128 20.0025L12.4439 21.9088C12.3331 21.9686 12.2103 21.999 12.0865 22Z"
-                                        fill="currentColor"></path>
-                                    <path
-                                        d="M11.3194 14.3209C11.1261 14.3219 10.9328 14.2523 10.7838 14.1091L8.86695 12.2656C8.57097 11.9793 8.56795 11.5145 8.86091 11.2262C9.15387 10.9369 9.63207 10.934 9.92906 11.2193L11.3083 12.5451L14.6758 9.22479C14.9698 8.93552 15.448 8.93258 15.744 9.21793C16.041 9.50426 16.044 9.97004 15.751 10.2574L11.8519 14.1022C11.7049 14.2474 11.5127 14.3199 11.3194 14.3209Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Propose</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse {{ (request()->routeIs('propose.product.*') ? 'show' : '' || request()->routeIs('propose.inventory.*')) ? 'show' : '' }}"
-                            id="sidebar-auth" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link {{ (request()->routeIs('propose.product.index') ? 'active' : '' || request()->routeIs('propose.product.search')) ? 'active' : '' }}"
-                                    href="{{ route('propose.product.index') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> P </i>
-                                    <span class="item-name">Product</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('propose.inventory.index') ? 'active' : '' }}"
-                                    href="{{ route('propose.inventory.index') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> P </i>
-                                    <span class="item-name">Pending</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('propose.inventory.approved') ? 'active' : '' }}"
-                                    href="{{ route('propose.inventory.approved') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> A </i>
-                                    <span class="item-name">Approved</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('propose.inventory.resubmitted') ? 'active' : '' }}"
-                                    href="{{ route('propose.inventory.resubmitted') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> R </i>
-                                    <span class="item-name">Resubmitted</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('propose.inventory.rejected') ? 'active' : '' }}"
-                                    href="{{ route('propose.inventory.rejected') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> R </i>
-                                    <span class="item-name">Rejected</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sidebar-table" role="button"
-                            aria-expanded="false" aria-controls="sidebar-table">
-                            <i class="icon">
-                                <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20"
-                                    viewBox="0 0 24 24" fill="none">
-                                    <path
-                                        d="M2 5C2 4.44772 2.44772 4 3 4H8.66667H21C21.5523 4 22 4.44772 22 5V8H15.3333H8.66667H2V5Z"
-                                        fill="currentColor" stroke="currentColor"></path>
-                                    <path
-                                        d="M6 8H2V11M6 8V20M6 8H14M6 20H3C2.44772 20 2 19.5523 2 19V11M6 20H14M14 8H22V11M14 8V20M14 20H21C21.5523 20 22 19.5523 22 19V11M2 11H22M2 14H22M2 17H22M10 8V20M18 8V20"
-                                        stroke="currentColor"></path>
-                                </svg>
-                            </i>
-                            <span class="item-name">Report</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </i>
-                        </a>
-                        <ul class="sub-nav collapse" id="sidebar-table" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link " href="{{ route('report.restock.purchase') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> PR </i>
-                                    <span class="item-name">Purchase Restock</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="{{ route('report.propose.purchase') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                            viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                </circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> PP </i>
-                                    <span class="item-name">Purchase Proposed</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'procurement' || Auth::user()->role == 'staff')
+                        {{-- RestockInventory --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('restock-inventory.*') ? '' : 'collapsed' }}"
+                                data-bs-toggle="collapse" href="#sidebar-special" role="button"
+                                aria-expanded="false" aria-controls="sidebar-special">
+                                <i class="icon">
+                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4"
+                                            d="M13.3051 5.88243V6.06547C12.8144 6.05584 12.3237 6.05584 11.8331 6.05584V5.89206C11.8331 5.22733 11.2737 4.68784 10.6064 4.68784H9.63482C8.52589 4.68784 7.62305 3.80152 7.62305 2.72254C7.62305 2.32755 7.95671 2 8.35906 2C8.77123 2 9.09508 2.32755 9.09508 2.72254C9.09508 3.01155 9.34042 3.24276 9.63482 3.24276H10.6064C12.0882 3.2524 13.2953 4.43736 13.3051 5.88243Z"
+                                            fill="currentColor"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M15.164 6.08279C15.4791 6.08712 15.7949 6.09145 16.1119 6.09469C19.5172 6.09469 22 8.52241 22 11.875V16.1813C22 19.5339 19.5172 21.9616 16.1119 21.9616C14.7478 21.9905 13.3837 22.0001 12.0098 22.0001C10.6359 22.0001 9.25221 21.9905 7.88813 21.9616C4.48283 21.9616 2 19.5339 2 16.1813V11.875C2 8.52241 4.48283 6.09469 7.89794 6.09469C9.18351 6.07542 10.4985 6.05615 11.8332 6.05615C12.3238 6.05615 12.8145 6.05615 13.3052 6.06579C13.9238 6.06579 14.5425 6.07427 15.164 6.08279ZM10.8518 14.7459H9.82139V15.767C9.82139 16.162 9.48773 16.4896 9.08538 16.4896C8.67321 16.4896 8.34936 16.162 8.34936 15.767V14.7459H7.30913C6.90677 14.7459 6.57311 14.4279 6.57311 14.0233C6.57311 13.6283 6.90677 13.3008 7.30913 13.3008H8.34936V12.2892C8.34936 11.8942 8.67321 11.5667 9.08538 11.5667C9.48773 11.5667 9.82139 11.8942 9.82139 12.2892V13.3008H10.8518C11.2542 13.3008 11.5878 13.6283 11.5878 14.0233C11.5878 14.4279 11.2542 14.7459 10.8518 14.7459ZM15.0226 13.1177H15.1207C15.5231 13.1177 15.8567 12.7998 15.8567 12.3952C15.8567 12.0002 15.5231 11.6727 15.1207 11.6727H15.0226C14.6104 11.6727 14.2866 12.0002 14.2866 12.3952C14.2866 12.7998 14.6104 13.1177 15.0226 13.1177ZM16.7007 16.4318H16.7988C17.2012 16.4318 17.5348 16.1139 17.5348 15.7092C17.5348 15.3143 17.2012 14.9867 16.7988 14.9867H16.7007C16.2885 14.9867 15.9647 15.3143 15.9647 15.7092C15.9647 16.1139 16.2885 16.4318 16.7007 16.4318Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </i>
+                                <span class="item-name">Restock</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse {{ request()->routeIs('restock.inventory.*') ? 'show' : '' }}"
+                                id="sidebar-special" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('restock.inventory.index') ? 'active' : '' }}"
+                                        href="{{ route('restock.inventory.index') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> P </i>
+                                        <span class="item-name">Pending</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('restock.inventory.approved') ? 'active' : '' }}"
+                                        href="{{ route('restock.inventory.approved') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> A </i>
+                                        <span class="item-name">Approved</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('restock.inventory.resubmitted') ? 'active' : '' }}"
+                                        href="{{ route('restock.inventory.resubmitted') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> R </i>
+                                        <span class="item-name">Resubmitted</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('restock.inventory.rejected') ? 'active' : '' }}"
+                                        href="{{ route('restock.inventory.rejected') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> R </i>
+                                        <span class="item-name">Rejected</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- Propose Products --}}
+                        <li class="nav-item">
+                            <a class="nav-link {{ (request()->routeIs('propose.product.*') ? 'active' : '' || request()->routeIs('propose.inventory.*')) ? 'active' : '' }}"
+                                data-bs-toggle="collapse" href="#sidebar-auth" role="button" aria-expanded="false"
+                                aria-controls="sidebar-user">
+                                <i class="icon">
+                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4"
+                                            d="M12.0865 22C11.9627 22 11.8388 21.9716 11.7271 21.9137L8.12599 20.0496C7.10415 19.5201 6.30481 18.9259 5.68063 18.2336C4.31449 16.7195 3.5544 14.776 3.54232 12.7599L3.50004 6.12426C3.495 5.35842 3.98931 4.67103 4.72826 4.41215L11.3405 2.10679C11.7331 1.96656 12.1711 1.9646 12.5707 2.09992L19.2081 4.32684C19.9511 4.57493 20.4535 5.25742 20.4575 6.02228L20.4998 12.6628C20.5129 14.676 19.779 16.6274 18.434 18.1581C17.8168 18.8602 17.0245 19.4632 16.0128 20.0025L12.4439 21.9088C12.3331 21.9686 12.2103 21.999 12.0865 22Z"
+                                            fill="currentColor"></path>
+                                        <path
+                                            d="M11.3194 14.3209C11.1261 14.3219 10.9328 14.2523 10.7838 14.1091L8.86695 12.2656C8.57097 11.9793 8.56795 11.5145 8.86091 11.2262C9.15387 10.9369 9.63207 10.934 9.92906 11.2193L11.3083 12.5451L14.6758 9.22479C14.9698 8.93552 15.448 8.93258 15.744 9.21793C16.041 9.50426 16.044 9.97004 15.751 10.2574L11.8519 14.1022C11.7049 14.2474 11.5127 14.3199 11.3194 14.3209Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </i>
+                                <span class="item-name">Propose</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse {{ (request()->routeIs('propose.product.*') ? 'show' : '' || request()->routeIs('propose.inventory.*')) ? 'show' : '' }}"
+                                id="sidebar-auth" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ (request()->routeIs('propose.product.index') ? 'active' : '' || request()->routeIs('propose.product.search')) ? 'active' : '' }}"
+                                        href="{{ route('propose.product.index') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> P </i>
+                                        <span class="item-name">Product</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('propose.inventory.index') ? 'active' : '' }}"
+                                        href="{{ route('propose.inventory.index') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> P </i>
+                                        <span class="item-name">Pending</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('propose.inventory.approved') ? 'active' : '' }}"
+                                        href="{{ route('propose.inventory.approved') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> A </i>
+                                        <span class="item-name">Approved</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('propose.inventory.resubmitted') ? 'active' : '' }}"
+                                        href="{{ route('propose.inventory.resubmitted') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> R </i>
+                                        <span class="item-name">Resubmitted</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('propose.inventory.rejected') ? 'active' : '' }}"
+                                        href="{{ route('propose.inventory.rejected') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> R </i>
+                                        <span class="item-name">Rejected</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{-- Report Purchase --}}
+                    @endif
+                    @if (Auth('web')->user()->role == 'admin' || Auth('web')->user()->role == 'procurement')
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sidebar-report"
+                                role="button" aria-expanded="false" aria-controls="sidebar-report">
+                                <i class="icon">
+                                    <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20"
+                                        viewBox="0 0 24 24" fill="none">
+                                        <path
+                                            d="M2 5C2 4.44772 2.44772 4 3 4H8.66667H21C21.5523 4 22 4.44772 22 5V8H15.3333H8.66667H2V5Z"
+                                            fill="currentColor" stroke="currentColor"></path>
+                                        <path
+                                            d="M6 8H2V11M6 8V20M6 8H14M6 20H3C2.44772 20 2 19.5523 2 19V11M6 20H14M14 8H22V11M14 8V20M14 20H21C21.5523 20 22 19.5523 22 19V11M2 11H22M2 14H22M2 17H22M10 8V20M18 8V20"
+                                            stroke="currentColor"></path>
+                                    </svg>
+                                </i>
+                                <span class="item-name">Report</span>
+                                <i class="right-icon">
+                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </i>
+                            </a>
+                            <ul class="sub-nav collapse" id="sidebar-report" data-bs-parent="#sidebar-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('report.restock.purchase') ? 'active' : '' }}"
+                                        href="{{ route('report.restock.purchase') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> PR </i>
+                                        <span class="item-name">Purchase Restock</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('report.propose.purchase') ? 'active' : '' }}"
+                                        href="{{ route('report.propose.purchase') }}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
+                                                    </circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> PP </i>
+                                        <span class="item-name">Purchase Proposed</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
                     @if (Auth('web')->user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}"
@@ -431,69 +443,74 @@
                                 <span class="mini-icon">-</span>
                             </a>
                         </li>
-                        {{-- Purchase --}}
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-purchase" role="button"
-                                aria-expanded="false" aria-controls="sidebar-purchase">
-                                <i class="icon">
-                                    <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path opacity="0.4"
-                                            d="M2 11.0786C2.05 13.4166 2.19 17.4156 2.21 17.8566C2.281 18.7996 2.642 19.7526 3.204 20.4246C3.986 21.3676 4.949 21.7886 6.292 21.7886C8.148 21.7986 10.194 21.7986 12.181 21.7986C14.176 21.7986 16.112 21.7986 17.747 21.7886C19.071 21.7886 20.064 21.3566 20.836 20.4246C21.398 19.7526 21.759 18.7896 21.81 17.8566C21.83 17.4856 21.93 13.1446 21.99 11.0786H2Z"
-                                            fill="currentColor"></path>
-                                        <path
-                                            d="M11.2451 15.3843V16.6783C11.2451 17.0923 11.5811 17.4283 11.9951 17.4283C12.4091 17.4283 12.7451 17.0923 12.7451 16.6783V15.3843C12.7451 14.9703 12.4091 14.6343 11.9951 14.6343C11.5811 14.6343 11.2451 14.9703 11.2451 15.3843Z"
-                                            fill="currentColor"></path>
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M10.211 14.5565C10.111 14.9195 9.762 15.1515 9.384 15.1015C6.833 14.7455 4.395 13.8405 2.337 12.4815C2.126 12.3435 2 12.1075 2 11.8555V8.38949C2 6.28949 3.712 4.58149 5.817 4.58149H7.784C7.972 3.12949 9.202 2.00049 10.704 2.00049H13.286C14.787 2.00049 16.018 3.12949 16.206 4.58149H18.183C20.282 4.58149 21.99 6.28949 21.99 8.38949V11.8555C21.99 12.1075 21.863 12.3425 21.654 12.4815C19.592 13.8465 17.144 14.7555 14.576 15.1105C14.541 15.1155 14.507 15.1175 14.473 15.1175C14.134 15.1175 13.831 14.8885 13.746 14.5525C13.544 13.7565 12.821 13.1995 11.99 13.1995C11.148 13.1995 10.433 13.7445 10.211 14.5565ZM13.286 3.50049H10.704C10.031 3.50049 9.469 3.96049 9.301 4.58149H14.688C14.52 3.96049 13.958 3.50049 13.286 3.50049Z"
-                                            fill="currentColor">
-                                        </path>
-                                    </svg>
-                                </i>
-                                <span class="item-name">Purchase</span>
-                                <i class="right-icon">
-                                    <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </i>
-                            </a>
-                            <ul class="sub-nav collapse" id="sidebar-purchase" data-bs-parent="#sidebar-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link {{ (((request()->routeIs('restock.purchase.index') ? 'active' : '' || request()->routeIs('restock.purchase.search')) ? 'active' : '' || request()->routeIs('restock.purchase.shipped')) ? 'active' : '' || request()->routeIs('restock.purchase.delivered')) ? 'active' : '' }}"
-                                        href="{{ route('restock.purchase.index') }}">
-                                        <i class="icon">
-                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <g>
-                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                    </circle>
-                                                </g>
-                                            </svg>
-                                        </i>
-                                        <i class="sidenav-mini-icon"> R </i>
-                                        <span class="item-name">Restock</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ (((request()->routeIs('propose.purchase.index') ? 'active' : '' || request()->routeIs('propose.purchase.search')) ? 'active' : '' || request()->routeIs('propose.purchase.shipped')) ? 'active' : '' || request()->routeIs('propose.purchase.delivered')) ? 'active' : '' }}"
-                                        href="{{ route('propose.purchase.index') }}">
-                                        <i class="icon">
-                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                                viewBox="0 0 24 24" fill="currentColor">
-                                                <g>
-                                                    <circle cx="12" cy="12" r="8" fill="currentColor">
-                                                    </circle>
-                                                </g>
-                                            </svg>
-                                        </i>
-                                        <i class="sidenav-mini-icon"> P </i>
-                                        <span class="item-name">Propose</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'procurement')
+                            {{-- Purchase --}}
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-purchase"
+                                    role="button" aria-expanded="false" aria-controls="sidebar-purchase">
+                                    <i class="icon">
+                                        <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4"
+                                                d="M2 11.0786C2.05 13.4166 2.19 17.4156 2.21 17.8566C2.281 18.7996 2.642 19.7526 3.204 20.4246C3.986 21.3676 4.949 21.7886 6.292 21.7886C8.148 21.7986 10.194 21.7986 12.181 21.7986C14.176 21.7986 16.112 21.7986 17.747 21.7886C19.071 21.7886 20.064 21.3566 20.836 20.4246C21.398 19.7526 21.759 18.7896 21.81 17.8566C21.83 17.4856 21.93 13.1446 21.99 11.0786H2Z"
+                                                fill="currentColor"></path>
+                                            <path
+                                                d="M11.2451 15.3843V16.6783C11.2451 17.0923 11.5811 17.4283 11.9951 17.4283C12.4091 17.4283 12.7451 17.0923 12.7451 16.6783V15.3843C12.7451 14.9703 12.4091 14.6343 11.9951 14.6343C11.5811 14.6343 11.2451 14.9703 11.2451 15.3843Z"
+                                                fill="currentColor"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M10.211 14.5565C10.111 14.9195 9.762 15.1515 9.384 15.1015C6.833 14.7455 4.395 13.8405 2.337 12.4815C2.126 12.3435 2 12.1075 2 11.8555V8.38949C2 6.28949 3.712 4.58149 5.817 4.58149H7.784C7.972 3.12949 9.202 2.00049 10.704 2.00049H13.286C14.787 2.00049 16.018 3.12949 16.206 4.58149H18.183C20.282 4.58149 21.99 6.28949 21.99 8.38949V11.8555C21.99 12.1075 21.863 12.3425 21.654 12.4815C19.592 13.8465 17.144 14.7555 14.576 15.1105C14.541 15.1155 14.507 15.1175 14.473 15.1175C14.134 15.1175 13.831 14.8885 13.746 14.5525C13.544 13.7565 12.821 13.1995 11.99 13.1995C11.148 13.1995 10.433 13.7445 10.211 14.5565ZM13.286 3.50049H10.704C10.031 3.50049 9.469 3.96049 9.301 4.58149H14.688C14.52 3.96049 13.958 3.50049 13.286 3.50049Z"
+                                                fill="currentColor">
+                                            </path>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">Purchase</span>
+                                    <i class="right-icon">
+                                        <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </i>
+                                </a>
+                                <ul class="sub-nav collapse" id="sidebar-purchase" data-bs-parent="#sidebar-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ (((request()->routeIs('restock.purchase.index') ? 'active' : '' || request()->routeIs('restock.purchase.search')) ? 'active' : '' || request()->routeIs('restock.purchase.shipped')) ? 'active' : '' || request()->routeIs('restock.purchase.delivered')) ? 'active' : '' }}"
+                                            href="{{ route('restock.purchase.index') }}">
+                                            <i class="icon">
+                                                <svg class="icon-10" xmlns="http://www.w3.org/2000/svg"
+                                                    width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                    <g>
+                                                        <circle cx="12" cy="12" r="8"
+                                                            fill="currentColor">
+                                                        </circle>
+                                                    </g>
+                                                </svg>
+                                            </i>
+                                            <i class="sidenav-mini-icon"> R </i>
+                                            <span class="item-name">Restock</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ (((request()->routeIs('propose.purchase.index') ? 'active' : '' || request()->routeIs('propose.purchase.search')) ? 'active' : '' || request()->routeIs('propose.purchase.shipped')) ? 'active' : '' || request()->routeIs('propose.purchase.delivered')) ? 'active' : '' }}"
+                                            href="{{ route('propose.purchase.index') }}">
+                                            <i class="icon">
+                                                <svg class="icon-10" xmlns="http://www.w3.org/2000/svg"
+                                                    width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                    <g>
+                                                        <circle cx="12" cy="12" r="8"
+                                                            fill="currentColor">
+                                                        </circle>
+                                                    </g>
+                                                </svg>
+                                            </i>
+                                            <i class="sidenav-mini-icon"> P </i>
+                                            <span class="item-name">Propose</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                        {{-- Shipment --}}
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-widget" role="button"
                                 aria-expanded="false" aria-controls="sidebar-widget">
@@ -553,7 +570,7 @@
 
                             </ul>
                         </li>
-                        @if (Auth('web')->user()->role == 'admin')
+                        @if (Auth('web')->user()->role == 'admin' || Auth('web')->user()->role == 'logistic')
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-maps" role="button"
                                     aria-expanded="false" aria-controls="sidebar-maps">
@@ -641,8 +658,6 @@
                             </li>
                         @endif
                     @endif
-
-
                 </ul>
                 <!-- Sidebar Menu End -->
             </div>

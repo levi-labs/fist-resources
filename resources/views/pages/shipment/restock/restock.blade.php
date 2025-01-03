@@ -29,8 +29,7 @@
                             <div class="row">
                                 <div class="col-md-12 mt-2">
                                     <a href="{{ route('shipment.restockShipped') }}"
-                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('shipment.restockShipped*') ? 'my-active' : '' }}">Awaiting
-                                        Shipment</a>
+                                        class="btn btn-outline-secondary btn-sm {{ request()->routeIs('shipment.restockShipped*') ? 'my-active' : '' }}">Shipped</a>
                                     <a href="{{ route('shipment.restockDelivered') }}"
                                         class="btn btn-outline-secondary btn-sm {{ request()->routeIs('shipment.restockDelivered*') ? 'my-active' : '' }}">Delivered</a>
                                     {{-- <a href="{{ route('restock.purchase.delivered') }}"
