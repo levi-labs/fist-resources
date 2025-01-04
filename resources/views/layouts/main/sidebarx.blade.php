@@ -1,27 +1,59 @@
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
+        <style>
+            .navbar-brand {
+                padding: 0px !important;
+                margin: 0 !important;
+            }
+
+            /*
+            .logo-main {
+                padding: 0px !important;
+                margin: 0 !important;
+            } */
+
+            /* .logo-normal {
+                padding: 0px !important;
+            } */
+
+            .logo-normal img {
+                padding: 0px !important;
+                width: 30px !important;
+                height: 40px !important;
+                margin: 50% !important;
+            }
+        </style>
         <a href="{{ url('/dashboard') }}" class="navbar-brand">
-            <style>
+            {{-- <style>
                 .logo-my {
                     max-width: 50% !important;
-                    height: auto !important;
+                    /* height: 50% !important; */
                 }
 
                 img.my-img {
                     max-width: 180% !important;
-                    height: auto !important;
+                    height: 100% !important;
                 }
-            </style>
+            </style> --}}
             <!--Logo start-->
-            <div class="row logo-my align-items-center justify-content-center">
+            {{-- <div class="row logo-my align-items-center justify-content-center">
                 <div class="col-4 p-0 m-0 mt-2">
                     <img class="my-img" src="{{ asset('/assets/fist-resources.png') }}" alt="">
                 </div>
                 <div class="col-8 p-0 mb-5 text-start">
                     <h5 class="logo-title">Fist Resources</h5>
                 </div>
-            </div>
+            </div> --}}
             <!--logo End-->
+
+
+            <div class="logo-main">
+                <div class="logo-normal te">
+                    <img class="my-img" src="{{ asset('/assets/fist-resources.png') }}" alt="">
+                    {{-- <h5 class="logo-title text-center">Fist Resources</h5> --}}
+                </div>
+            </div>
+            <h6 class="logo-title">Fist Resources</h6>
         </a>
         <div class="sidebar-toggle bg-success" data-toggle="sidebar" data-active="true">
             <i class="icon">
@@ -658,6 +690,8 @@
                             </li>
                         @endif
                     @endif
+                    <br>
+                    <br>
                 </ul>
                 <!-- Sidebar Menu End -->
             </div>
