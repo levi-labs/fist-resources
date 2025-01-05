@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\ProposedProduct;
 use App\Models\ProposedRequest;
+use App\Models\ProposePurchaseOrder;
+use App\Models\Shipment;
 use App\Services\ProposeProductService;
 use App\Services\ProposePurchaseOrderService;
 use App\Services\ProposeRequestService;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -208,7 +211,67 @@ class ProposeInventoryController extends Controller
         $title = 'Propose Inventory Details';
         $proposed = $this->proposeRequestService->getByRequestCode($request_code);
         $suppliers = $supplierService->getAllSuppliers();
-        return view('pages.propose_inventory.detail', compact('title', 'proposed', 'suppliers'));
+        if ($proposed[0]->status == 'approved') {
+            $status_purchase = ProposePurchaseOrder::where('request_code', $request_code)->first();
+            $shipped = Shipment::where('proposed_product_purchase_order_id', $status_purchase->id)->first();
+            $tracking_status = [];
+            $awaiting_shipment = [
+                [
+                    'request_code' => $request_code,
+                    'status' => 'awaiting shipment',
+                    'invoice_number' => $status_purchase->invoice_number,
+                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                ]
+            ];
+            if ($status_purchase->status === 'awaiting shipment') {
+                $tracking_status = $awaiting_shipment;
+            } elseif ($status_purchase->status === 'shipped') {
+                $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+                $shipped = [
+
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'shipped',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => $x,
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'awaiting shipment',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                    ],
+                ];
+                $tracking_status = $shipped;
+            } elseif ($status_purchase->status === 'delivered') {
+                $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+                $delivered = [
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'delivered',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->updated_at)->format('Y-m-d'),
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'shipped',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => $x,
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'awaiting shipment',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                    ]
+
+
+                ];
+                $tracking_status = $delivered;
+            }
+        }
+
+        return view('pages.propose_inventory.detail', compact('title', 'proposed', 'suppliers', 'tracking_status'));
     }
 
     /**

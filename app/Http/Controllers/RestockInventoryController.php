@@ -227,7 +227,7 @@ class RestockInventoryController extends Controller
             $status_purchase = RestockPurchaseOrder::where('request_code', $request_code)->first();
             $shipped = Shipment::where('restock_purchase_order_id', $status_purchase->id)->first();
             $tracking_status = [];
-            $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+
             $awaiting_shipment = [
                 [
                     'request_code' => $request_code,
@@ -236,49 +236,53 @@ class RestockInventoryController extends Controller
                     'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
                 ]
             ];
-            $shipped = [
-
-                [
-                    'request_code' => $request_code,
-                    'status' => 'shipped',
-                    'invoice_number' => $status_purchase->invoice_number,
-                    'time' => $x,
-                ],
-                [
-                    'request_code' => $request_code,
-                    'status' => 'awaiting shipment',
-                    'invoice_number' => $status_purchase->invoice_number,
-                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
-                ],
-            ];
-
-            $delivered = [
-                [
-                    'request_code' => $request_code,
-                    'status' => 'delivered',
-                    'invoice_number' => $status_purchase->invoice_number,
-                    'time' => Carbon::parse($status_purchase->updated_at)->format('Y-m-d'),
-                ],
-                [
-                    'request_code' => $request_code,
-                    'status' => 'shipped',
-                    'invoice_number' => $status_purchase->invoice_number,
-                    'time' => $x,
-                ],
-                [
-                    'request_code' => $request_code,
-                    'status' => 'awaiting shipment',
-                    'invoice_number' => $status_purchase->invoice_number,
-                    'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
-                ]
 
 
-            ];
-            if ($status_purchase->status === 'awaiting_shipment') {
+
+            if ($status_purchase->status === 'awaiting shipment') {
                 $tracking_status = $awaiting_shipment;
             } elseif ($status_purchase->status === 'shipped') {
+                $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+                $shipped = [
+
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'shipped',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => $x,
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'awaiting shipment',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                    ],
+                ];
                 $tracking_status = $shipped;
             } elseif ($status_purchase->status === 'delivered') {
+                $x = Carbon::parse($shipped->created_at)->format('Y-m-d');
+                $delivered = [
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'delivered',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->updated_at)->format('Y-m-d'),
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'shipped',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => $x,
+                    ],
+                    [
+                        'request_code' => $request_code,
+                        'status' => 'awaiting shipment',
+                        'invoice_number' => $status_purchase->invoice_number,
+                        'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
+                    ]
+
+
+                ];
                 $tracking_status = $delivered;
             }
             return view('pages.restock_inventory.detail', compact(
