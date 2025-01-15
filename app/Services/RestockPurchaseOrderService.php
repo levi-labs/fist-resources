@@ -83,15 +83,36 @@ class RestockPurchaseOrderService
     }
     public function getAllRestockPurchaseOrder()
     {
-        return RestockPurchaseOrder::where('status', 'awaiting shipment')->paginate(10);
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return RestockPurchaseOrder::where('status', 'awaiting shipment')
+                ->where('supplier_id', auth('web')->user()->supplier_id)
+                ->paginate(10);
+        }
+        return RestockPurchaseOrder::where('status', 'awaiting shipment')
+            ->paginate(10);
     }
     public function getAllRestockPurchaseOrderShipped()
     {
-        return RestockPurchaseOrder::where('status', 'shipped')->paginate(10);
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return RestockPurchaseOrder::where('status', 'shipped')
+                ->where('supplier_id', auth('web')->user()->supplier_id)
+                ->paginate(10);
+        }
+        return RestockPurchaseOrder::where('status', 'shipped')
+            ->paginate(10);
     }
     public function getAllRestockPurchaseOrderDelivered()
     {
-        return RestockPurchaseOrder::where('status', 'delivered')->paginate(10);
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return RestockPurchaseOrder::where('status', 'delivered')
+                ->where('supplier_id', auth('web')->user()->supplier_id)
+                ->paginate(10);
+        }
+        return RestockPurchaseOrder::where('status', 'delivered')
+            ->paginate(10);
     }
     public function getRestockPurchaseOrderById($id)
     {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class SupplierService
@@ -29,19 +30,44 @@ class SupplierService
 
     public function createSupplier($data)
     {
+        DB::beginTransaction();
         try {
-            return Supplier::create($data);
+
+            $supplier = Supplier::create($data);
+            $user = [
+                'name' => $data['name'],
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'role' => 'supplier',
+                'password' => bcrypt('password'),
+                'supplier_id' => $supplier->id,
+            ];
+            User::create($user);
+            DB::commit();
         } catch (\Throwable $error) {
+            DB::rollBack();
             throw $error;
         }
     }
 
     public function updateSupplier($id, $data)
     {
+        DB::beginTransaction();
         try {
             $supplier = Supplier::findOrFail($id);
-            return $supplier->update($data);
+            $user = [
+                'name' => $data['name'],
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'role' => 'supplier',
+                'password' => bcrypt('password'),
+                'supplier_id' => $supplier->id,
+            ];
+            $supplier->update($data);
+            User::where('supplier_id', $supplier->id)->update($user);
+            DB::commit();
         } catch (\Throwable $error) {
+            DB::rollBack();
             throw $error;
         }
     }

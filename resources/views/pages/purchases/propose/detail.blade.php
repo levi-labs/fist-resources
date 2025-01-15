@@ -158,12 +158,15 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12 text-end">
-                @if ($status === 'pending' || $status === 'awaiting shipment')
-                    <button type="button" class="btn btn-md btn-icon btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Process
-                    </button>
+                @if (auth('web')->user()->role == 'supplier')
+                    @if ($status === 'pending' || $status === 'awaiting shipment')
+                        <button type="button" class="btn btn-md btn-icon btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Process
+                        </button>
+                    @endif
                 @endif
+
             </div>
         </div>
 

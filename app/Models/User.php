@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role',
         'username',
         'password',
+        'supplier_id',
     ];
 
     protected function name(): Attribute

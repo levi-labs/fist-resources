@@ -100,12 +100,15 @@
                     <li>
                         <hr class="hr-horizontal">
                     </li>
-                    <li class="nav-item static-item">
-                        <a class="nav-link static-item disabled" href="#" tabindex="-1">
-                            <span class="default-icon">Menu</span>
-                            <span class="mini-icon">-</span>
-                        </a>
-                    </li>
+                    @if (!auth('web')->user()->role == 'supplier')
+                        <li class="nav-item static-item">
+                            <a class="nav-link static-item disabled" href="#" tabindex="-1">
+                                <span class="default-icon">Menu</span>
+                                <span class="mini-icon">-</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (auth('web')->user()->role == 'admin' ||
                             auth('web')->user()->role == 'procurement' ||
                             auth('web')->user()->role == 'logistic')
@@ -465,7 +468,10 @@
                             </a>
                         </li>
                     @endif
-                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'procurement' || Auth::user()->role == 'logistic')
+                    @if (Auth::user()->role == 'admin' ||
+                            Auth::user()->role == 'procurement' ||
+                            Auth::user()->role == 'logistic' ||
+                            Auth::user()->role == 'supplier')
                         <li>
                             <hr class="hr-horizontal">
                         </li>
@@ -475,7 +481,7 @@
                                 <span class="mini-icon">-</span>
                             </a>
                         </li>
-                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'procurement')
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'procurement' || Auth::user()->role == 'supplier')
                             {{-- Purchase --}}
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-purchase"

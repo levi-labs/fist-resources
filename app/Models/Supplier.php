@@ -17,6 +17,15 @@ class Supplier extends Model
             set: fn($value) => strtolower($value),
         );
     }
+
+    protected function username(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => strtolower($value),
+            set: fn($value) => strtolower($value),
+        );
+    }
+
     protected function address(): Attribute
     {
         return Attribute::make(
