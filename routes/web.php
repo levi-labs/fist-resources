@@ -178,7 +178,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement,supplier
         });
     Route::controller(App\Http\Controllers\ShipmentController::class)
         ->prefix('shipment')
-        ->middleware('role:admin,procurement,logistic')
+        ->middleware('role:admin,procurement,logistic,supplier')
         ->group(function () {
             Route::post('/create', 'store')->name('shipment.store');
             Route::get('/restock', 'restockShipped')->name('shipment.restockShipped');

@@ -19,8 +19,14 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Request Restock</p>
-                                            <h4 class="counter">{{ $request_restock }}</h4>
+                                            @if (auth()->user()->role !== 'supplier')
+                                                <p class="mb-2">Request Restock</p>
+                                                <h4 class="counter">{{ $request_restock }}</h4>
+                                            @else
+                                                <p class="mb-2">Purchase Restock</p>
+                                                <h4 class="counter">{{ $purchase_restock_awaiting }}</h4>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -37,8 +43,13 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Purchase Restock</p>
-                                            <h4 class="counter">{{ $purchase_restock }}</h4>
+                                            @if (auth()->user()->role !== 'supplier')
+                                                <p class="mb-2">Purchase Restock</p>
+                                                <h4 class="counter">{{ $purchase_restock }}</h4>
+                                            @else
+                                                <p class="mb-2">Delivered Restock</p>
+                                                <h4 class="counter">{{ $purchase_restock_delivered }}</h4>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -55,8 +66,15 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Request Proposed</p>
-                                            <h4 class="counter">{{ $request_propose }}</h4>
+                                            @if (auth()->user()->role !== 'supplier')
+                                                <p class="mb-2">Request Proposed</p>
+                                                <h4 class="counter">{{ $request_propose }}</h4>
+                                            @else
+                                                <p class="mb-2">Purchase Propose</p>
+                                                <h4 class="counter">{{ $purchase_propose_awaiting }}</h4>
+                                            @endif
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -73,8 +91,14 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Purchase Proposed</p>
-                                            <h4 class="counter">{{ $purchase_propose }}</h4>
+                                            @if (auth()->user()->role !== 'supplier')
+                                                <p class="mb-2">Purchase Proposed</p>
+                                                <h4 class="counter">{{ $purchase_propose }}</h4>
+                                            @else
+                                                <p class="mb-2">Delivered Proposed</p>
+                                                <h4 class="counter">{{ $purchase_propose_delivered }}</h4>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>

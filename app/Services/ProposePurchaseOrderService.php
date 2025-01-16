@@ -14,20 +14,46 @@ class ProposePurchaseOrderService
 
     public function getAllProposePurchaseOrder()
     {
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return ProposePurchaseOrder::where('status', 'awaiting shipment')
+                ->where('supplier_id', $auth->supplier_id)
+                ->paginate(10);
+        }
         return ProposePurchaseOrder::where('status', 'awaiting shipment')->paginate(10);
     }
     public function getAllProposePurchaseOrderDelivered()
     {
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return ProposePurchaseOrder::where('status', 'delivered')
+                ->where('supplier_id', $auth->supplier_id)
+                ->paginate(10);
+        }
         return ProposePurchaseOrder::where('status', 'delivered')->paginate(10);
     }
     public function getAllProposePurchaseOrderShipped()
     {
+        $auth = auth('web')->user();
+        if ($auth->role === 'supplier') {
+            return ProposePurchaseOrder::where('status', 'shipped')
+                ->where('supplier_id', $auth->supplier_id)
+                ->paginate(10);
+        }
         return ProposePurchaseOrder::where('status', 'shipped')->paginate(10);
     }
 
     public function search($search, $status)
     {
         try {
+            $auth = auth('web')->user();
+            if ($auth->role === 'supplier') {
+                $purchase = ProposePurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
+                    ->where('status', $status)
+                    ->where('supplier_id', auth('web')->user()->supplier_id)
+                    ->paginate(10);
+                return $purchase;
+            }
             $purchase = ProposePurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
                 ->where('status', $status)
                 ->paginate(10);

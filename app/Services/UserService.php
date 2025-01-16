@@ -9,6 +9,7 @@ class UserService
     public function searchUser($query)
     {
         $users = User::where('name', 'like', '%' . $query . '%')
+            ->where('role', '!=', 'supplier')
             ->orWhere('role', 'like', '%' . $query . '%')
             ->get();
         $users = User::hydrate($users->toArray());
@@ -16,7 +17,8 @@ class UserService
     }
     public function getAllUsers()
     {
-        return User::all();
+
+        return User::where('role', '!=', 'supplier')->paginate(10);
     }
 
     public function getUserById($id)

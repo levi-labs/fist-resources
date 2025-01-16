@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $sanitize = handleSanitize(request()->input('search', ''));
-        if (isset($sanitize) && $sanitize !== '') {
+        if ($sanitize) {
             $title = 'User List';
             $users = $this->userservice->searchUser($sanitize);
             return view('pages.user.index', compact('title', 'users'));

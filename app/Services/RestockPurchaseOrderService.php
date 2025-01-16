@@ -73,6 +73,14 @@ class RestockPurchaseOrderService
     public function search($search, $status)
     {
         try {
+            $auth = auth('web')->user();
+            if ($auth->role === 'supplier') {
+                $purchase = RestockPurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
+                    ->where('status', $status)
+                    ->where('supplier_id', auth('web')->user()->supplier_id)
+                    ->paginate(10);
+                return $purchase;
+            }
             $purchase = RestockPurchaseOrder::where('invoice_number', 'like', '%' . $search . '%')
                 ->where('status', $status)
                 ->paginate(10);
