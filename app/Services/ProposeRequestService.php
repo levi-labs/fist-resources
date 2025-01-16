@@ -135,7 +135,8 @@ class ProposeRequestService
             Notification::create([
                 'user_role' => 'procurement',
                 'request_related' => $request_code,
-                'notification_type' => 'request propose',
+                'notification_type' => 'request',
+                'order_type' => 'request propose',
                 'message' => 'New Request Item',
             ]);
             DB::commit();

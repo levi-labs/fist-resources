@@ -88,103 +88,136 @@
                         $notification_count = \App\Models\Notification::where('status', 'unread')->count();
                         $nofications_m = \App\Models\Notification::where('status', 'unread')->limit(5)->get();
                     }
-                    // dd($nofications_m);
+
                 @endphp
                 <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
-                    <li class="nav-item dropdown">
+                    @if (auth('web')->user()->role !== 'staff')
+                        <li class="nav-item dropdown">
 
-                        <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown"
-                            class="position-relative">
-                            <svg class="icon-24" width="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M19.7695 11.6453C19.039 10.7923 18.7071 10.0531 18.7071 8.79716V8.37013C18.7071 6.73354 18.3304 5.67907 17.5115 4.62459C16.2493 2.98699 14.1244 2 12.0442 2H11.9558C9.91935 2 7.86106 2.94167 6.577 4.5128C5.71333 5.58842 5.29293 6.68822 5.29293 8.37013V8.79716C5.29293 10.0531 4.98284 10.7923 4.23049 11.6453C3.67691 12.2738 3.5 13.0815 3.5 13.9557C3.5 14.8309 3.78723 15.6598 4.36367 16.3336C5.11602 17.1413 6.17846 17.6569 7.26375 17.7466C8.83505 17.9258 10.4063 17.9933 12.0005 17.9933C13.5937 17.9933 15.165 17.8805 16.7372 17.7466C17.8215 17.6569 18.884 17.1413 19.6363 16.3336C20.2118 15.6598 20.5 14.8309 20.5 13.9557C20.5 13.0815 20.3231 12.2738 19.7695 11.6453Z"
-                                    fill="currentColor"></path>
-                                <path opacity="0.4"
-                                    d="M14.0088 19.2283C13.5088 19.1215 10.4627 19.1215 9.96275 19.2283C9.53539 19.327 9.07324 19.5566 9.07324 20.0602C9.09809 20.5406 9.37935 20.9646 9.76895 21.2335L9.76795 21.2345C10.2718 21.6273 10.8632 21.877 11.4824 21.9667C11.8123 22.012 12.1482 22.01 12.4901 21.9667C13.1083 21.877 13.6997 21.6273 14.2036 21.2345L14.2026 21.2335C14.5922 20.9646 14.8734 20.5406 14.8983 20.0602C14.8983 19.5566 14.4361 19.327 14.0088 19.2283Z"
-                                    fill="currentColor"></path>
-                            </svg>
+                            <a href="#" class="nav-link" id="notification-drop" data-bs-toggle="dropdown"
+                                class="position-relative">
+                                <svg class="icon-24" width="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M19.7695 11.6453C19.039 10.7923 18.7071 10.0531 18.7071 8.79716V8.37013C18.7071 6.73354 18.3304 5.67907 17.5115 4.62459C16.2493 2.98699 14.1244 2 12.0442 2H11.9558C9.91935 2 7.86106 2.94167 6.577 4.5128C5.71333 5.58842 5.29293 6.68822 5.29293 8.37013V8.79716C5.29293 10.0531 4.98284 10.7923 4.23049 11.6453C3.67691 12.2738 3.5 13.0815 3.5 13.9557C3.5 14.8309 3.78723 15.6598 4.36367 16.3336C5.11602 17.1413 6.17846 17.6569 7.26375 17.7466C8.83505 17.9258 10.4063 17.9933 12.0005 17.9933C13.5937 17.9933 15.165 17.8805 16.7372 17.7466C17.8215 17.6569 18.884 17.1413 19.6363 16.3336C20.2118 15.6598 20.5 14.8309 20.5 13.9557C20.5 13.0815 20.3231 12.2738 19.7695 11.6453Z"
+                                        fill="currentColor"></path>
+                                    <path opacity="0.4"
+                                        d="M14.0088 19.2283C13.5088 19.1215 10.4627 19.1215 9.96275 19.2283C9.53539 19.327 9.07324 19.5566 9.07324 20.0602C9.09809 20.5406 9.37935 20.9646 9.76895 21.2335L9.76795 21.2345C10.2718 21.6273 10.8632 21.877 11.4824 21.9667C11.8123 22.012 12.1482 22.01 12.4901 21.9667C13.1083 21.877 13.6997 21.6273 14.2036 21.2345L14.2026 21.2335C14.5922 20.9646 14.8734 20.5406 14.8983 20.0602C14.8983 19.5566 14.4361 19.327 14.0088 19.2283Z"
+                                        fill="currentColor"></path>
+                                </svg>
 
-                            <span
-                                class="position-absolute top-10 start-95 translate-middle badge rounded-pill bg-danger">
-                                {{ $notification_count > 5 ? '5+' : $notification_count }} <span
-                                    class="visually-hidden">unread messages</span>
-                            </span>
-                        </a>
-                        <div class="p-0 sub-drop dropdown-menu dropdown-menu-end" aria-labelledby="notification-drop">
-                            <div class="m-0 shadow-none card">
-                                <div class="py-3 card-header d-flex justify-content-between bg-primary rounded-top">
-                                    <div class="header-title">
-                                        <h5 class="mb-0 text-white">All Notifications</h5>
+                                <span
+                                    class="position-absolute top-10 start-95 translate-middle badge rounded-pill bg-danger">
+                                    {{ $notification_count > 5 ? '5+' : $notification_count }} <span
+                                        class="visually-hidden">unread messages</span>
+                                </span>
+                            </a>
+                            <div class="p-0 sub-drop dropdown-menu dropdown-menu-end"
+                                aria-labelledby="notification-drop">
+                                <div class="m-0 shadow-none card">
+                                    <div class="py-3 card-header d-flex justify-content-between bg-primary rounded-top">
+                                        <div class="header-title">
+                                            <h5 class="mb-0 text-white">All Notifications</h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <style>
-                                    .my-hover:hover {
-                                        background-color: #5272ef !important;
-                                        color: white !important;
-                                    }
+                                    <style>
+                                        .my-hover:hover {
+                                            background-color: #5272ef !important;
+                                            color: white !important;
+                                        }
 
-                                    .my-hover:hover .iq-text {
-                                        color: white !important;
-                                    }
-                                </style>
-                                <div class="p-0 card-body">
+                                        .my-hover:hover .iq-text {
+                                            color: white !important;
+                                        }
+                                    </style>
+                                    <div class="p-0 card-body">
 
-                                    @forelse ($nofications_m as $notif)
-                                        @php
-                                            $type = $notif->order_type; // Tambahkan titik koma setelah penugasan
+                                        @forelse ($nofications_m as $notif)
+                                            @php
+                                                $type = $notif->order_type; // Tambahkan titik koma setelah penugasan
 
-                                            if ($type == 'purchase restock') {
-                                                $link = route('restock.purchase.show', $notif->related_order_id);
-                                            } elseif ($type == 'purchase proposed product') {
-                                                $link = route('propose.purchase.show', $notif->related_order_id);
-                                            } elseif ($notif->notification_type == 'request restock') {
-                                                $link = route('restock.inventory.show', $notif->related_order_id);
-                                            } elseif ($notif->notification_type == 'request propose') {
-                                                $link = route('propose.inventory.show', $notif->related_order_id);
-                                            } elseif ($notif->notification_type == 'shipment restock shipped') {
-                                                $link = route('shipment.restockShipped');
-                                            } elseif ($notif->notification_type == 'shipment restock delivered') {
-                                                $link = route('shipment.restockDelivered');
-                                            } elseif ($notif->notification_type == 'shipment propose shipped') {
-                                                $link = route('shipment.proposeShipped');
-                                            } elseif ($notif->notification_type == 'shipment propose delivered') {
-                                                $link = route('shipment.proposeDelivered');
-                                            }
+                                                if ($type == 'purchase restock') {
+                                                    $link = route('restock.purchase.show', $notif->related_order_id);
+                                                } elseif ($type == 'purchase proposed product') {
+                                                    $link = route('propose.purchase.show', $notif->related_order_id);
+                                                } elseif ($type == 'request restock') {
+                                                    $link = route('restock.inventory.show', $notif->request_related);
+                                                } elseif ($type == 'request propose') {
+                                                    $link = route('propose.inventory.show', $notif->request_related);
+                                                } elseif ($type == 'shipment restock shipped') {
+                                                    $link = route('shipment.restockShipped');
+                                                } elseif ($type == 'shipment restock delivered') {
+                                                    $link = route('shipment.restockDelivered');
+                                                } elseif ($type == 'shipment propose shipped') {
+                                                    $link = route('shipment.proposeShipped');
+                                                } elseif ($type == 'shipment propose delivered') {
+                                                    $link = route('shipment.proposeDelivered');
+                                                }
 
-                                        @endphp
-                                        <a href="{{ $link ?? '#' }}" class="iq-sub-card my-hover">
-                                            <div class="d-flex align-items-center">
-                                                {{-- <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
+                                            @endphp
+                                            <a href="{{ route('read.notification', $notif->id) }}"
+                                                class="iq-sub-card my-hover" id="notif-{{ $notif->id }}">
+                                                <div class="d-flex align-items-center">
+                                                    {{-- <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
                                             src="../assets/images/shapes/01.png" alt=""> --}}
-
-                                                <div class="ms-3 w-100">
-                                                    <h6 class="mb-0 text-start iq-text">{{ $notif->message }}</h6>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <p class="mb-0">{{ $notif->notification_type }}</p>
-                                                        <small
-                                                            class="float-end font-size-12">{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}</small>
+                                                    <div class="ms-3 w-100">
+                                                        <h6 class="mb-0 text-start iq-text">{{ $notif->message }}</h6>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="mb-0">{{ $notif->notification_type }}</p>
+                                                            <small
+                                                                class="float-end font-size-12">{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans() }}</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    @empty
-                                        <a href="#" class="iq-sub-card my-hover">
-                                            <div class="d-flex align-items-center">
-                                                {{-- <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
+                                            </a>
+                                            <script>
+                                                document.getElementById('notif-{{ $notif->id }}').addEventListener('click', function(event) {
+                                                    event.preventDefault(); // Mencegah link biasa agar tidak melakukan refresh halaman
+                                                    var link = this.getAttribute('href');
+                                                    var notifElement = this; // Simpan elemen notifikasi untuk diubah nanti
+
+                                                    Kirim request GET menggunakan Fetch API
+                                                    fetch(link, {
+                                                            method: 'GET',
+                                                            headers: {
+                                                                'Accept': 'application/json',
+                                                                'X-Requested-With': 'XMLHttpRequest',
+                                                            },
+                                                        })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            event.preventDefault();
+                                                            alert(data);
+                                                            if (data.success) {
+                                                                console.log('message', data.link);
+
+                                                                window.location.href = data.link;
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            console.error('Error:', error);
+                                                        });
+                                                });
+                                            </script>
+                                        @empty
+                                            <a href="#" class="iq-sub-card my-hover">
+                                                <div class="d-flex align-items-center">
+                                                    {{-- <img class="p-1 avatar-40 rounded-pill bg-primary-subtle"
                                         src="../assets/images/shapes/01.png" alt=""> --}}
 
-                                                <div class="ms-3 w-100">
-                                                    <h6 class="mb-0 text-start iq-text">No Notifications</h6>
+                                                    <div class="ms-3 w-100">
+                                                        <h6 class="mb-0 text-start iq-text">No Notifications</h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    @endforelse
+                                            </a>
+                                        @endforelse
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    @endif
+
 
                     <li class="nav-item dropdown custom-drop">
                         <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown"
@@ -240,6 +273,7 @@
     </div> <!-- Nav Header Component End -->
     <!--Nav End-->
 </div>
+
 
 
 

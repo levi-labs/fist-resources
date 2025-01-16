@@ -18,6 +18,7 @@ Route::controller(App\Http\Controllers\AuthController::class)
     });
 Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement,supplier'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/read-notification/{id}', [DashboardController::class, 'readNotification'])->name('read.notification');
 
     Route::controller(App\Http\Controllers\CategoryController::class)
         ->prefix('category')

@@ -93,7 +93,7 @@
                                                 <div class="flex align-items-center list-user-action">
                                                     <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
-                                                        href="{{ route('restock.purchase.show', $dt->id) }}"
+                                                        href="{{ route('propose.purchase.show', $dt->id) }}"
                                                         aria-label="Detail" data-bs-original-title="">
                                                         <span class="btn-inner">
                                                             <svg class="icon-18" width="18" viewBox="0 0 24 24"

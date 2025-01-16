@@ -44,4 +44,36 @@ class DashboardController extends Controller
 
         return view('pages.dashboard.index', compact('request_restock', 'purchase_restock', 'request_propose', 'purchase_propose'));
     }
+
+    public function readNotification($id)
+    {
+
+        try {
+            $notif = \App\Models\Notification::find($id);
+            $notif->status = 'read';
+            $notif->update();
+            $type = $notif->order_type; // Tambahkan titik koma setelah penugasan
+
+            if ($type == 'purchase restock') {
+                $link = route('restock.purchase.show', $notif->related_order_id);
+            } elseif ($type == 'purchase proposed product') {
+                $link = route('propose.purchase.show', $notif->related_order_id);
+            } elseif ($type == 'request restock') {
+                $link = route('restock.inventory.show', $notif->request_related);
+            } elseif ($type == 'request propose') {
+                $link = route('propose.inventory.show', $notif->request_related);
+            } elseif ($type == 'shipment restock shipped') {
+                $link = route('shipment.restockShipped');
+            } elseif ($type == 'shipment restock delivered') {
+                $link = route('shipment.restockDelivered');
+            } elseif ($type == 'shipment propose shipped') {
+                $link = route('shipment.proposeShipped');
+            } elseif ($type == 'shipment propose delivered') {
+                $link = route('shipment.proposeDelivered');
+            }
+            return redirect($link);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
 }
