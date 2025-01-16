@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Notification;
 use App\Models\ProposedRequest;
 use App\Models\ProposePurchaseOrder;
 use App\Models\ProposePurchaseOrderDetail;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -147,6 +149,15 @@ class ProposePurchaseOrderService
 
                 $propose_purchase = ProposePurchaseOrder::create($data_order);
                 $propose_purchase_id = $propose_purchase->id;
+                $getUser = User::where('supplier_id', $supplier)->first();
+                Notification::create([
+                    'user_id' => $getUser->id,
+                    'user_role' => 'supplier',
+                    'notification_type' => 'purchase',
+                    'message' => 'New Purchase Order',
+                    'order_type' => 'purchase proposed product',
+                    'related_order_id' => $propose_purchase_id,
+                ]);
 
                 for ($i = 0; $i < count($data_order_detail); $i++) {
                     $data_order_detail[$i]['proposed_order_id'] = $propose_purchase_id;

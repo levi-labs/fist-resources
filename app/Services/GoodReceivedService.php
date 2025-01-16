@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\GoodReceived;
 use App\Models\GoodReceivedDetail;
 use App\Models\Inventory;
+use App\Models\Notification;
 use App\Models\Product;
 use App\Models\ProposedProduct;
 use App\Models\ProposePurchaseOrder;
@@ -120,6 +121,14 @@ class GoodReceivedService
                         'image' => $path
 
                     ]);
+
+                    Notification::create([
+                        'user_role' => 'logistic',
+                        'notification_type' => 'shipment',
+                        'message' => 'Purchase Order Delivered',
+                        'order_type' => 'shipment restock delivered',
+                        'related_order_id' => $data['restock_order'],
+                    ]);
                     // dd($orderItem);
 
                     $data_inventory = [];
@@ -179,6 +188,13 @@ class GoodReceivedService
                         'request_type' => 'proposed',
                         'notes' => $data['notes'] ?? null,
                         'image' => $path
+                    ]);
+                    Notification::create([
+                        'user_role' => 'logistic',
+                        'notification_type' => 'shipment',
+                        'message' => 'Purchase Order Delivered',
+                        'order_type' => 'shipment propose delivered',
+                        'related_order_id' => $data['propose_order'],
                     ]);
                     foreach ($orderItem as $key => $value) {
                         $new_product[] = [

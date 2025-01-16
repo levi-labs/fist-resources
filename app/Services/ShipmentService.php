@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Notification;
 use App\Models\Shipment;
+
+use Illuminate\Support\Facades\DB;
 
 class ShipmentService
 {
@@ -153,11 +156,24 @@ class ShipmentService
             throw $th;
         }
     }
-    public function create($data)
+    public function create($data, $request_type, $order_id)
     {
+        DB::beginTransaction();
         try {
+
             Shipment::create($data);
+
+            Notification::create([
+                'user_role' => 'logistic',
+                'notification_type' => 'shipment',
+                'message' => 'Purchase Order Shipped',
+                'order_type' => $request_type === 'restock' ? 'shipment restock shipped' : 'shipment propose shipped',
+                'related_order_id' => $order_id,
+            ]);
+
+            DB::commit();
         } catch (\Throwable $th) {
+            DB::rollBack();
             throw $th;
         }
     }

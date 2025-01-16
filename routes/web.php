@@ -167,7 +167,7 @@ Route::middleware(['auth.check', 'role:admin,staff,logistic,procurement,supplier
         ->group(function () {
             Route::get('/', 'index')->name('propose.purchase.index');
             Route::post('/', 'index')->name('propose.purchase.search');
-            Route::get('/show/{request_code}', 'show')->name('propose.purchase.show');
+            Route::get('/show/{id}', 'show')->name('propose.purchase.show');
             Route::get('/create', 'create')->name('propose.purchase.create');
             Route::post('/create', 'store')->name('propose.purchase.store');
             Route::get('/shipped', 'shipped')->name('propose.purchase.shipped');

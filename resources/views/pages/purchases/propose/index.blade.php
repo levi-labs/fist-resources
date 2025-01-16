@@ -95,7 +95,7 @@
                                                     <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip"
                                                         data-bs-placement="top"
                                                         href="{{ route('propose.purchase.show', $dt->id) }}"
-                                                        aria-label="Detail" data-bs-original-title="Detail">
+                                                        aria-label="Detail" data-bs-original-title="">
                                                         <span class="btn-inner">
                                                             <svg class="icon-18" width="18" viewBox="0 0 24 24"
                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">

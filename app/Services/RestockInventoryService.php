@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Http\Requests\RestockInventoryRequest;
+use App\Models\Notification;
 use App\Models\RestockInventory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -73,6 +74,7 @@ class RestockInventoryService
 
     public function create($id, $quantity, $notes = null)
     {
+        DB::beginTransaction();
         try {
             // DB::table('restock_inventory_requests')->truncate();
             $data = [];
@@ -90,8 +92,17 @@ class RestockInventoryService
                 ];
             }
             RestockInventory::insert($data);
+            Notification::create([
+                'user_role' => 'procurement',
+                'request_related' => $request_code,
+                'notification_type' => 'request',
+                'order_type' => 'request restock',
+                'message' => 'New Request Item',
+            ]);
+            DB::commit();
             // dd(session()->get('cart'));
         } catch (\Throwable $error) {
+            DB::rollBack();
             throw $error;
         }
     }

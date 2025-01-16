@@ -55,7 +55,7 @@ class ShipmentController extends Controller
         try {
             DB::transaction(function () use ($data, $request) {
 
-                $this->shipmentService->create($data);
+                $this->shipmentService->create($data, $request->type, $request->id);
                 if ($request->type == 'restock') {
                     $this->restockPurchaseOrderService->updateStatus($request->id, 'shipped');
                 }

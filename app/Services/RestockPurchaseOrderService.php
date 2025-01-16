@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Notification;
 use App\Models\RestockInventory;
 use App\Models\RestockPurchaseOrder;
 use App\Models\RestockPurchaseOrderDetail;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use  Illuminate\Support\Str;
@@ -56,8 +58,19 @@ class RestockPurchaseOrderService
                     ];
                 }
 
+
                 $purchase_order = RestockPurchaseOrder::create($data_order);
+
                 $purchase_order_id = $purchase_order->id;
+                $getUser = User::where('supplier_id', $supplier)->first();
+                Notification::create([
+                    'user_id' => $getUser->id,
+                    'user_role' => 'supplier',
+                    'notification_type' => 'purchase',
+                    'message' => 'New Purchase Order',
+                    'order_type' => 'purchase restock',
+                    'related_order_id' => $purchase_order_id,
+                ]);
                 for ($i = 0; $i < count($data_order_detail); $i++) {
                     $data_order_detail[$i]['restock_purchase_order_id'] = $purchase_order_id;
                 }

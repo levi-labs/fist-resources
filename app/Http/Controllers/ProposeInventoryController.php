@@ -211,6 +211,7 @@ class ProposeInventoryController extends Controller
         $title = 'Propose Inventory Details';
         $proposed = $this->proposeRequestService->getByRequestCode($request_code);
         $suppliers = $supplierService->getAllSuppliers();
+
         if ($proposed[0]->status == 'approved') {
             $status_purchase = ProposePurchaseOrder::where('request_code', $request_code)->first();
             $shipped = Shipment::where('proposed_product_purchase_order_id', $status_purchase->id)->first();
@@ -223,6 +224,7 @@ class ProposeInventoryController extends Controller
                     'time' => Carbon::parse($status_purchase->created_at)->format('Y-m-d'),
                 ]
             ];
+
             if ($status_purchase->status === 'awaiting shipment') {
                 $tracking_status = $awaiting_shipment;
             } elseif ($status_purchase->status === 'shipped') {
@@ -269,9 +271,11 @@ class ProposeInventoryController extends Controller
                 ];
                 $tracking_status = $delivered;
             }
+
+            return view('pages.propose_inventory.detail', compact('title', 'proposed', 'suppliers', 'tracking_status'));
         }
 
-        return view('pages.propose_inventory.detail', compact('title', 'proposed', 'suppliers', 'tracking_status'));
+        return view('pages.propose_inventory.detail', compact('title', 'proposed', 'suppliers'));
     }
 
     /**

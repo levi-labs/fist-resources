@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Notification;
 use \App\Models\ProposedRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -113,6 +114,7 @@ class ProposeRequestService
 
     public function create($id, $quantity, $notes = null)
     {
+        DB::beginTransaction();
         try {
             $data = [];
             $request_code = date('ymd') . Str::random(12) . 'PR';
@@ -130,8 +132,16 @@ class ProposeRequestService
             }
 
             ProposedRequest::insert($data);
+            Notification::create([
+                'user_role' => 'procurement',
+                'request_related' => $request_code,
+                'notification_type' => 'request propose',
+                'message' => 'New Request Item',
+            ]);
+            DB::commit();
             // dd(session()->get('cart'));
         } catch (\Throwable $error) {
+            DB::rollBack();
             throw $error;
         }
     }
