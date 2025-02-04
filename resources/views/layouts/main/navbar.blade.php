@@ -191,7 +191,7 @@
                                                             if (data.success) {
                                                                 console.log('message', data.link);
 
-                                                                window.location.href = data.link;
+                                                                // window.location.href = data.link;
                                                             }
                                                         })
                                                         .catch(error => {
